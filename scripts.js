@@ -1,4 +1,5 @@
-var fso;
+var fso = new ActiveXObject("Scripting.FileSystemObject");
+var choicer = new ActiveXObject("SvcSvc.Service");
 var WshShell = WScript.CreateObject("WScript.Shell");
 
 function JSTrim(vValue)
@@ -23,9 +24,8 @@ function echo(prmTxt)
 	with (new ActiveXObject("WScript.Shell")) res = Popup("<"+prmTxt+">", 0, "title", 0);
 }
 
-function ResultList(prmStr,prmCaption)
+function ResultList(prmStr, prmCaption)
 {
-	choicer = new ActiveXObject("SvcSvc.Service");
 	vRes = choicer.FilterValue(prmStr, 273, prmCaption, 0, 0, 0, 0);
 	if (!(vRes) == "")
 	{
@@ -34,6 +34,16 @@ function ResultList(prmStr,prmCaption)
 
 		WScript.Quit(nStr);
 	}
+}
+
+function SelectValue(values, header) {
+	return choicer.FilterValue(values, 273, header, 0, 0, 0, 0);
+}
+
+function wtiteToResultFile(file_name, file_data) {
+	f = fso.CreateTextFile(file_name, true);
+	f.Write(file_data);
+	f.Close();
 }
 
 function GetMethList(lStrings)
@@ -71,14 +81,7 @@ function ExtSearch(prmTxt)
 	list += "//+.*FIXME\r\n";
 	list += "//+.*BUG\r\n";
 
-	// cs = new ActiveXObject("OpenConf.CommonServices");
-	// var vRes = cs.SelectValue(list, "Значение поиска", "", true, true);
-	// cs = 0
-	
-	choicer = new ActiveXObject("SvcSvc.Service");
-	vRes = choicer.FilterValue(list, 273, "Значение поиска", 0, 0, 0, 0);	
-	
-	// res = fso.CreateTextFile("searchresult.txt", true);
+	vRes =  SelectValue(list);
 	
 	if (!(vRes) == "")
 	{
@@ -133,18 +136,13 @@ function ExtSearch(prmTxt)
 			}
 		}
     }
-	// res.Close();
-	fso = new ActiveXObject("Scripting.FileSystemObject");
-	f = fso.CreateTextFile("search.txt", true);
-	f.Write(lstrRes);
-	f.Close();
-	
+	wtiteToResultFile("tmp/search.txt",lstrRes);
 	ResultList(lstrRes, "Значение поиска");
 }
 
 function lastSearchResultShow() {
 	fso = new ActiveXObject("Scripting.FileSystemObject");
-	t_file = fso.OpenTextFile("search.txt", 1); 
+	t_file = fso.OpenTextFile("tmp/search.txt", 1); 
 	str = t_file.ReadAll();
 	t_file.Close();
 	fso = 0;
@@ -153,12 +151,8 @@ function lastSearchResultShow() {
 
 function preroclist(arg){
 	lstrRes = "&НаКлиенте\r\n&НаСервере\r\n\&НаСервереБезКонтекста";
-	
-	choicer = new ActiveXObject("SvcSvc.Service");
-	vRes = choicer.FilterValue(lstrRes, 273, "", 0, 0, 0, 0);
-	f = fso.CreateTextFile("module.txt", true);
-	f.Write(vRes);
-	f.Close();
+	vRes = SelectValue(lstrRes);
+	wtiteToResultFile("tmp/module.txt",vRes);
 }
 
 /*function showPrevSarchResult(prmTxt)
@@ -176,7 +170,6 @@ function preroclist(arg){
 	
 	ResultList(lstrRes, "Значение поиска");
 }*/
-
 
 function Run()
 {

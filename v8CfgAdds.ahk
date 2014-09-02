@@ -72,7 +72,7 @@ Return
 Return
 
 ;-----------------------------------------------
-; поиск с рег.выражениями: Ctrl+Alt+f
+; поиск с рег.выражениями: Alt+r
 !r::
    SendInput, {home}
    SendMessage, 0x50,, 0x4090409,, A ;переходим на lat раскладку, для упрощения управления
@@ -96,8 +96,7 @@ Return
 Return
 
 ; ---------------------------
-;  развернуть модуль
-; ctrl+i
+;  Развернуть модуль: ctrl+i
 ^i::
    SendInput, ^+{NumpadAdd}
 Return
@@ -116,7 +115,7 @@ runAuthorComments(prmVar)
 	ClipWait , 1
 	RunWait, wscript author.js %prmVar%
 	ClipWait , 1
-	FileRead, text, actxt.tmp
+	FileRead, text, tmp\actxt.tmp
 	ClipWait , 1
 	ClipPutText(text)
 	ClipWait , 1
@@ -170,18 +169,36 @@ return
 	;module = %temp%\module.1s
 	;PutCurrentModuleTextIntoFile(module)
 	ClipWait , 1
-	RunWait, wscript generator.js %prmVar%
+	RunWait, wscript generator.js null simple-managment
 	ClipWait , 1
-	FileRead, text, module.txt
+	FileRead, text, tmp\module.txt
 	ClipWait , 1
 	ClipPutText(text)
 	ClipWait , 1
 	SendInput +{ins}
 return
 
+; Alt+g - Вызов генераторов кода
+!g::
+	SendInput, ^{ins}
+	ClipWait , 1
+	;module = %temp%\module.1s
+	;PutCurrentModuleTextIntoFile(module)
+	ClipWait , 1
+	RunWait, wscript generator.js null generator
+	ClipWait , 1
+	FileRead, text, tmp\module.txt
+	ClipWait , 1
+	ClipPutText(text)
+	ClipWait , 1
+	SendInput +{ins}
+return
+
+
+; Alt+7 - Препроцессор функции
 !7::
 	RunWait, wscript scripts.js null preprocmenu
-	FileRead, text, module.txt
+	FileRead, text, tmp\module.txt
 	ClipWait , 1
 	ClipPutText(text)
 	ClipWait , 1

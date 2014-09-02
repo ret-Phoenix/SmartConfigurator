@@ -120,7 +120,7 @@ function setMarker(markerType, newCode)
 		block += ind + "//" + s.markerEndBlock + (s.doNotSignAtEnd?"":AC_Sign) + "\r\n";
 
 		fso = new ActiveXObject("Scripting.FileSystemObject");
-		var defFile = fso.CreateTextFile("actxt.tmp",true);
+		var defFile = fso.CreateTextFile("tmp/actxt.tmp",true);
 		defFile.WriteLine(block);
 		defFile.Close();
 }
