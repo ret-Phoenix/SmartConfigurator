@@ -204,3 +204,15 @@ return
 	ClipWait , 1
 	SendInput +{ins}
 return
+
+; Ctrl+m - Препроцессор функции
+^m::
+	SendInput, ^{ins}
+	ClipWait , 1
+	RunWait, wscript scripts_manager.js
+	FileRead, text, tmp\module.txt
+	ClipWait , 1
+	ClipPutText(text)
+	ClipWait , 1
+	SendInput +{ins}
+return
