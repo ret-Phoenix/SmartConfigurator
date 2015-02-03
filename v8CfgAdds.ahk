@@ -9,7 +9,7 @@ Ctrl_Shift_Z = ^+{SC02C}
 F6::
 
 	module = %temp%\module.1s
-	PutCurrentModuleTextIntoFile(module)
+	PutCurrentModuleTextIntoFileFast(module)
 
 	RunWait, perl code_beautifier.pl -f %module%
 
@@ -34,7 +34,7 @@ F6::
 ; ¬ызов списка процедур: ctrl +1
 ^1::
 	module = %temp%\module.1s
-	PutCurrentModuleTextIntoFile(module)
+	PutCurrentModuleTextIntoFileFast(module)
 
 	SendInput, {home}
 ; 	Sleep 5
@@ -56,7 +56,7 @@ Return
 ; поиск с рег.выражени€ми: Alt+f
 !f::
    module = %temp%\module.1s
-   PutCurrentModuleTextIntoFile(module)
+   PutCurrentModuleTextIntoFileFast(module)
    SendInput, {home}
 ;    SendInput, ^+{NumpadAdd} ; развернем все строки
    SendMessage, 0x50,, 0x4090409,, A ;переходим на lat раскладку, дл€ упрощени€ управлени€
@@ -91,8 +91,7 @@ Return
 
 ; «акоментировать строку: ctrl + / (ctrl + .)
 ^/::
-   Send, {home}
-   Send, //
+   Send, {home}//
 Return
 
 ; ---------------------------
@@ -216,3 +215,40 @@ return
 	ClipWait , 1
 	SendInput +{ins}
 return
+
+; Alt + c - √енерировать словарь
+!c::
+	module = tmp\module.txt
+	PutCurrentModuleTextIntoFileFast(module)
+	SendInput, {Home}
+	RunWait, wscript scripts.js tmp\module.txt gen-words
+return
+
+
+; ctrl + w- выбор подготовленных слов
+^w::
+; 	SendMessage, 0x50,, 0x4090409,, A ;переходим на lat раскладку, дл€ упрощени€ управлени€
+	RunWait, wscript scripts.js null choice-words
+	ClipWait , 1
+	FileRead, text, tmp\module.txt
+	ClipWait , 1
+	ClipPutText(text)
+	ClipWait , 1
+	SendInput +{ins}
+	
+; 	SendPlay %text%
+	
+return
+
+
+^l::
+	SendInput, ^+{Home}^{ins}{Right} 
+	FileAppend, %clipboard%, tmp\module.txt
+	RunWait, wscript scripts.js tmp\module.txt words
+	FileRead, text, tmp\module.txt
+	ClipWait , 1
+	ClipPutText(text)
+	ClipWait , 1
+	SendInput +{ins}
+
+Return

@@ -5,6 +5,26 @@
 
 ; Ctrl_A = ^{SC01E}
 
+PutCurrentModuleTextIntoFileFast(fileName, flagSaveClipboard = 1)
+{
+	set_locale_ru()
+	if (flagSaveClipboard = 1)
+		SaveClipboard()
+
+	module := fileName
+	;set_locale_ru()
+
+	;Sleep 30
+	SendInput ^{SC01E}^{ins}{Left}
+	ClipWait , 1
+	
+	FileDelete %module%
+	FileAppend, %clipboard%, %module%
+
+	if (flagSaveClipboard = 1)
+		RestoreClipboard()
+}
+
 ; после выполнения текст модуля остается выделенным - это важно для некоторых скриптов
 PutCurrentModuleTextIntoFile(fileName, flagSaveClipboard = 1)
 {

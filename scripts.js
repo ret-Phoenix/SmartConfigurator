@@ -171,6 +171,72 @@ function preroclist(arg){
 	ResultList(lstrRes, "Значение поиска");
 }*/
 
+
+function gen_words(txt) {
+	txt = txt.join(' ');
+	txt1 = txt.replace(/(\s|>|<|\*|}|{|=|\||\"|\.|,|:|;|-|\+|\(|\))/g, "\r\n");
+	t1 = txt1.split('\r\n');
+	result_str = "";
+	for (var i = 0; i < t1.length; i++) {
+		if (t1[i].length > 4)  {
+			if (result_str.indexOf(t1[i]) == -1) 
+			{
+				result_str += "\r\n" + t1[i];	
+			}
+		} 
+	}
+	wtiteToResultFile("tmp/words.txt",result_str);
+}
+
+
+
+
+function choice_words() {
+	fso = new ActiveXObject("Scripting.FileSystemObject");
+	t_file = fso.OpenTextFile("tmp/words.txt", 1); 
+	str = t_file.ReadAll();
+	t_file.Close();
+	// fso = 0;
+
+	fso = new ActiveXObject("Scripting.FileSystemObject");
+	t_file = fso.OpenTextFile("words.txt", 1); 
+	str += t_file.ReadAll();
+	t_file.Close();
+	
+	vRes = SelectValue(str,"Слово");
+	wtiteToResultFile("tmp/module.txt",JSTrim(vRes));
+}
+
+
+
+
+
+
+
+function words(txt) {
+	txt = txt.join('');
+	txt1 = txt.replace(/(\s|>|<|\*|}|{|=|\||\"|\.|,|:|;|-|\+|\(|\))/g, "\r\n");
+	t1 = txt1.split('\r\n');
+	result_str = "";
+	for (var i = 0; i < t1.length; i++) {
+		if (t1[i].length > 4)  {
+			if (result_str.indexOf(t1[i]) == -1) 
+			{
+				result_str += "\r\n" + t1[i];	
+			}
+		} 
+	}
+
+	fso = new ActiveXObject("Scripting.FileSystemObject");
+	t_file = fso.OpenTextFile("words.txt", 1); 
+	result_str += t_file.ReadAll();
+	t_file.Close();
+
+	vRes = SelectValue(result_str,"Слово");
+	wtiteToResultFile("tmp/module.txt",JSTrim(vRes));
+}
+
+
 function Run()
 {
     arg=WScript.Arguments;
@@ -195,6 +261,15 @@ function Run()
 			break;
 		case "preprocmenu":
 			preroclist();
+			break;
+		case "gen-words":
+			gen_words(lList);
+			break;
+		case "choice-words":
+			choice_words();
+			break;
+		case "words":
+			words(lList);
 			break;
 		default:
 			return; // не должно быть в принципе
