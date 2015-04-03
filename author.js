@@ -4,7 +4,7 @@ var WshShell = WScript.CreateObject("WScript.Shell");
 var settings = {
 // настройки по умолчанию
 	authorName		: "",
-	companyName		: "RayCon",
+	companyName		: getOSUser(0),
 	// dateFormat		: "yyyy-mm-dd HH:SS:MM",
 	dateFormat		: "yyyy-mm-dd",
 	markerAdded		: "+",
