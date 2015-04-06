@@ -218,8 +218,8 @@ return
 	SendInput +{ins}
 return
 
-; Выбор
-^l::
+; Ctrl +w Выбор ранее набранного слова
+^w::
 	SendInput, ^+{Home}^{ins}{Right} 
 	FileAppend, %clipboard%, tmp\moduletext.txt
 	SendInput, ^+{End}^{ins}{Left} 
