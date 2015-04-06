@@ -18,6 +18,13 @@ function getTextBeforeBracket(prmTxt)
 	return prmTxt.substring(0,nEnd);
 }
 
+function log(msg) {
+	// OpenTextFile("C:\Test.txt", 2, True)
+	f = fso.OpenTextFile("log.txt", 8,true);
+	f.WriteLine(msg);
+	f.Close();
+}
+
 
 function echo(prmTxt)
 {
@@ -185,6 +192,7 @@ function gen_words(txt) {
 			}
 		} 
 	}
+	result_str += "\r\n";
 	wtiteToResultFile("tmp/words.txt",result_str);
 }
 
@@ -215,7 +223,7 @@ function choice_words() {
 
 function words(txt) {
 	txt = txt.join('');
-	txt1 = txt.replace(/(\s|>|<|\*|}|{|=|\||\"|\.|,|:|;|-|\+|\(|\))/g, "\r\n");
+	txt1 = txt.replace(/(\s|>|<|\*|}|{|=|\||\"|\.|,|:|;|-|\+|\(|\)|\b|\r\n)/g, "\r\n");
 	t1 = txt1.split('\r\n');
 	result_str = "";
 	for (var i = 0; i < t1.length; i++) {
@@ -226,7 +234,8 @@ function words(txt) {
 			}
 		} 
 	}
-
+	result_str += "\r\n";
+	
 	fso = new ActiveXObject("Scripting.FileSystemObject");
 	t_file = fso.OpenTextFile("words.txt", 1); 
 	result_str += t_file.ReadAll();
@@ -244,10 +253,20 @@ function Run()
 
     fso = new ActiveXObject("Scripting.FileSystemObject");
 	if (arg(0) != 'null') {
-		f=fso.OpenTextFile(arg(0),1);
-		var lTxt=f.ReadAll();
-		var lList =lTxt.split('\r').join('').split('\n');
-		f.close();
+		File = fso.GetFile(arg(0));
+		// echo("Размер - " + File.Size);
+		// log("Размер - " + File.Size + " " + arg(0));
+		if (File.Size > 0) {
+			f=fso.OpenTextFile(arg(0),1);
+			var lTxt = f.ReadAll();
+			var lList = lTxt.split('\r').join('').split('\n');
+			f.close();
+			// echo("not empty");
+		} else {
+			var lList = [];
+			// echo("empty");
+		}
+		
 	}
 	switch (arg(1)) {
 		case "search":
