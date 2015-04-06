@@ -38,7 +38,7 @@ F6::
 
 	SendInput, {home}
 ; 	Sleep 5
-	RunWait, wscript scripts.js %module% proclist
+	RunWait, wscript.exe scripts.js %module% proclist
 	if (ErrorLevel > 0)
 	{
 		nStr := ErrorLevel
@@ -196,12 +196,14 @@ return
 
 ; Alt+7 - Препроцессор функции
 !7::
+	set_locale_ru()
 	RunWait, wscript scripts.js null preprocmenu
 	FileRead, text, tmp\module.txt
-	ClipWait , 1
-	ClipPutText(text)
-	ClipWait , 1
-	SendInput +{ins}
+	SendInput, %text%
+; 	ClipWait , 1
+; 	ClipPutText(text)
+; 	ClipWait , 1
+; 	SendInput +{ins}
 return
 
 ; Ctrl+m - Препроцессор функции
@@ -216,35 +218,14 @@ return
 	SendInput +{ins}
 return
 
-; Alt + c - Генерировать словарь
-!c::
-	module = tmp\module.txt
-	PutCurrentModuleTextIntoFileFast(module)
-	SendInput, {Home}
-	RunWait, wscript scripts.js tmp\module.txt gen-words
-return
-
-
-; ctrl + w- выбор подготовленных слов
+; Ctrl +w Выбор ранее набранного слова
 ^w::
-; 	SendMessage, 0x50,, 0x4090409,, A ;переходим на lat раскладку, для упрощения управления
-	RunWait, wscript scripts.js null choice-words
-	ClipWait , 1
-	FileRead, text, tmp\module.txt
-	ClipWait , 1
-	ClipPutText(text)
-	ClipWait , 1
-	SendInput +{ins}
-	
-; 	SendPlay %text%
-	
-return
-
-
-^l::
 	SendInput, ^+{Home}^{ins}{Right} 
-	FileAppend, %clipboard%, tmp\module.txt
-	RunWait, wscript scripts.js tmp\module.txt words
+	FileAppend, %clipboard%, tmp\moduletext.txt
+	SendInput, ^+{End}^{ins}{Left} 
+	FileAppend, %clipboard%, tmp\moduletext.txt
+; 	RunWait, wscript scripts.js tmp\module.txt words
+	RunWait, wscript scripts.js tmp\moduletext.txt words
 	FileRead, text, tmp\module.txt
 	ClipWait , 1
 	ClipPutText(text)
