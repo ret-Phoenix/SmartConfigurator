@@ -69,9 +69,6 @@ function Run()
 		case "un_format_block_vert":
 			un_format_block_vert(str_from_file);
 			break;
-		case "preprocmenu":
-			preroclist();
-			break;
 		default:
 			return; // не должно быть в принципе
 	}

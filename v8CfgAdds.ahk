@@ -1,5 +1,6 @@
 #include Clipboard_rus_subs.ahk
 #include WorkWithModule.ahk
+#include KeyCodes.ahk
 
 Ctrl_A = ^{SC01E}
 Ctrl_L = ^{SC026}
@@ -7,103 +8,91 @@ Ctrl_Shift_Z = ^+{SC02C}
 
 ; форматирование модуля
 F6::
-
-	module = %temp%\module.1s
+	module = tmp\module.1s
 	PutCurrentModuleTextIntoFileFast(module)
-
 	RunWait, perl code_beautifier.pl -f %module%
-
 	FileRead, text, %module%
-	
 	SaveClipboard()
-
 	clipboard =
 	ClipPutText(text)
 	ClipWait
-	;Sleep 30
 	SendInput +{ins}
-	;Sleep 30
-
 	RestoreClipboard()
-
-	Return
-
-
+return
 ; ----------------------------------
-
-; Вызов списка процедур: ctrl +1
+; Ctrl + 1 Вызов списка процедур
 ^1::
-	module = %temp%\module.1s
+	module = tmp\module.1s
 	PutCurrentModuleTextIntoFileFast(module)
-
 	SendInput, {home}
-; 	Sleep 5
-	RunWait, wscript.exe scripts.js %module% proclist
-	if (ErrorLevel > 0)
-	{
+	RunWait, wscript scripts.js %module% proclist
+	if (ErrorLevel > 0) {
 		nStr := ErrorLevel
-		SendMessage, 0x50,, 0x4090409,, A ;переходим на lat раскладку, чтобы работал SendInput
-; 		SendInput ^g^п%nStr%{ENTER}
-		 SendInput ^g%nStr%{ENTER}
+		SendInput ^%KeyG%%nStr%{ENTER}
 	}
-	
 	SendInput, {home}
 	SendInput, ^{NumpadAdd}
-
-Return
+return
 
 ;-----------------------------------------------
-; поиск с рег.выражениями: Alt+f
+; --- Поиск с Регулярными выражениями ---
+; Alt + f - поиск с рег.выражениями
 !f::
-   module = %temp%\module.1s
+   module = tmp\module.1s
    PutCurrentModuleTextIntoFileFast(module)
    SendInput, {home}
-;    SendInput, ^+{NumpadAdd} ; развернем все строки
-   SendMessage, 0x50,, 0x4090409,, A ;переходим на lat раскладку, для упрощения управления
    RunWait, wscript scripts.js %module% search
-   if (ErrorLevel > 0)
-   {
+   if (ErrorLevel > 0) {
 	  nStr := ErrorLevel
-	  SendMessage, 0x50,, 0x4090409,, A ;переходим на lat раскладку, чтобы работал SendInput
-	  SendInput ^g%nStr%{ENTER}
+	  Sleep 1
+	  SendInput ^%KeyG%%nStr%{ENTER}
    }   
    SendInput, {home}
    SendInput, ^{NumpadAdd}
-Return
-
+return
 ;-----------------------------------------------
-; поиск с рег.выражениями: Alt+r
+; Alt + r - результаты последнего поиска
 !r::
    SendInput, {home}
-   SendMessage, 0x50,, 0x4090409,, A ;переходим на lat раскладку, для упрощения управления
    RunWait, wscript scripts.js null search-last
-   if (ErrorLevel > 0)
-   {
+   if (ErrorLevel > 0) {
 	  nStr := ErrorLevel
-	  SendMessage, 0x50,, 0x4090409,, A ;переходим на lat раскладку, чтобы работал SendInput
-	  SendInput ^g%nStr%{ENTER}
+	  SendInput ^%KeyG%%nStr%{ENTER}
    }   
    SendInput, {home}
    SendInput, ^{NumpadAdd}
-Return
+return
 
-;-----------------------------------------------------------
+; --- Прочее ---
+; ctrl + / (ctrl + .) - Закоментировать строку:
+^/:: Send, {home}//
 
-; Закоментировать строку: ctrl + / (ctrl + .)
-^/::
-   Send, {home}//
-Return
+; Ctrl + i - Развернуть модуль: 
+^i:: SendInput, ^+{NumpadAdd}
 
-; ---------------------------
-;  Развернуть модуль: ctrl+i
-^i::
-   SendInput, ^+{NumpadAdd}
-Return
+; Ctrl+y - удаление строки
+$^SC015:: SendInput %Ctrl_L%
 
-;-----------------------------------------
+; Ctrl-, - символ '<'
+$^,:: SendInput <
 
-; удаление строки Ctrl+y
-$^SC015::	SendInput %Ctrl_L%
+; Ctrl-. символ '>'
+$^.:: SendInput >
+
+; Ctrl-\ символ '|'
+$^\:: SendInput |
+
+; Alt - [ - символ '['
+$!SC01A::Send [ 
+
+; Alt + ] - символ ']'
+$!SC01B::Send ] 
+
+; Ctrl - & - символ '&'
+$^SC008::Send &
+
+; Ctrl + D - Копирование текущей строки и вставка в следующей
+^d:: Send, {HOME}{SHIFTDOWN}{END}{SHIFTUP}{CTRLDOWN}{INS}{CTRLUP}{END}{ENTER}{SHIFTDOWN}{INS}{SHIFTUP}
 
 ; ----------------------------------------
 ; авторские комментарии
@@ -114,10 +103,9 @@ runAuthorComments(prmVar)
 	ClipWait , 1
 	RunWait, wscript author.js %prmVar%
 	ClipWait , 1
-	FileRead, text, tmp\actxt.tmp
+	FileRead, newText, tmp\actxt.tmp
 	ClipWait , 1
-	ClipPutText(text)
-	ClipWait , 1
+	Clipboard := newText
 	SendInput +{ins}
 }
 
@@ -131,31 +119,15 @@ runAuthorComments(prmVar)
 ;Закрытие окна сообщение Ctrl+z (не всем нравится)
 ;$^SC02C::SendInput %Ctrl_Shift_Z%
 
-
-;символ '<' по Ctrl-,
-$^,::	SendInput <
-
-
-;символ '>' по Ctrl-.
-$^.::	SendInput >
-
-;символ '|' по Ctrl-\
-$^\::	SendInput |
-
-; Копирование текущей строки и вставка в следующей: ctrl+shift+c
-^+c:: 
-	Send, {HOME}{SHIFTDOWN}{END}{SHIFTUP}{CTRLDOWN}{INS}{CTRLUP}{END}{ENTER}{SHIFTDOWN}{INS}{SHIFTUP}
-return
-
 ;-----------------------------------
 ; переходы по процедурам в стиле OpenConf
 ;
-; переход в процедуру (как в OpenConf)
+; Ctrl + Enter - переход в процедуру (как в OpenConf)
 ^Enter::
 	SendInput, {F12}
 return
 
-; возврат на предыдущую позицию (как в OpenConf)
+; Alt + - возврат на предыдущую позицию (как в OpenConf)
 !left::
 	SendInput, ^-
 return
@@ -165,8 +137,6 @@ return
 !h::
 	SendInput, ^{ins}
 	ClipWait , 1
-	;module = %temp%\module.1s
-	;PutCurrentModuleTextIntoFile(module)
 	ClipWait , 1
 	RunWait, wscript generator.js null simple-managment
 	ClipWait , 1
@@ -180,30 +150,25 @@ return
 ; Alt+g - Вызов генераторов кода
 !g::
 	SendInput, ^{ins}
-	ClipWait , 1
-	;module = %temp%\module.1s
-	;PutCurrentModuleTextIntoFile(module)
-	ClipWait , 1
+	ClipWait
 	RunWait, wscript generator.js null generator
-	ClipWait , 1
+	ClipWait
 	FileRead, text, tmp\module.txt
-	ClipWait , 1
+	ClipWait
 	ClipPutText(text)
-	ClipWait , 1
+	ClipWait
 	SendInput +{ins}
 return
 
 
 ; Alt+7 - Препроцессор функции
-!7::
+!SC008::
 	set_locale_ru()
 	RunWait, wscript scripts.js null preprocmenu
+	set_locale_ru()
 	FileRead, text, tmp\module.txt
+	set_locale_ru()
 	SendInput, %text%
-; 	ClipWait , 1
-; 	ClipPutText(text)
-; 	ClipWait , 1
-; 	SendInput +{ins}
 return
 
 ; Ctrl+m - Препроцессор функции
@@ -211,25 +176,66 @@ return
 	SendInput, ^{ins}
 	ClipWait , 1
 	RunWait, wscript scripts_manager.js
-	FileRead, text, tmp\module.txt
+	FileRead, newText, tmp\module.txt
 	ClipWait , 1
-	ClipPutText(text)
-	ClipWait , 1
+	Clipboard := newText
 	SendInput +{ins}
 return
 
 ; Ctrl +w Выбор ранее набранного слова
 ^w::
+	set_locale_ru()
 	SendInput, ^+{Home}^{ins}{Right} 
 	FileAppend, %clipboard%, tmp\moduletext.txt
 	SendInput, ^+{End}^{ins}{Left} 
 	FileAppend, %clipboard%, tmp\moduletext.txt
-; 	RunWait, wscript scripts.js tmp\module.txt words
 	RunWait, wscript scripts.js tmp\moduletext.txt words
 	FileRead, text, tmp\module.txt
-	ClipWait , 1
-	ClipPutText(text)
+	Clipboard := text
 	ClipWait , 1
 	SendInput +{ins}
+return
 
-Return
+; Alt + J - Поиск по метаданным
+!j::
+	SendInput, ^+%KeyC%
+	Sleep 10
+	SendInput ^%KeyF%
+return
+
+; Ctrl + b - В начало метода
+^b::
+	getTextUp()
+	RunWait, wscript scripts.js tmp\moduletext.txt BeginMethod
+	if (ErrorLevel > 0) {
+		nStr := ErrorLevel
+		SendInput ^%KeyG%%nStr%{ENTER}
+	}   
+	SendInput, {home}
+return
+
+; Ctrl + e - В конец метода
+^e::
+	getTextUp()
+	RunWait, wscript scripts.js tmp\moduletext.txt EndMethod
+	if (ErrorLevel > 0) {
+		nStr := ErrorLevel
+		SendInput ^%KeyG%%nStr%{ENTER}
+		SendInput ^{SC01A}
+	}   
+	SendInput, {home}
+return
+
+; Ctrl + 2 - Вызов списка секций
+^2::
+	module = tmp\module.1s
+	PutCurrentModuleTextIntoFileFast(module)
+	SendInput, {home}
+	RunWait, wscript scripts.js %module% sectionslist
+	if (ErrorLevel > 0) {
+		nStr := ErrorLevel
+		SendInput ^%KeyG%%nStr%{ENTER}
+	}
+	SendInput, {home}
+	SendInput, ^{NumpadAdd}
+return

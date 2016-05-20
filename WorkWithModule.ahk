@@ -5,6 +5,21 @@
 
 ; Ctrl_A = ^{SC01E}
 
+getTextUp()
+{
+	SendInput, ^+{Home}^{ins}{Right} 
+	FileDelete tmp\moduletext.txt
+	FileAppend, %clipboard%, tmp\moduletext.txt
+}
+
+getTextDown()
+{
+	SendInput, ^+{End}^{ins}{Left} 
+	FileDelete tmp\moduletext.txt
+	FileAppend, %clipboard%, tmp\moduletext.txt
+}
+
+
 PutCurrentModuleTextIntoFileFast(fileName, flagSaveClipboard = 1)
 {
 	set_locale_ru()
@@ -51,7 +66,7 @@ PutCurrentModuleTextIntoFile(fileName, flagSaveClipboard = 1)
 
 PutCurrentModuleTextIntoTempFile()
 {
-	module = %temp%\module.1s
+	module = tmp\module.1s
 	PutCurrentModuleTextIntoFile(module)
 }
 

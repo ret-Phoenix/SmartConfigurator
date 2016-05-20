@@ -3,6 +3,11 @@ set_locale_ru()
 	SendMessage, 0x50,, 0x4190419,, A
 }
 
+set_locale_en()
+{
+  SendMessage, 0x50,, 0x4090409,, A 
+}
+
 ;From http://forum.script-coding.info  (http://forum.script-coding.info/viewtopic.php?id=1073)
 ClipPutText(Text, LocaleID=0x419)
 {

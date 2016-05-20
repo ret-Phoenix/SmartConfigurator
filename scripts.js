@@ -9,7 +9,7 @@ function JSTrim(vValue)
 
 function delFP(vValue)
 {
-	return  vValue.replace(/\s*(процедура|функция|procedure|function)\s+/i, "");
+	return  vValue.replace(/\s*(процедура|функция|procedure|function|#Область|#region)\s+/i, "");
 }
 
 function getTextBeforeBracket(prmTxt)
@@ -70,13 +70,34 @@ function GetMethList(lStrings)
 			j = i+1;
 			lStrLong = JSTrim(delFP(lStr));
 			FuncName = getTextBeforeBracket(lStrLong);
-			// FuncPrm = lStrLong.substring(nEnd+1,lStrLong.length-1);
 			lListProcFunc += "(" + j + ") "+delFP(FuncName) + "\r\n";
 		}
 	}
-	ResultList(lListProcFunc,"Список процедур\функций");
+	ResultList(lListProcFunc,"Список процедур/функций");
 }
 
+
+function getSectionsList(lStrings)
+{
+
+	var re_meth = /^\s*(#Область|#region)\s+/i;
+	var lListProcFunc = "";
+
+	for(var i=0; i<lStrings.length; i++)
+	{
+		lStrCurrent = "";
+		lStr = lStrings[i];
+
+		var matches = lStr.match(re_meth);
+		if (matches != null)
+		{
+			j = i+1;
+			lStrLong = JSTrim(delFP(lStr));
+			lListProcFunc += "(" + j + ") "+delFP(lStrLong) + "\r\n";
+		}
+	}
+	ResultList(lListProcFunc,"Список процедур/функций");
+}
 
 function ExtSearch(prmTxt)
 {
@@ -202,6 +223,29 @@ function words(txt) {
 	wtiteToResultFile("tmp/module.txt",JSTrim(vRes));
 }
 
+function methodBegin(lStrings) {
+	
+	var lListProcFunc = "";
+
+	data = lStrings;
+
+	data = lStrings.reverse();
+	var re_meth = /^\s*(процедура|функция|procedure|function)\s+/i;
+
+	CntRows = data.length;
+	rowBM = 1;
+	for(var i=0; i < CntRows; i++)
+	{
+		lStr = data[i];
+		var matches = lStr.match(re_meth);
+		if (matches != null)
+		{
+			rowBM = CntRows-i;
+			break;
+		}
+	}
+	WScript.Quit(rowBM);
+}
 
 function Run()
 {
@@ -240,6 +284,15 @@ function Run()
 			break;
 		case "words":
 			words(lList);
+			break;
+		case "BeginMethod":
+			methodBegin(lList);
+			break;
+		case "EndMethod":
+			methodBegin(lList);
+			break;
+		case "sectionslist":
+			getSectionsList(lList);
 			break;
 		default:
 			return; // не должно быть в принципе
