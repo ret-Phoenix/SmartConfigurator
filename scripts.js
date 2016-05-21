@@ -33,7 +33,7 @@ function echo(prmTxt)
 
 function ResultList(prmStr, prmCaption)
 {
-	vRes = choicer.FilterValue(prmStr, 273, prmCaption, 0, 0, 0, 0);
+	vRes = choicer.FilterValue(prmStr, 273+512, prmCaption, 0, 0, 0, 0);
 	if (!(vRes) == "")
 	{
 		var nEnd = vRes.indexOf(")")
@@ -44,7 +44,7 @@ function ResultList(prmStr, prmCaption)
 }
 
 function SelectValue(values, header) {
-	return choicer.FilterValue(values, 273, header, 0, 0, 0, 0);
+	return choicer.FilterValue(values, 273+512, header, 0, 0, 0, 0);
 }
 
 function wtiteToResultFile(file_name, file_data) {
