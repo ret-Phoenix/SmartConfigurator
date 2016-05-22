@@ -20,14 +20,6 @@ var settings = {
 	addModDateTimeAtEnd: null
 }
 
-function GetFromClipboard() {
-	clip = new ActiveXObject("WshExtra.Clipboard");
-	str = clip.Paste();
-	clip = 0;
-	return str;
-}
-
-
 function echo(prmTxt)
 {
 	with (new ActiveXObject("WScript.Shell")) res = Popup("<"+prmTxt+">", 0, "title", 0);
@@ -120,19 +112,20 @@ function setMarker(markerType, newCode)
 		block += ind + "//" + s.markerEndBlock + (s.doNotSignAtEnd?"":AC_Sign) + "\r\n";
 
 		fso = new ActiveXObject("Scripting.FileSystemObject");
-		var defFile = fso.CreateTextFile("tmp/actxt.tmp",true);
+		var defFile = fso.CreateTextFile("tmp/module.txt",true);
 		defFile.WriteLine(block);
 		defFile.Close();
 }
 
 function PasteTextFromClipboard(prmVar)
 {
-	clipboard = GetFromClipboard();
-
-	if (!clipboard) {
+	fso = new ActiveXObject("Scripting.FileSystemObject");
+	f=fso.OpenTextFile('tmp/module.txt',1);
+	var textFromFile = f.ReadAll();
+	if (!textFromFile) {
 		return;
 	}
-	setMarker(prmVar, clipboard);
+	setMarker(prmVar, textFromFile);
 }
 
 function commentLines(lines, ind)

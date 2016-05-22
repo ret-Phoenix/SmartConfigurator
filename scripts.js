@@ -31,6 +31,14 @@ function echo(prmTxt)
 	with (new ActiveXObject("WScript.Shell")) res = Popup("<"+prmTxt+">", 0, "title", 0);
 }
 
+// function getapp() {
+// 	//with (new ActiveXObject("WScript.Shell")) res = exec("c:\\Users\\savage\\Documents\\lazarus\\project1.exe");
+// 	//WshShell = WScript.CreateObject("WScript.Shell");
+// 	WshShell.Run("c:\\Users\\savage\\Documents\\lazarus\\project1.exe",1,true);
+// 	echo('ok');
+// }
+
+
 function ResultList(prmStr, prmCaption)
 {
 	vRes = choicer.FilterValue(prmStr, 273+512, prmCaption, 0, 0, 0, 0);
@@ -73,6 +81,7 @@ function GetMethList(lStrings)
 			lListProcFunc += "(" + j + ") "+delFP(FuncName) + "\r\n";
 		}
 	}
+	// getapp();
 	ResultList(lListProcFunc,"Список процедур/функций");
 }
 
@@ -80,7 +89,7 @@ function GetMethList(lStrings)
 function getSectionsList(lStrings)
 {
 
-	var re_meth = /^\s*(#Область|#region)\s+/i;
+	var re_meth = /^\s*(#Область)\s+/i;
 	var lListProcFunc = "";
 
 	for(var i=0; i<lStrings.length; i++)
@@ -251,21 +260,16 @@ function Run()
 {
     arg=WScript.Arguments;
 
-
     fso = new ActiveXObject("Scripting.FileSystemObject");
 	if (arg(0) != 'null') {
 		File = fso.GetFile(arg(0));
-		// echo("Размер - " + File.Size);
-		// log("Размер - " + File.Size + " " + arg(0));
 		if (File.Size > 0) {
 			f=fso.OpenTextFile(arg(0),1);
 			var lTxt = f.ReadAll();
 			var lList = lTxt.split('\r').join('').split('\n');
 			f.close();
-			// echo("not empty");
 		} else {
 			var lList = [];
-			// echo("empty");
 		}
 		
 	}

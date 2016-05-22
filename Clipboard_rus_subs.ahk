@@ -1,3 +1,11 @@
+pasteTextFromFile() {
+  FileRead, newText, tmp\module.txt
+  ClipWait, 1
+  Clipboard := newText
+  ClipWait, 1
+  SendInput +{ins}
+}
+
 set_locale_ru()
 {
 	SendMessage, 0x50,, 0x4190419,, A

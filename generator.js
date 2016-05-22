@@ -25,8 +25,7 @@ function SelectValue(values, header) {
 	return choicer.FilterValue(values, 273, header, 0, 0, 0, 0);
 }
 
-function ResultList(prmStr,prmCaption)
-{
+function ResultList(prmStr,prmCaption) {
 	vRes = choicer.FilterValue(prmStr, 273, prmCaption, 0, 0, 0, 0);
 	if (!(vRes) == "")
 	{
@@ -35,17 +34,13 @@ function ResultList(prmStr,prmCaption)
 }
 
 function GetFromClipboard() {
-	clip = new ActiveXObject("WshExtra.Clipboard");
-	str = clip.Paste();
-	clip = 0;
-	return str;
+	f=fso.OpenTextFile('tmp/module.txt',1);
+	var textFromFile = f.ReadAll();
+	if (!textFromFile) {
+		return;
+	}
+	return textFromFile;
 }
-
-// function SetToClipboard(dataToClip) {
-	// clip = new ActiveXObject("WshExtra.Clipboard");
-	// clip.Copy(dataToClip);
-	// clip = 0;
-// }
 
 function choiceMDObject() {
     

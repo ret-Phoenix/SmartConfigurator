@@ -7,10 +7,13 @@ function echo(prmTxt)
 }
 
 function GetFromClipboard() {
-	clip = new ActiveXObject("WshExtra.Clipboard");
-	str = clip.Paste();
-	clip = 0;
-	return str;
+	// fso = new ActiveXObject("Scripting.FileSystemObject");
+	f=fso.OpenTextFile('tmp/module.txt',1);
+	var textFromFile = f.ReadAll();
+	if (!textFromFile) {
+		return;
+	}
+	return textFromFile;
 }
 
 function JSTrim(vValue)

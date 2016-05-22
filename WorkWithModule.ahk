@@ -1,27 +1,85 @@
 ; #IfWinActive Конфигуратор ahk_class V8TopLevelFrame
 #IfWinActive ahk_class V8TopLevelFrame
 
-#include Clipboard_rus_subs.ahk
+; #include Clipboard_rus_subs.ahk
 
-; Ctrl_A = ^{SC01E}
 
-getTextUp()
-{
-	SendInput, ^+{Home}^{ins}{Right} 
-	FileDelete tmp\moduletext.txt
-	FileAppend, %clipboard%, tmp\moduletext.txt
+pasteTextFromFile() {
+  FileRead, newText, tmp\module.txt
+  ClipWait, 1
+  Clipboard := newText
+  ClipWait, 1
+  SendInput +{ins}
 }
 
-getTextDown()
-{
+set_locale_ru() {
+	SendMessage, 0x50,, 0x4190419,, A
+}
+
+set_locale_en() {
+  SendMessage, 0x50,, 0x4090409,, A 
+}
+
+putSelectionInFile(fileName=0, flagSaveClipboard = 1) {
+	clipboard := 
+	set_locale_ru()
+	if (flagSaveClipboard = 1)
+		SaveClipboard()
+
+	if (fileName = 0) {
+		fileName = tmp\module.txt	
+	}
+
+	module := fileName
+	SendInput, ^{ins}
+	ClipWait
+	
+	FileDelete %module%
+	FileAppend, %clipboard%, %module%
+
+	if (flagSaveClipboard = 1)
+		RestoreClipboard()
+}
+
+putModuleInFile(fileName = 0) {
+	set_locale_ru()
+
+	if (fileName = 0) {
+		fileName = tmp\module.txt
+	}
+
+	clipboard := 
+	SendInput, ^+{Home}^{ins}{Right}
+	ClipWait
+	FileDelete fileName
+	FileAppend, %clipboard%, %fileName%
+
+	clipboard := 
 	SendInput, ^+{End}^{ins}{Left} 
-	FileDelete tmp\moduletext.txt
-	FileAppend, %clipboard%, tmp\moduletext.txt
+	ClipWait
+	;FileDelete tmp\module.txt
+	FileAppend, %clipboard%, %fileName%
+	
+}
+
+getTextUp() {
+	clipboard := 
+	SendInput, ^+{Home}^{ins}{Right}
+	ClipWait
+	FileDelete tmp\module.txt
+	FileAppend, %clipboard%, tmp\module.txt
+}
+
+getTextDown() {
+	clipboard := 
+	SendInput, ^+{End}^{ins}{Left} 
+	ClipWait
+	FileDelete tmp\module.txt
+	FileAppend, %clipboard%, tmp\module.txt
 }
 
 
-PutCurrentModuleTextIntoFileFast(fileName, flagSaveClipboard = 1)
-{
+PutCurrentModuleTextIntoFileFast(fileName, flagSaveClipboard = 1) {
 	set_locale_ru()
 	if (flagSaveClipboard = 1)
 		SaveClipboard()
@@ -31,7 +89,7 @@ PutCurrentModuleTextIntoFileFast(fileName, flagSaveClipboard = 1)
 
 	;Sleep 30
 	SendInput ^{SC01E}^{ins}{Left}
-	ClipWait , 1
+	ClipWait
 	
 	FileDelete %module%
 	FileAppend, %clipboard%, %module%
@@ -41,8 +99,7 @@ PutCurrentModuleTextIntoFileFast(fileName, flagSaveClipboard = 1)
 }
 
 ; после выполнения текст модуля остается выделенным - это важно для некоторых скриптов
-PutCurrentModuleTextIntoFile(fileName, flagSaveClipboard = 1)
-{
+PutCurrentModuleTextIntoFile(fileName, flagSaveClipboard = 1) {
 	set_locale_ru()
 	if (flagSaveClipboard = 1)
 		SaveClipboard()
@@ -55,7 +112,7 @@ PutCurrentModuleTextIntoFile(fileName, flagSaveClipboard = 1)
 	;Sleep 30
 	SendInput, ^{ins}
 	;Sleep 30
-	ClipWait , 1
+	ClipWait
 	
 	FileDelete %module%
 	FileAppend, %clipboard%, %module%
@@ -64,8 +121,7 @@ PutCurrentModuleTextIntoFile(fileName, flagSaveClipboard = 1)
 		RestoreClipboard()
 }
 
-PutCurrentModuleTextIntoTempFile()
-{
+PutCurrentModuleTextIntoTempFile() {
 	module = tmp\module.1s
 	PutCurrentModuleTextIntoFile(module)
 }

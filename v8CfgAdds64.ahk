@@ -1,6 +1,6 @@
-#include Clipboard_rus_subs.ahk
-#include WorkWithModule.ahk
+; #include Clipboard_rus_subs.ahk
 #include KeyCodes.ahk
+#include WorkWithModule.ahk
 
 Ctrl_A = ^{SC01E}
 Ctrl_L = ^{SC026}
@@ -8,16 +8,16 @@ Ctrl_Shift_Z = ^+{SC02C}
 
 ; форматирование модуля
 F6::
-	module = tmp\module.1s
-	PutCurrentModuleTextIntoFileFast(module)
+	putModuleInFile()
 	RunWait, perl code_beautifier.pl -f %module%
-	FileRead, text, %module%
-	SaveClipboard()
-	clipboard =
-	ClipPutText(text)
-	ClipWait
-	SendInput +{ins}
-	RestoreClipboard()
+	pasteTextFromFile()
+	;FileRead, text, %module%
+	;SaveClipboard()
+	;clipboard =
+	;ClipPutText(text)
+	;ClipWait
+	;SendInput +{ins}
+	;RestoreClipboard()
 return
 ; ----------------------------------
 ; Ctrl + 1 Вызов списка процедур
@@ -99,14 +99,9 @@ $^SC008::Send &
 ; ----------------------------------------
 runAuthorComments(prmVar)
 {
-	SendInput, ^{ins}
-	ClipWait , 1
+	putSelectionInFile()
 	RunWait, %A_WinDir%\SysWOW64\wscript author.js %prmVar%
-	ClipWait , 1
-	FileRead, newText, tmp\actxt.tmp
-	ClipWait , 1
-	Clipboard := newText
-	SendInput +{ins}
+	pasteTextFromFile()
 }
 
 !s::	runAuthorComments("new") ; alt+s - блок добавлен
@@ -135,29 +130,16 @@ return
 
 ; Alt+h - добавление ссылки на реквизит в модуле
 !h::
-	SendInput, ^{ins}
-	ClipWait , 1
-	ClipWait , 1
+	putSelectionInFile()
 	RunWait, %A_WinDir%\SysWOW64\wscript generator.js null simple-managment
-	ClipWait , 1
-	FileRead, text, tmp\module.txt
-	ClipWait , 1
-	ClipPutText(text)
-	ClipWait , 1
-	SendInput +{ins}
+	pasteTextFromFile()
 return
 
 ; Alt+g - Вызов генераторов кода
 !g::
-	SendInput, ^{ins}
-	ClipWait
+	putSelectionInFile()
 	RunWait, %A_WinDir%\SysWOW64\wscript generator.js null generator
-	ClipWait
-	FileRead, text, tmp\module.txt
-	ClipWait
-	ClipPutText(text)
-	ClipWait
-	SendInput +{ins}
+	pasteTextFromFile()	
 return
 
 
@@ -171,29 +153,18 @@ return
 	SendInput, %text%
 return
 
-; Ctrl+m - Препроцессор функции
+; Ctrl + m - Прочие скрипты
 ^m::
-	SendInput, ^{ins}
-	ClipWait , 1
+	putSelectionInFile()
 	RunWait, %A_WinDir%\SysWOW64\wscript scripts_manager.js
-	FileRead, newText, tmp\module.txt
-	ClipWait , 1
-	Clipboard := newText
-	SendInput +{ins}
+	pasteTextFromFile()
 return
 
-; Ctrl +w Выбор ранее набранного слова
+; Ctrl + w Выбор ранее набранного слова
 ^w::
-	set_locale_ru()
-	SendInput, ^+{Home}^{ins}{Right} 
-	FileAppend, %clipboard%, tmp\moduletext.txt
-	SendInput, ^+{End}^{ins}{Left} 
-	FileAppend, %clipboard%, tmp\moduletext.txt
-	RunWait, %A_WinDir%\SysWOW64\wscript scripts.js tmp\moduletext.txt words
-	FileRead, text, tmp\module.txt
-	Clipboard := text
-	ClipWait , 1
-	SendInput +{ins}
+	putModuleInFile()
+	RunWait, %A_WinDir%\SysWOW64\wscript scripts.js tmp\module.txt words
+	pasteTextFromFile()
 return
 
 ; Alt + J - Поиск по метаданным
@@ -206,7 +177,7 @@ return
 ; Ctrl + b - В начало метода
 ^b::
 	getTextUp()
-	RunWait, %A_WinDir%\SysWOW64\wscript scripts.js tmp\moduletext.txt BeginMethod
+	RunWait, %A_WinDir%\SysWOW64\wscript scripts.js tmp\module.txt BeginMethod
 	if (ErrorLevel > 0) {
 		nStr := ErrorLevel
 		SendInput ^%KeyG%%nStr%{ENTER}
@@ -217,7 +188,7 @@ return
 ; Ctrl + e - В конец метода
 ^e::
 	getTextUp()
-	RunWait, %A_WinDir%\SysWOW64\wscript scripts.js tmp\moduletext.txt EndMethod
+	RunWait, %A_WinDir%\SysWOW64\wscript scripts.js tmp\module.txt EndMethod
 	if (ErrorLevel > 0) {
 		nStr := ErrorLevel
 		SendInput ^%KeyG%%nStr%{ENTER}
@@ -228,14 +199,28 @@ return
 
 ; Ctrl + 2 - Вызов списка секций
 ^2::
-	module = tmp\module.1s
-	PutCurrentModuleTextIntoFileFast(module)
+	putModuleInFile()
 	SendInput, {home}
-	RunWait, %A_WinDir%\SysWOW64\wscript.exe scripts.js %module% sectionslist
+	RunWait, %A_WinDir%\SysWOW64\wscript scripts.js tmp\module.txt sectionslist
 	if (ErrorLevel > 0) {
 		nStr := ErrorLevel
 		SendInput ^%KeyG%%nStr%{ENTER}
 	}
 	SendInput, {home}
 	SendInput, ^{NumpadAdd}
+return
+
+^3::
+	RunWait, %A_WinDir%\SysWOW64\wscript ExtFiles.js
+	FileRead, newText, tmp\module.txt
+	Clipboard := newText
+	ClipWait
+	Sleep 1
+	set_locale_ru()
+	SendInput, !%KeyA%
+	SendInput, {DOWN}{DOWN}{Enter}
+	Sleep 1000
+	SendInput, ^%KeyV%
+	Sleep 1000
+	SendInput, {Enter}
 return
