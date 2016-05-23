@@ -210,6 +210,7 @@ return
 	SendInput, ^{NumpadAdd}
 return
 
+; Ctrl + 3 - Открытие внешних файлов
 ^3::
 	RunWait, %A_WinDir%\SysWOW64\wscript ExtFiles.js
 	FileRead, newText, tmp\module.txt
