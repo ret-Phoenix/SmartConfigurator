@@ -1,5 +1,15 @@
 fso = new ActiveXObject("Scripting.FileSystemObject");
-choicer = new ActiveXObject("SvcSvc.Service");
+var WshShell = WScript.CreateObject("WScript.Shell");
+
+function echo(prmTxt)
+{
+	with (new ActiveXObject("WScript.Shell")) res = Popup("<"+prmTxt+">", 0, "title", 0);
+}
+
+function JSTrim(vValue)
+{
+        return  vValue.replace(/(^\s*)|(\s*$)/g, "");
+}
 
 function setDefaultCfg() {
 	Folder = fso.GetFolder('configs/')
@@ -20,18 +30,33 @@ function setDefaultCfg() {
 	return;
 }
 
+function readFile(fileName) {
+        fs = new ActiveXObject("Scripting.FileSystemObject");
+        t_file = fs.OpenTextFile(fileName, 1); 
+        str = t_file.ReadAll();
+        t_file.Close();
+        fs= 0;
+        return str;
+}
 
 function SelectValue(values, header) {
-	return choicer.FilterValue(values, 273, header, 0, 0, 0, 0);
+        
+        wtiteToResultFile("tmp/app.txt",values);
+
+        WshShell.Run("system\\SelectValueSharp.exe tmp/app.txt", 1, true);
+        strFromFile = readFile("tmp/app.txt");
+        return strFromFile;
 }
 
-function ResultList(prmStr,prmCaption) {
-	vRes = choicer.FilterValue(prmStr, 273, prmCaption, 0, 0, 0, 0);
-	if (!(vRes) == "")
-	{
-		return vRes;
-	}
+function ResultList(prmStr, prmCaption)
+{
+	wtiteToResultFile("tmp/app.txt",prmStr);
+
+	WshShell.Run("system\\SelectValueSharp.exe tmp/app.txt", 1, true);
+	str = readFile("tmp/app.txt");
+	return str; 
 }
+
 
 function GetFromClipboard() {
 	f=fso.OpenTextFile('tmp/module.txt',1);
@@ -73,7 +98,7 @@ function choiceMDObject() {
 	str = TextStream.ReadAll();
 	var lList = str.split('\r').join('').split('\n');
 	str = lList[pos];
-	
+
 	return str;
 }
 
@@ -86,7 +111,8 @@ function wtiteToResultFile(file_name, file_data) {
 
 function ModuleFromSimpleToManagment()
 {
-	str = choiceMDObject();
+	var str = choiceMDObject();
+
 	if (str == "") {
 		wtiteToResultFile("tmp/module.txt","");
 		WScript.Quit(0);
@@ -132,17 +158,19 @@ function printArrayToCodeGen(text, arr, start_pos, prefix) {
 }
 
 function generateCodeMDObject(md_obj_part) {
-	str = choiceMDObject();
-	if (str == "") {
+	var strMetadata = choiceMDObject();
+
+	if (strMetadata == "") {
 		wtiteToResultFile("tmp/module.txt","");
 		WScript.Quit(0);
 		return;
 	}
-	vars = ('док,спр,запись').replace(/\,/g,'\r\n');
-	varName = SelectValue(vars);
+
+	listVars = ('док,спр,запись').replace(/\,/g,'\r\n');
+	var varName = SelectValue(listVars);
 	
 	// Получаем реквизиты шапки
-	item_ar = str.split('|');
+	item_ar = strMetadata.split('|');
 	md_type = item_ar[0];
 	md_type_ar = md_type.split('.');
 	

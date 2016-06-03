@@ -1,15 +1,35 @@
 var listFiles = '';
 var fso = new ActiveXObject("Scripting.FileSystemObject");
-var choicer = new ActiveXObject("SvcSvc.Service");
 var WshShell = WScript.CreateObject("WScript.Shell");
+
+
+function log(msg) {
+        f = fso.OpenTextFile("log.txt", 8,true);
+        f.WriteLine(msg);
+        f.Close();
+}
 
 function JSTrim(vValue)
 {
         return  vValue.replace(/(^\s*)|(\s*$)/g, "");
 }
 
+function readFile(fileName) {
+        fs = new ActiveXObject("Scripting.FileSystemObject");
+        t_file = fs.OpenTextFile(fileName, 1); 
+        str = t_file.ReadAll();
+        t_file.Close();
+        fs= 0;
+        return str;
+}
+
 function SelectValue(values, header) {
-        return choicer.FilterValue(values, 273+512, header, 0, 0, 0, 0);
+        
+        wtiteToResultFile("tmp/app.txt",values);
+
+        WshShell.Run("system\\SelectValueSharp.exe tmp/app.txt", 1, true);
+        str = readFile("tmp/app.txt");
+        return str;
 }
 
 
@@ -20,24 +40,15 @@ function wtiteToResultFile(file_name, file_data) {
 }
 
 function Main() {
-//Пример запуска
-
         var FileSystem = new ActiveXObject('Scripting.FileSystemObject');
-        try {
-                var Drive = FileSystem.Drives.Item('D'); 
-        } catch (e){
-                Log.Write(1, 'Диск не найден');
-                return
-        }
-        var RegExpMask = /.*(\.epf|\.erf|\.cf)/igm;//<--файлы с расширением .avi
-        // var Folder = Drive.RootFolder;//Можно использовать метод GetFolder('имя папки') для подпапок
-        var Folder = FileSystem.GetFolder('c:\\work\\db\\');
+        var RegExpMask = /.*(\.epf|\.erf|\.cf)/igm;
+        var Folder = FileSystem.GetFolder('c:\\work\\db\\ExtForms\\v8extforms\\');
 
         listFiles = '';
 
         SearchFile(Folder, RegExpMask);
 
-        // Folder = FileSystem.GetFolder('c:\\work\\db\\xUnitFor1C\\xUnitFor1C-ext\\');
+        // Folder = FileSystem.GetFolder('c:\\work\\');
         // SearchFile(Folder, RegExpMask);
 
         vRes = SelectValue(listFiles,"файлы");
@@ -45,8 +56,6 @@ function Main() {
 }
  
 function SearchFile(Folder, RegExpMask){
-//Рекурсивная функция поиска файлов по маске
-        //поиск файлов в папке Folder
         var FilesEnumerator = new Enumerator(Folder.Files);
         while (!FilesEnumerator.atEnd()){
                 var File = FilesEnumerator.item();
@@ -55,7 +64,6 @@ function SearchFile(Folder, RegExpMask){
                 var FileSize = File.Size;//размер файла
                 RegExpMask.compile(RegExpMask);
                 var FileByMask = RegExpMask.exec(FileName);
-                // System.ProcessMessages();//<--здесь можно двигать бегунок
                 if (FileByMask){
                         // Log.Write(1, FilePath);//здесь можно выполнять любые действия с найденным файлом
                         //WScript.StdOut.WriteLine(FilePath);

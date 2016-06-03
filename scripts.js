@@ -1,5 +1,5 @@
 var fso = new ActiveXObject("Scripting.FileSystemObject");
-var choicer = new ActiveXObject("SvcSvc.Service");
+//var choicer = new ActiveXObject("SvcSvc.Service");
 var WshShell = WScript.CreateObject("WScript.Shell");
 
 function JSTrim(vValue)
@@ -23,36 +23,63 @@ function log(msg) {
 	f = fso.OpenTextFile("log.txt", 8,true);
 	f.WriteLine(msg);
 	f.Close();
+	f=0;
 }
 
+function readFile(fileName) {
+	fs = new ActiveXObject("Scripting.FileSystemObject");
+	t_file = fs.OpenTextFile(fileName, 1); 
+	str = t_file.ReadAll();
+	t_file.Close();
+	fs= 0;
+	return str;
+}
 
 function echo(prmTxt)
 {
 	with (new ActiveXObject("WScript.Shell")) res = Popup("<"+prmTxt+">", 0, "title", 0);
 }
 
-// function getapp() {
-// 	//with (new ActiveXObject("WScript.Shell")) res = exec("c:\\Users\\savage\\Documents\\lazarus\\project1.exe");
-// 	//WshShell = WScript.CreateObject("WScript.Shell");
-// 	WshShell.Run("c:\\Users\\savage\\Documents\\lazarus\\project1.exe",1,true);
-// 	echo('ok');
-// }
-
-
 function ResultList(prmStr, prmCaption)
 {
-	vRes = choicer.FilterValue(prmStr, 273+512, prmCaption, 0, 0, 0, 0);
-	if (!(vRes) == "")
-	{
-		var nEnd = vRes.indexOf(")")
-		var nStr = vRes.substring(1,nEnd);
+	wtiteToResultFile("tmp/app.txt", prmStr);
+
+	WshShell.Run("system\\SelectValueSharp.exe tmp/app.txt",1,true);
+	str = readFile("tmp/app.txt");
+
+	if (JSTrim(str) != "") {
+		var nEnd = str.indexOf(")")
+		var nStr = str.substring(1,nEnd);
 
 		WScript.Quit(nStr);
+	} else {
+		WScript.Quit(0);
 	}
 }
 
+
+// function ResultListDLL(prmStr, prmCaption)
+// {
+// 	vRes = choicer.FilterValue(prmStr, 273+512, prmCaption, 0, 0, 0, 0);
+// 	if (!(vRes) == "")
+// 	{
+// 		var nEnd = vRes.indexOf(")")
+// 		var nStr = vRes.substring(1,nEnd);
+
+// 		WScript.Quit(nStr);
+// 	}
+// }
+
 function SelectValue(values, header) {
-	return choicer.FilterValue(values, 273+512, header, 0, 0, 0, 0);
+	
+	wtiteToResultFile("tmp/app.txt",values);
+
+	WshShell.Run("SelectValueSharp.exe tmp/app.txt",1,true);
+	str = readFile("tmp/app.txt");
+	//echo(str);
+	return str;
+	
+	//return choicer.FilterValue(values, 273+512, header, 0, 0, 0, 0);
 }
 
 function wtiteToResultFile(file_name, file_data) {

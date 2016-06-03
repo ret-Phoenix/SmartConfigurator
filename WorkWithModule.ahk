@@ -42,23 +42,28 @@ putSelectionInFile(fileName=0, flagSaveClipboard = 1) {
 }
 
 putModuleInFile(fileName = 0) {
-	set_locale_ru()
 
 	if (fileName = 0) {
-		fileName = tmp\module.txt
+		module = tmp\module.txt
+	} else {
+		module = fileName
 	}
 
-	clipboard := 
+	FileDelete %module%
+
+	set_locale_ru()
+
+	clipboard := ""
 	SendInput, ^+{Home}^{ins}{Right}
 	ClipWait
-	FileDelete fileName
-	FileAppend, %clipboard%, %fileName%
+	ClipWait
+	FileAppend, %clipboard%, %module%
 
-	clipboard := 
+	clipboard := ""
 	SendInput, ^+{End}^{ins}{Left} 
 	ClipWait
-	;FileDelete tmp\module.txt
-	FileAppend, %clipboard%, %fileName%
+	ClipWait
+	FileAppend, %clipboard%, %module%
 	
 }
 
