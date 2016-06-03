@@ -108,13 +108,15 @@ function GetMethList(lStrings)
 			lListProcFunc += "(" + j + ") "+delFP(FuncName) + "\r\n";
 		}
 	}
-	// getapp();
-	ResultList(lListProcFunc,"Список процедур/функций");
+	if (JSTrim(lListProcFunc) == "") {
+		echo("В модуле нет процедур или функций");
+	} else {
+		ResultList(lListProcFunc,"Список процедур/функций");
+	}
 }
 
 
-function getSectionsList(lStrings)
-{
+function getSectionsList(lStrings) {
 
 	var re_meth = /^\s*(#Область)\s+/i;
 	var lListProcFunc = "";
@@ -132,7 +134,11 @@ function getSectionsList(lStrings)
 			lListProcFunc += "(" + j + ") "+delFP(lStrLong) + "\r\n";
 		}
 	}
-	ResultList(lListProcFunc,"Список процедур/функций");
+	if (JSTrim(lListProcFunc) == "") {
+		echo("В модуле нет областей");
+	} else {
+		ResultList(lListProcFunc,"Список процедур/функций");
+	}
 }
 
 function ExtSearch(prmTxt)
