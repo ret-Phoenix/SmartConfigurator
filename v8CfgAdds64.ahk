@@ -137,7 +137,7 @@ return
 
 ; Alt+g - Вызов генераторов кода
 !g::
-	putSelectionInFile()
+	;putSelectionInFile()
 	RunWait, %A_WinDir%\SysWOW64\wscript generator.js null generator
 	pasteTextFromFile()	
 return
@@ -199,8 +199,13 @@ return
 
 ; Ctrl + 2 - Вызов списка секций
 ^2::
+	;module = tmp\module.txt
+	;PutCurrentModuleTextIntoFileFast(module)
+	;SendInput, {home}
+
 	putModuleInFile()
 	SendInput, {home}
+	ClipWait
 	RunWait, %A_WinDir%\SysWOW64\wscript scripts.js tmp\module.txt sectionslist
 	if (ErrorLevel > 0) {
 		nStr := ErrorLevel
