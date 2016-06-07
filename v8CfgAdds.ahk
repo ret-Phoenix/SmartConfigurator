@@ -5,7 +5,7 @@
 Ctrl_A = ^{SC01E}
 Ctrl_L = ^{SC026}
 Ctrl_Shift_Z = ^+{SC02C}
-
+/*
 ; форматирование модуля
 F6::
 	putModuleInFile()
@@ -19,6 +19,7 @@ F6::
 	;SendInput +{ins}
 	;RestoreClipboard()
 return
+*/
 ; ----------------------------------
 ; Ctrl + 1 Вызов списка процедур
 ^1::
@@ -137,7 +138,7 @@ return
 
 ; Alt+g - Вызов генераторов кода
 !g::
-	putSelectionInFile()
+	;putSelectionInFile()
 	RunWait, wscript generator.js null generator
 	pasteTextFromFile()	
 return
@@ -199,8 +200,13 @@ return
 
 ; Ctrl + 2 - Вызов списка секций
 ^2::
+	;module = tmp\module.txt
+	;PutCurrentModuleTextIntoFileFast(module)
+	;SendInput, {home}
+
 	putModuleInFile()
 	SendInput, {home}
+	ClipWait
 	RunWait, wscript scripts.js tmp\module.txt sectionslist
 	if (ErrorLevel > 0) {
 		nStr := ErrorLevel
@@ -223,5 +229,57 @@ return
 	Sleep 1000
 	SendInput, ^%KeyV%
 	Sleep 1000
+	SendInput, {Enter}
+return
+
+; Ctrl +j - Переход к объекту метаданных из типа текущего реквизита
+$^sc24::
+	SendInput, %KeyContextMenu%
+	SendInput, {UP}{UP}{UP}{ENTER}
+	Sleep 100
+	SendInput, {Enter}
+	SendInput, ^!%KeyO%
+	SendInput, ^%KeyA%
+	putSelectionInFile(0)
+	module = tmp\module.txt
+	SendInput, ^{END}
+	RunWait, wscript scripts.js %module% gototype
+	if (ErrorLevel > 0) {
+		UpCount := ErrorLevel
+		Loop %UpCount%
+		{
+			SendInput, {UP}
+		}	
+		SendInput, {ENTER}	
+	}
+return
+
+; Ctrl + shift + j - Переход к объекту метаданных из типа текущего реквизита
+$^+sc24::
+	module = tmp\module.txt
+
+	FileDelete %module%
+	FileAppend,, %module%
+	RunWait, system\inputbox.exe %module%
+	
+	SendInput, ^!%KeyO%
+	SendInput, ^+%KeyC%
+	SendInput, ^%KeyF%
+	pasteTextFromFile()
+	SendInput, !{Insert}
+	SendInput, {Enter}
+	Sleep 2000
+	SendInput, ^%KeyA%
+	ClipWait
+	SendInput, {Left}{Enter}
+	putSelectionInFile(0)
+	SendInput, ^{END}
+	RunWait, wscript scripts.js %module% gotoobject
+	SendInput, {Home}
+	SendInput, ^%KeyF%
+	pasteTextFromFile()
+	SendInput, !{Insert}
+	ClipWait
+	SendInput, {Enter}
 	SendInput, {Enter}
 return

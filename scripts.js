@@ -50,7 +50,6 @@ function ResultList(prmStr, prmCaption)
 	if (JSTrim(str) != "") {
 		var nEnd = str.indexOf(")")
 		var nStr = str.substring(1,nEnd);
-
 		WScript.Quit(nStr);
 	} else {
 		WScript.Quit(0);
@@ -72,9 +71,13 @@ function ResultList(prmStr, prmCaption)
 
 function SelectValue(values, header) {
 	
+	if (JSTrim(values) == "") {
+		return "";
+	}
+	
 	wtiteToResultFile("tmp/app.txt",values);
 
-	WshShell.Run("SelectValueSharp.exe tmp/app.txt",1,true);
+	WshShell.Run("system\\SelectValueSharp.exe tmp/app.txt",1,true);
 	str = readFile("tmp/app.txt");
 	//echo(str);
 	return str;
@@ -111,7 +114,7 @@ function GetMethList(lStrings)
 	if (JSTrim(lListProcFunc) == "") {
 		echo("В модуле нет процедур или функций");
 	} else {
-		ResultList(lListProcFunc,"Список процедур/функций");
+		ResultList(JSTrim(lListProcFunc),"Список процедур/функций");
 	}
 }
 
@@ -289,6 +292,66 @@ function methodBegin(lStrings) {
 	WScript.Quit(rowBM);
 }
 
+function actionGoToType(lStrings) {
+	
+	var lListProcFunc = "";
+
+	data = lStrings;
+	StrToChoice = '';
+	UpCount = 0;
+
+	data = lStrings.reverse();
+	var re_meth = /(ссылается на)/i;
+
+	CntRows = data.length;
+	rowBM = 1;
+	for(var i=0; i < CntRows; i++)
+	{
+		lStr = data[i];
+		var matches = lStr.match(re_meth);
+		if (matches != null)
+		{
+			break;
+		}
+		if (JSTrim(lStr) != "") {
+			UpCount++;
+			StrToChoice +=  "("+UpCount+") "+ lStr + "\r\n";
+		}
+	}
+	if (UpCount == 1) {
+		WScript.Quit(1);
+	} else if (UpCount == 0) {
+		WScript.Quit(0);
+	} else {
+		vRes = ResultList(StrToChoice,"");
+	}
+	//wtiteToResultFile("tmp/module.txt",JSTrim(vRes));
+}
+
+function actionGoToObject(lStrings) {
+	
+	var lListProcFunc = "";
+
+	data = lStrings;
+	StrToChoice = '';
+	UpCount = 0;
+
+	CntRows = data.length;
+	for(var i=1; i < CntRows-1; i++)
+	{
+		var str = data[i];
+		StrToChoice +=  str + "\r\n";
+		UpCount++;
+	}
+	if (StrToChoice != "") {
+		var resultStr = SelectValue(StrToChoice);
+		wtiteToResultFile("tmp/module.txt",JSTrim(resultStr));
+	} else {
+		echo("Пустой список");
+	}
+}
+
+
 function Run()
 {
     arg=WScript.Arguments;
@@ -305,7 +368,7 @@ function Run()
 			var lList = [];
 		}
 		
-	}
+	} 
 	switch (arg(1)) {
 		case "search":
 			ExtSearch(lList);
@@ -330,6 +393,12 @@ function Run()
 			break;
 		case "sectionslist":
 			getSectionsList(lList);
+			break;
+		case "gototype":
+			actionGoToType(lList);
+			break;
+		case "gotoobject":
+			actionGoToObject(lList);
 			break;
 		default:
 			return; // не должно быть в принципе

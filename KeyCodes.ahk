@@ -27,4 +27,4 @@ KeyB = {sc30}
 KeyN = {sc31}
 KeyM = {sc32}
 
-
+KeyContextMenu = {sc15D}
