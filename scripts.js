@@ -29,9 +29,14 @@ function log(msg) {
 function readFile(fileName) {
 	fs = new ActiveXObject("Scripting.FileSystemObject");
 	t_file = fs.OpenTextFile(fileName, 1); 
-	str = t_file.ReadAll();
-	t_file.Close();
-	fs= 0;
+	str = "";
+	try {
+		str = t_file.ReadAll();
+		t_file.Close();
+		fs= 0;
+	} catch(e) {
+		
+	}
 	return str;
 }
 
@@ -44,7 +49,7 @@ function ResultList(prmStr, prmCaption)
 {
 	wtiteToResultFile("tmp/app.txt", prmStr);
 
-	WshShell.Run("system\\SelectValueSharp.exe tmp/app.txt",1,true);
+	WshShell.Run("system\\SelectValueSharp.exe tmp\\app.txt",1,true);
 	str = readFile("tmp/app.txt");
 
 	if (JSTrim(str) != "") {
@@ -216,9 +221,9 @@ function ExtSearch(prmTxt)
 function lastSearchResultShow() {
 	fso = new ActiveXObject("Scripting.FileSystemObject");
 	t_file = fso.OpenTextFile("tmp/search.txt", 1); 
-	str = t_file.ReadAll();
+	var str = t_file.ReadAll();
 	t_file.Close();
-	fso = 0;
+	//fso = 0;
 	return ResultList(str, "Значение поиска");
 }
 
@@ -347,6 +352,7 @@ function actionGoToObject(lStrings) {
 		var resultStr = SelectValue(StrToChoice);
 		wtiteToResultFile("tmp/module.txt",JSTrim(resultStr));
 	} else {
+		wtiteToResultFile("tmp/module.txt","");
 		echo("Пустой список");
 	}
 }
