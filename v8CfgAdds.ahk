@@ -1,68 +1,46 @@
 ; #include Clipboard_rus_subs.ahk
 #include KeyCodes.ahk
 #include WorkWithModule.ahk
+#include actions.ahk
 
 Ctrl_A = ^{SC01E}
 Ctrl_L = ^{SC026}
 Ctrl_Shift_Z = ^+{SC02C}
-/*
-; форматирование модуля
-F6::
-	putModuleInFile()
-	RunWait, perl code_beautifier.pl -f %module%
-	pasteTextFromFile()
-	;FileRead, text, %module%
-	;SaveClipboard()
-	;clipboard =
-	;ClipPutText(text)
-	;ClipWait
-	;SendInput +{ins}
-	;RestoreClipboard()
-return
-*/
+
 ; ----------------------------------
 ; Ctrl + 1 Вызов списка процедур
-^1::
-	module = tmp\module.1s
-	PutCurrentModuleTextIntoFileFast(module)
-	SendInput, {home}
-	RunWait, wscript scripts.js %module% proclist
-	if (ErrorLevel > 0) {
-		nStr := ErrorLevel
-		SendInput ^%KeyG%%nStr%{ENTER}
-	}
-	SendInput, {home}
-	SendInput, ^{NumpadAdd}
-return
+^1:: actionShowMethodsList()
+
+; Ctrl + 2 - Вызов списка секций
+^2:: actionShowRegionsList()
+
+; Ctrl + 3 - Открытие внешних файлов
+^3:: actionShowExtFilesList()
+
+; Ctrl + Shift + m - Прочие скрипты
+^+m:: actionShowScriptManager()
+
+; Ctrl + w Выбор ранее набранного слова
+^w:: actionShowPrevWords()
+
+; ----------------------------------
+; НАЧАЛО: Навигация внутри метода
+
+; Ctrl + b - В начало метода
+^b:: actionGotoMethodBegin()
+
+; Ctrl + e - В конец метода
+^e:: actionGotoMethodEnd()
+; КОНЕЦ: Навигация внутри метода
+; ----------------------------------
 
 ;-----------------------------------------------
 ; --- Поиск с Регулярными выражениями ---
 ; Alt + f - поиск с рег.выражениями
-!f::
-   module = tmp\module.1s
-   PutCurrentModuleTextIntoFileFast(module)
-   SendInput, {home}
-   RunWait, wscript scripts.js %module% search
-   if (ErrorLevel > 0) {
-	  nStr := ErrorLevel
-	  Sleep 1
-	  SendInput ^%KeyG%%nStr%{ENTER}
-   }   
-   SendInput, {home}
-   SendInput, ^{NumpadAdd}
-return
+!f:: actionShowRegExSearch()
 ;-----------------------------------------------
 ; Alt + r - результаты последнего поиска
-!r::
-   SendInput, {home}
-   RunWait, wscript scripts.js null search-last
-   if (ErrorLevel > 0) {
-	  nStr := ErrorLevel
-	  SendInput ^%KeyG%%nStr%{ENTER}
-   }   
-   SendInput, {home}
-   SendInput, ^{NumpadAdd}
-return
+!r:: actionShowRegExSearchLastResult()
 
 ; --- Прочее ---
 ; ctrl + / (ctrl + .) - Закоментировать строку:
@@ -98,17 +76,9 @@ $^SC008::Send &
 ; ----------------------------------------
 ; авторские комментарии
 ; ----------------------------------------
-runAuthorComments(prmVar)
-{
-	putSelectionInFile()
-	RunWait, wscript author.js %prmVar%
-	pasteTextFromFile()
-}
-
-!s::	runAuthorComments("new") ; alt+s - блок добавлен
-!e::	runAuthorComments("edit") ; alt+e - блок изменен
-!d::	runAuthorComments("del") ; alt+d - блок удален
-
+!s:: actionRunAuthorComments("new") ; alt+s - блок добавлен
+!e:: actionRunAuthorComments("edit") ; alt+e - блок изменен
+!d:: actionRunAuthorComments("del") ; alt+d - блок удален
 ; КОНЕЦ авторские комментарии
 ; ----------------------------------------
 
@@ -130,156 +100,23 @@ return
 ;------------------------------------
 
 ; Alt+h - добавление ссылки на реквизит в модуле
-!h::
-	putSelectionInFile()
-	RunWait, wscript generator.js null simple-managment
-	pasteTextFromFile()
-return
+!h:: actionRunLinksToItems()
 
 ; Alt+g - Вызов генераторов кода
-!g::
-	;putSelectionInFile()
-	RunWait, wscript generator.js null generator
-	pasteTextFromFile()	
-return
-
+!g:: actionShowCodeGenerator()
 
 ; Alt+7 - Препроцессор функции
-!SC008::
-	set_locale_ru()
-	RunWait, wscript scripts.js null preprocmenu
-	set_locale_ru()
-	FileRead, text, tmp\module.txt
-	set_locale_ru()
-	SendInput, %text%
-return
+!SC008:: actionShowPreprocMethod()
 
-; Ctrl + m - Прочие скрипты
-^m::
-	putSelectionInFile()
-	RunWait, wscript scripts_manager.js
-	pasteTextFromFile()
-return
-
-; Ctrl + w Выбор ранее набранного слова
-^w::
-	putModuleInFile()
-	RunWait, wscript scripts.js tmp\module.txt words
-	pasteTextFromFile()
-return
+;------------------------------------
+; Навигация по метаданным
 
 ; Alt + J - Поиск по метаданным
-!j::
-	SendInput, ^+%KeyC%
-	Sleep 10
-	SendInput ^%KeyF%
-return
-
-; Ctrl + b - В начало метода
-^b::
-	getTextUp()
-	RunWait, wscript scripts.js tmp\module.txt BeginMethod
-	if (ErrorLevel > 0) {
-		nStr := ErrorLevel
-		SendInput ^%KeyG%%nStr%{ENTER}
-	}   
-	SendInput, {home}
-return
-
-; Ctrl + e - В конец метода
-^e::
-	getTextUp()
-	RunWait, wscript scripts.js tmp\module.txt EndMethod
-	if (ErrorLevel > 0) {
-		nStr := ErrorLevel
-		SendInput ^%KeyG%%nStr%{ENTER}
-		SendInput ^{SC01A}
-	}   
-	SendInput, {home}
-return
-
-; Ctrl + 2 - Вызов списка секций
-^2::
-	;module = tmp\module.txt
-	;PutCurrentModuleTextIntoFileFast(module)
-	;SendInput, {home}
-
-	putModuleInFile()
-	SendInput, {home}
-	ClipWait
-	RunWait, wscript scripts.js tmp\module.txt sectionslist
-	if (ErrorLevel > 0) {
-		nStr := ErrorLevel
-		SendInput ^%KeyG%%nStr%{ENTER}
-	}
-	SendInput, {home}
-	SendInput, ^{NumpadAdd}
-return
-
-; Ctrl + 3 - Открытие внешних файлов
-^3::
-	RunWait, wscript ExtFiles.js
-	FileRead, newText, tmp\module.txt
-	Clipboard := newText
-	ClipWait
-	Sleep 1
-	set_locale_ru()
-	SendInput, !%KeyA%
-	SendInput, {DOWN}{DOWN}{Enter}
-	Sleep 1000
-	SendInput, ^%KeyV%
-	Sleep 1000
-	SendInput, {Enter}
-return
+^k:: actionShowSimpleMetaSearch()
 
 ; Ctrl +j - Переход к объекту метаданных из типа текущего реквизита
-$^sc24::
-	SendInput, %KeyContextMenu%
-	SendInput, {UP}{UP}{UP}{ENTER}
-	Sleep 100
-	SendInput, {Enter}
-	SendInput, ^!%KeyO%
-	SendInput, ^%KeyA%
-	putSelectionInFile(0)
-	module = tmp\module.txt
-	SendInput, ^{END}
-	RunWait, wscript scripts.js %module% gototype
-	if (ErrorLevel > 0) {
-		UpCount := ErrorLevel
-		Loop %UpCount%
-		{
-			SendInput, {UP}
-		}	
-		SendInput, {ENTER}	
-	}
-return
+$^sc24:: actionShowIncomingObjectTypes()
 
-; Ctrl + shift + j - Переход к объекту метаданных из типа текущего реквизита
-$^+sc24::
-	module = tmp\module.txt
-
-	FileDelete %module%
-	FileAppend,, %module%
-	RunWait, system\inputbox.exe %module%
-	
-	SendInput, ^!%KeyO%
-	SendInput, ^+%KeyC%
-	SendInput, ^%KeyF%
-	pasteTextFromFile()
-	SendInput, !{Insert}
-	SendInput, {Enter}
-	Sleep 2000
-	SendInput, ^%KeyA%
-	ClipWait
-	SendInput, {Left}{Enter}
-	putSelectionInFile(0)
-	SendInput, ^{END}
-	RunWait, wscript scripts.js %module% gotoobject
-	SendInput, {Home}
-	SendInput, ^%KeyF%
-	pasteTextFromFile()
-	SendInput, !{Insert}
-	ClipWait
-	SendInput, {Enter}
-	SendInput, {Enter}
-return
+; Ctrl + shift + j - Переход к объекту метаданных
+$^+sc24:: actionShowMetadataNavigator()
+;------------------------------------

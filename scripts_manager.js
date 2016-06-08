@@ -36,7 +36,18 @@ function SelectValue(values, header) {
 function Run() {
 	var array_commands = [
 	   { key: 'Добавить перенос строк', value: 'wscript format.js null format_block_vert' },  
-	   { key: 'Убрать перенос строк', value: 'wscript format.js null un_format_block_vert' }
+	   { key: 'Убрать перенос строк', value: 'wscript format.js null un_format_block_vert' },
+	   { key: '----------------------------------------', value: '' },
+	   { key: 'Выделение в верхний регистр', value: 'system\\OneScript\\bin\\oscript.exe РаботаСРегистромТекста.os up' },
+	   { key: 'Выделение в нижний регистр', value: 'system\\OneScript\\bin\\oscript.exe РаботаСРегистромТекста.os down' },
+	   { key: 'Выделение в нормальный регистр', value: 'system\\OneScript\\bin\\oscript.exe РаботаСРегистромТекста.os normal' },
+	   { key: '----------------------------------------', value: '' },
+	   { key: 'Выравнять по равно', value: 'system\\OneScript\\bin\\oscript.exe format.os align-equal-sign' },
+	   { key: 'Выравнять по первой запятой', value: 'system\\OneScript\\bin\\oscript.exe format.os align-first-comma' },
+	   { key: 'Выравнять по выбранному значению', value: 'system\\OneScript\\bin\\oscript.exe format.os align-user-symbol' },
+	   { key: '----------------------------------------', value: '' },
+	   { key: 'Очистить модуль', value: 'system\\OneScript\\bin\\oscript.exe ModuleCleaner.os' },
+	   { key: 'Убрать пробелы на конце строк', value: 'system\\OneScript\\bin\\oscript.exe format.os rtrim' }
 	]	
 	   
 	var array_run = new Array();
@@ -45,12 +56,15 @@ function Run() {
 		str_select += array_commands[i].key + '\r\n';
 	}
 	run_command = JSTrim(SelectValue(str_select, 'Команда'));
-	
-	for (var i = 0, len = array_commands.length; i < len; i++) {
-		if (array_commands[i].key == run_command) {
-			// echo(array_commands[i].value);
-			WshShell.Run(array_commands[i].value,1,true);	
-			break;
+
+	if (run_command != "") {
+		for (var i = 0, len = array_commands.length; i < len; i++) {
+			if (array_commands[i].key == run_command) {
+				if (array_commands[i].value != "") {
+					WshShell.Run(array_commands[i].value,0,true);	
+					break;
+				}
+			}
 		}
 	}
 	

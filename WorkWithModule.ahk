@@ -3,6 +3,14 @@
 
 ; #include Clipboard_rus_subs.ahk
 
+getTextFromFile() {
+  FileRead, newText, tmp\module.txt
+  ClipWait, 1
+  Clipboard := newText
+  ClipWait, 1
+  
+  Return %newText%
+}
 
 pasteTextFromFile() {
   FileRead, newText, tmp\module.txt
