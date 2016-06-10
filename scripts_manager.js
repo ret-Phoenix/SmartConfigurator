@@ -1,4 +1,7 @@
+var listFiles = [];
 var WshShell = WScript.CreateObject("WScript.Shell");
+var fso = new ActiveXObject("Scripting.FileSystemObject");
+
 
 function JSTrim(vValue) {
 	return  vValue.replace(/(^\s*)|(\s*$)/g, "");
@@ -16,12 +19,17 @@ function wtiteToResultFile(file_name, file_data) {
 }
 
 function readFile(fileName) {
-        fs = new ActiveXObject("Scripting.FileSystemObject");
-        t_file = fs.OpenTextFile(fileName, 1); 
-        str = t_file.ReadAll();
-        t_file.Close();
-        fs= 0;
-        return str;
+	fs = new ActiveXObject("Scripting.FileSystemObject");
+	t_file = fs.OpenTextFile(fileName, 1); 
+	str = "";
+	try {
+		str = t_file.ReadAll();
+		t_file.Close();
+		fs= 0;
+	} catch(e) {
+		
+	}
+	return str;
 }
 
 function SelectValue(values, header) {
@@ -32,6 +40,43 @@ function SelectValue(values, header) {
         str = readFile("tmp/app.txt");
         return str;
 }
+
+function SearchFile(Folder, RegExpMask){
+        var FilesEnumerator = new Enumerator(Folder.Files);
+        while (!FilesEnumerator.atEnd()){
+                var File = FilesEnumerator.item();
+                var FileName = File.Name;//имя файла
+                var FilePath = File.Path;//полный путь к файлу
+                var FileSize = File.Size;//размер файла
+                RegExpMask.compile(RegExpMask);
+                var FileByMask = RegExpMask.exec(FileName);
+                if (FileByMask){
+                        // Log.Write(1, FilePath);//здесь можно выполнять любые действия с найденным файлом
+                        //WScript.StdOut.WriteLine(FilePath);
+                        //listFiles += FilePath + "\r\n";
+
+                         FileExt = fso.GetExtensionName(FilePath);
+                         if (FileExt == "os") {
+                         	FilePath = "system\\OneScript\\bin\\oscript.exe " + FilePath
+                         } else {
+                         	FilePath = "wscript " + FilePath;
+                         }
+
+                        listFiles[listFiles.length] = { key: FileName, value: FilePath };
+                }
+                FilesEnumerator.moveNext();
+        }
+        //поиск в подпапках 
+        var SubFoldersEnumerator = new Enumerator(Folder.SubFolders);    
+        while (!SubFoldersEnumerator.atEnd()){
+                var Folder = SubFoldersEnumerator.item();               
+                //System.ProcessMessages();//<--здесь можно двигать бегунок
+                //Log.Write(1, Folder.Path);//<--здесь можно выполнять любые действия с найденной папкой
+                SearchFile(Folder, RegExpMask);
+                SubFoldersEnumerator.moveNext();
+        }
+}
+
 
 function Run() {
 	var array_commands = [
@@ -47,9 +92,24 @@ function Run() {
 	   { key: 'Выравнять по выбранному значению', value: 'system\\OneScript\\bin\\oscript.exe format.os align-user-symbol' },
 	   { key: '----------------------------------------', value: '' },
 	   { key: 'Очистить модуль', value: 'system\\OneScript\\bin\\oscript.exe ModuleCleaner.os' },
-	   { key: 'Убрать пробелы на конце строк', value: 'system\\OneScript\\bin\\oscript.exe format.os rtrim' }
+	   { key: 'Убрать пробелы на конце строк', value: 'system\\OneScript\\bin\\oscript.exe format.os rtrim' },
+	   { key: '============ Автоматически добавленные ============', value: '' }
 	]	
 	   
+	var FileSystem = new ActiveXObject('Scripting.FileSystemObject');
+    var RegExpMask = /.*(\.os|\.js)/igm;
+    var Folder = FileSystem.GetFolder('auto');
+
+    //listFiles = '';
+
+    SearchFile(Folder, RegExpMask);
+	len = listFiles.length;
+    for (var i = 0 ; i < len; i++) {
+    	//echo(listFiles[i].key)
+    	array_commands[array_commands.length] = listFiles[i];
+    }
+
+
 	var array_run = new Array();
 	str_select = "";
 	for (var i = 0, len = array_commands.length; i < len; i++) {
