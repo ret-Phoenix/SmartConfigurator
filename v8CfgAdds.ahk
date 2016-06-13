@@ -120,3 +120,13 @@ $^sc24:: actionShowIncomingObjectTypes()
 ; Ctrl + shift + j - Переход к объекту метаданных
 $^+sc24:: actionShowMetadataNavigator()
 ;------------------------------------
+
+#x::
+	module = tmp\module.txt
+	PutCurrentModuleTextIntoFileFast(module)
+	RunWait, system\OneScript\bin\oscript.exe НавигацияПоМодулю.os СписокМетодов,,Hide
+	if (ErrorLevel > 0) {
+		nStr := ErrorLevel
+		SendInput ^%KeyG%%nStr%{ENTER}
+	}		
+Return
