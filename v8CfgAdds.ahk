@@ -1,7 +1,10 @@
 ; #include Clipboard_rus_subs.ahk
+
 #include core\KeyCodes.ahk
 #include core\WorkWithModule.ahk
 #include scripts\actions.ahk
+#include scripts\menu.ahk
+
 
 Ctrl_A = ^{SC01E}
 Ctrl_L = ^{SC026}
@@ -123,14 +126,7 @@ $^sc24:: actionShowIncomingObjectTypes()
 $^+sc24:: actionShowMetadataNavigator()
 ;------------------------------------
 
-#x::
-	module = tmp\module.txt
-	PutCurrentModuleTextIntoFileFast(module)
-	RunWait, system\OneScript\bin\oscript.exe НавигацияПоМодулю.os СписокМетодов,,Hide
-	if (ErrorLevel > 0) {
-		nStr := ErrorLevel
-		SendInput ^%KeyG%%nStr%{ENTER}
-	}		
+#sc02D:: showMenu()
 Return
 
 +^Space:: 

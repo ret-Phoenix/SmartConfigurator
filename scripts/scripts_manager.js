@@ -57,7 +57,7 @@ function SearchFile(Folder, RegExpMask){
 
                          FileExt = fso.GetExtensionName(FilePath);
                          if (FileExt == "os") {
-                         	FilePath = "system\\OneScript\\bin\\oscript.exe " + FilePath
+                         	FilePath = "system\\OneScript\\bin\\oscript.exe " + "\"" + FilePath + "\"";
                          } else {
                          	FilePath = "wscript " + FilePath;
                          }
@@ -80,9 +80,6 @@ function SearchFile(Folder, RegExpMask){
 
 function Run() {
 	var array_commands = [
-	   { key: 'Добавить перенос строк', value: 'wscript scripts\\format.js null format_block_vert' },  
-	   { key: 'Убрать перенос строк', value: 'wscript scripts\\format.js null un_format_block_vert' },
-	   { key: '----------------------------------------', value: '' },
 	   { key: 'Выделение в верхний регистр', value: 'system\\OneScript\\bin\\oscript.exe scripts\\РаботаСРегистромТекста.os up' },
 	   { key: 'Выделение в нижний регистр', value: 'system\\OneScript\\bin\\oscript.exe scripts\\РаботаСРегистромТекста.os down' },
 	   { key: 'Выделение в нормальный регистр', value: 'system\\OneScript\\bin\\oscript.exe scripts\\РаботаСРегистромТекста.os normal' },
@@ -121,6 +118,7 @@ function Run() {
 		for (var i = 0, len = array_commands.length; i < len; i++) {
 			if (array_commands[i].key == run_command) {
 				if (array_commands[i].value != "") {
+					// echo(array_commands[i].value);
 					WshShell.Run(array_commands[i].value,0,true);	
 					break;
 				}

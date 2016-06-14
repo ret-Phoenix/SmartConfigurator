@@ -1,5 +1,5 @@
 ; #include KeyCodes.ahk
-; #include core\WorkWithModule.ahk
+; КонецЕсли;#include ..\core\WorkWithModule.ahk
 
 actionShowMethodsList() {
 	Global
@@ -33,32 +33,30 @@ actionShowRegionsList() {
 actionShowExtFilesList() {
 	Global
 
-	RunWait, wscript scripts\ExtFiles.js
+	; RunWait, wscript scripts\ExtFiles.js
+	RunWait, system\OneScript\bin\oscript.exe scripts\ExtFiles.os,,Hide
 
 	NewText := getTextFromFile()
 	If (NewText <> "") {
-		; FileRead, newText, tmp\module.txt
-		; Clipboard := newText
 		ClipWait
 		Sleep 1
 		set_locale_ru()
 		SendInput, !%KeyA%
 		SendInput, {DOWN}{DOWN}{Enter}
-		Sleep 1000
-		SendInput, ^%KeyV%
-		Sleep 1000
-		SendInput, {Enter}
+		Sleep 50
+		SendInput, ^%KeyV%{Enter}
 	}
 }
 
 actionShowScriptManager() {
 	putSelectionInFile()
 	RunWait, wscript scripts\scripts_manager.js
+	; RunWait, system\OneScript\bin\oscript.exe scripts\МенеджерСкриптов.os,,Hide
 	pasteTextFromFile()
 }
 
 actionShowPrevWords() {
-	putModuleInFile()
+	putModuleInFileWithSavePosition()
 	RunWait, wscript scripts\scripts.js tmp\module.txt words
 	pasteTextFromFile()
 }
@@ -229,4 +227,9 @@ actionShowMetadataNavigator() {
 			}
 		}
 	}
+}
+
+showMenu() {
+	createMenuItems()
+	Menu, Popup, Show
 }

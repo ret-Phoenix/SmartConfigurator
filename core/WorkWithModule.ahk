@@ -53,6 +53,27 @@ putModuleInFile() {
 	PutCurrentModuleTextIntoFileFast(0, 1)
 }
 
+putModuleInFileWithSavePosition() {
+
+	module = tmp\module.txt
+
+	FileDelete %module%
+
+	set_locale_ru()
+
+	clipboard := 
+	SendInput, ^+{Home}^{ins}{Right}
+	ClipWait
+	ClipWait
+	FileAppend, %clipboard%, %module%
+
+	clipboard := 
+	SendInput, ^+{End}^{ins}{Left} 
+	ClipWait
+	ClipWait
+	FileAppend, %clipboard%, %module%
+}
+
 
 /*
 ; Don't work selectValue, why?
