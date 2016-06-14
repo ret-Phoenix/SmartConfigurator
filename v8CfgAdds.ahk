@@ -120,3 +120,22 @@ $^sc24:: actionShowIncomingObjectTypes()
 ; Ctrl + shift + j - Переход к объекту метаданных
 $^+sc24:: actionShowMetadataNavigator()
 ;------------------------------------
+
+;------------------------------------
+; Автозамена приращений ++, +=, --, -=
+::++:: 
+ 	SendInput, ^+{left}^{ins}{Right}{space}{scD}{Space}+{ins}{sc4E}{Space}1;
+Return
+
+::--:: 
+ 	SendInput, ^+{left}^{ins}{Right}{space}{scD}{Space}+{ins}{sc4A}{Space}1;
+Return
+
+::+=:: 
+ 	SendInput, ^+{left}^{ins}{Right}{space}{scD}{Space}+{ins}{sc4E}{Space}
+Return
+
+::-=:: 
+ 	SendInput, ^+{left}^{ins}{Right}{space}{scD}{Space}+{ins}{sc4A}{Space}
+Return
+;------------------------------------
