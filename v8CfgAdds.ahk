@@ -1,7 +1,7 @@
 ; #include Clipboard_rus_subs.ahk
-#include KeyCodes.ahk
-#include WorkWithModule.ahk
-#include actions.ahk
+#include core\KeyCodes.ahk
+#include core\WorkWithModule.ahk
+#include scripts\actions.ahk
 
 Ctrl_A = ^{SC01E}
 Ctrl_L = ^{SC026}
@@ -41,6 +41,8 @@ Ctrl_Shift_Z = ^+{SC02C}
 ;-----------------------------------------------
 ; Alt + r - результаты последнего поиска
 !r:: actionShowRegExSearchLastResult()
+
++!r:: actionShowLastSelect()
 
 ; --- Прочее ---
 ; ctrl + / (ctrl + .) - Закоментировать строку:
@@ -130,3 +132,10 @@ $^+sc24:: actionShowMetadataNavigator()
 		SendInput ^%KeyG%%nStr%{ENTER}
 	}		
 Return
+
++^Space:: 
+   ;MsgBox, hi
+   actionShowPrevWords()
+Return
+ 
+

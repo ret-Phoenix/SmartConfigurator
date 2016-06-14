@@ -49,6 +49,13 @@ putSelectionInFile(fileName=0, flagSaveClipboard = 1) {
 		RestoreClipboard()
 }
 
+putModuleInFile() {
+	PutCurrentModuleTextIntoFileFast(0, 1)
+}
+
+
+/*
+; Don't work selectValue, why?
 putModuleInFile(fileName = 0) {
 
 	if (fileName = 0) {
@@ -74,7 +81,7 @@ putModuleInFile(fileName = 0) {
 	FileAppend, %clipboard%, %module%
 	
 }
-
+*/
 getTextUp() {
 	clipboard := 
 	SendInput, ^+{Home}^{ins}{Right}
@@ -92,13 +99,15 @@ getTextDown() {
 }
 
 
-PutCurrentModuleTextIntoFileFast(fileName, flagSaveClipboard = 1) {
+PutCurrentModuleTextIntoFileFast(fileName = 0, flagSaveClipboard = 1) {
 	set_locale_ru()
 	if (flagSaveClipboard = 1)
 		SaveClipboard()
 
-	module := fileName
-	;set_locale_ru()
+	module = tmp\module.txt
+	if (fileName <> 0) {
+		module = fileName
+	}
 
 	;Sleep 30
 	SendInput ^{SC01E}^{ins}{Left}

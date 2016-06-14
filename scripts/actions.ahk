@@ -1,13 +1,12 @@
 ; #include KeyCodes.ahk
-#include WorkWithModule.ahk
+; #include core\WorkWithModule.ahk
 
 actionShowMethodsList() {
 	Global
 
-	module = tmp\module.1s
-	PutCurrentModuleTextIntoFileFast(module)
+	putModuleInFile()
 	SendInput, {home}
-	RunWait, wscript scripts.js %module% proclist
+	RunWait, system\OneScript\bin\oscript.exe scripts\Навигация\НавигацияПоМодулю.os СписокМетодов,,Hide
 	if (ErrorLevel > 0) {
 		nStr := ErrorLevel
 		SendInput ^%KeyG%%nStr%{ENTER}
@@ -22,7 +21,7 @@ actionShowRegionsList() {
 	putModuleInFile()
 	SendInput, {home}
 	ClipWait
-	RunWait, wscript scripts.js tmp\module.txt sectionslist
+	RunWait, system\OneScript\bin\oscript.exe scripts\Навигация\НавигацияПоМодулю.os СписокОбластей,,Hide
 	if (ErrorLevel > 0) {
 		nStr := ErrorLevel
 		SendInput ^%KeyG%%nStr%{ENTER}
@@ -34,29 +33,33 @@ actionShowRegionsList() {
 actionShowExtFilesList() {
 	Global
 
-	RunWait, wscript ExtFiles.js
-	FileRead, newText, tmp\module.txt
-	Clipboard := newText
-	ClipWait
-	Sleep 1
-	set_locale_ru()
-	SendInput, !%KeyA%
-	SendInput, {DOWN}{DOWN}{Enter}
-	Sleep 1000
-	SendInput, ^%KeyV%
-	Sleep 1000
-	SendInput, {Enter}
+	RunWait, wscript scripts\ExtFiles.js
+
+	NewText := getTextFromFile()
+	If (NewText <> "") {
+		; FileRead, newText, tmp\module.txt
+		; Clipboard := newText
+		ClipWait
+		Sleep 1
+		set_locale_ru()
+		SendInput, !%KeyA%
+		SendInput, {DOWN}{DOWN}{Enter}
+		Sleep 1000
+		SendInput, ^%KeyV%
+		Sleep 1000
+		SendInput, {Enter}
+	}
 }
 
 actionShowScriptManager() {
 	putSelectionInFile()
-	RunWait, wscript scripts_manager.js
+	RunWait, wscript scripts\scripts_manager.js
 	pasteTextFromFile()
 }
 
 actionShowPrevWords() {
 	putModuleInFile()
-	RunWait, wscript scripts.js tmp\module.txt words
+	RunWait, wscript scripts\scripts.js tmp\module.txt words
 	pasteTextFromFile()
 }
 
@@ -64,7 +67,7 @@ actionGotoMethodBegin() {
 	Global
 
 	getTextUp()
-	RunWait, wscript scripts.js tmp\module.txt BeginMethod
+	RunWait, system\OneScript\bin\oscript.exe scripts\Навигация\НавигацияПоМодулю.os НачалоМетода,,Hide
 	if (ErrorLevel > 0) {
 		nStr := ErrorLevel
 		SendInput ^%KeyG%%nStr%{ENTER}
@@ -76,7 +79,7 @@ actionGotoMethodEnd() {
 	Global
 
 	getTextUp()
-	RunWait, wscript scripts.js tmp\module.txt EndMethod
+	RunWait, system\OneScript\bin\oscript.exe scripts\Навигация\НавигацияПоМодулю.os НачалоМетода,,Hide
 	if (ErrorLevel > 0) {
 		nStr := ErrorLevel
 		SendInput ^%KeyG%%nStr%{ENTER}
@@ -88,24 +91,36 @@ actionGotoMethodEnd() {
 actionShowRegExSearch() {
 	Global
 
-	module = tmp\module.1s
-	PutCurrentModuleTextIntoFileFast(module)
+	putModuleInFile()
+
 	SendInput, {home}
-	RunWait, wscript scripts.js %module% search
+	RunWait, system\OneScript\bin\oscript.exe scripts\Навигация\НавигацияПоМодулю.os RegExSearch,,Hide
 	if (ErrorLevel > 0) {
 		nStr := ErrorLevel
 		Sleep 1
 		SendInput ^%KeyG%%nStr%{ENTER}
 	}   
 	SendInput, {home}
-	SendInput, ^{NumpadAdd}
 }
 
 actionShowRegExSearchLastResult() {
 	Global
 
 	SendInput, {home}
-	RunWait, wscript scripts.js null search-last
+	RunWait, system\OneScript\bin\oscript.exe scripts\Навигация\НавигацияПоМодулю.os РезультатПоследнегоПоиска,,Hide
+	if (ErrorLevel > 0) {
+		nStr := ErrorLevel
+		SendInput ^%KeyG%%nStr%{ENTER}
+	}   
+	SendInput, {home}
+}
+
+actionShowLastSelect() {
+	Global
+
+	SendInput, {home}
+	; RunWait, wscript scripts.js null last
+	RunWait, system\OneScript\bin\oscript.exe scripts\Навигация\НавигацияПоМодулю.os ПоказатьПоследнийСписокВыбора,,Hide
 	if (ErrorLevel > 0) {
 		nStr := ErrorLevel
 		SendInput ^%KeyG%%nStr%{ENTER}
@@ -114,26 +129,27 @@ actionShowRegExSearchLastResult() {
 	SendInput, ^{NumpadAdd}
 }
 
+
 actionRunAuthorComments(data) {
 	putSelectionInFile()
-	RunWait, wscript author.js %data%
+	RunWait, wscript scripts\author.js %data%
 	pasteTextFromFile()
 }
 
 actionRunLinksToItems() {
 	putSelectionInFile()
-	RunWait, wscript generator.js null simple-managment
+	RunWait, wscript scripts\generator.js null simple-managment
 	pasteTextFromFile()
 }
 
 actionShowCodeGenerator() {
-	RunWait, wscript generator.js null generator
+	RunWait, wscript scripts\generator.js null generator
 	pasteTextFromFile()	
 }
 
 actionShowPreprocMethod() {
 	set_locale_ru()
-	RunWait, wscript scripts.js null preprocmenu
+	RunWait, wscript scripts\scripts.js null preprocmenu
 	set_locale_ru()
 	FileRead, text, tmp\module.txt
 	set_locale_ru()
@@ -160,7 +176,7 @@ actionShowIncomingObjectTypes() {
 	putSelectionInFile(0)
 	module = tmp\module.txt
 	SendInput, ^{END}
-	RunWait, wscript scripts.js %module% gototype
+	RunWait, wscript scripts\scripts.js %module% gototype
 	if (ErrorLevel > 0) {
 		UpCount := ErrorLevel
 		Loop %UpCount%
@@ -199,7 +215,7 @@ actionShowMetadataNavigator() {
 		NewText := getTextFromFile()
 		If (NewText <> "") {
 			SendInput, ^{END}
-			RunWait, wscript scripts.js %module% gotoobject
+			RunWait, wscript scripts\scripts.js %module% gotoobject
 			NewText := getTextFromFile()
 			If (NewText <> "") {
 				SendInput, {Home}

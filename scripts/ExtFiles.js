@@ -17,9 +17,14 @@ function JSTrim(vValue)
 function readFile(fileName) {
         fs = new ActiveXObject("Scripting.FileSystemObject");
         t_file = fs.OpenTextFile(fileName, 1); 
-        str = t_file.ReadAll();
-        t_file.Close();
-        fs= 0;
+        str = "";
+        try {
+                str = t_file.ReadAll();
+                t_file.Close();
+                fs= 0;
+        } catch(e) {
+                
+        }
         return str;
 }
 
