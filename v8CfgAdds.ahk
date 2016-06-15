@@ -1,7 +1,10 @@
 ; #include Clipboard_rus_subs.ahk
-#include KeyCodes.ahk
-#include WorkWithModule.ahk
-#include actions.ahk
+
+#include core\KeyCodes.ahk
+#include core\WorkWithModule.ahk
+#include scripts\actions.ahk
+#include scripts\menu.ahk
+
 
 Ctrl_A = ^{SC01E}
 Ctrl_L = ^{SC026}
@@ -42,6 +45,9 @@ Ctrl_Shift_Z = ^+{SC02C}
 ; Alt + r - результаты последнего поиска
 !r:: actionShowRegExSearchLastResult()
 
+; shift + alt + r
++!r:: actionShowLastSelect()
+
 ; --- Прочее ---
 ; ctrl + / (ctrl + .) - Закоментировать строку:
 ^/:: Send, {home}//
@@ -76,9 +82,9 @@ $^SC008::Send &
 ; ----------------------------------------
 ; авторские комментарии
 ; ----------------------------------------
-!s:: actionRunAuthorComments("new") ; alt+s - блок добавлен
-!e:: actionRunAuthorComments("edit") ; alt+e - блок изменен
-!d:: actionRunAuthorComments("del") ; alt+d - блок удален
+!a:: actionRunAuthorComments("Добавлено") ; alt+s - блок добавлен
+!e:: actionRunAuthorComments("Изменено") ; alt+e - блок изменен
+!d:: actionRunAuthorComments("Удалено") ; alt+d - блок удален
 ; КОНЕЦ авторские комментарии
 ; ----------------------------------------
 
@@ -139,3 +145,14 @@ Return
  	SendInput, ^+{left}^{ins}{Right}{space}{scD}{Space}+{ins}{sc4A}{Space}
 Return
 ;------------------------------------
+
+; Win + X
+#sc02D:: 
+	showMenu()
+Return
+
++^Space:: 
+   actionShowPrevWords()
+Return
+ 
+

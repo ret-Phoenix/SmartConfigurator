@@ -57,7 +57,7 @@ function SearchFile(Folder, RegExpMask){
 
                          FileExt = fso.GetExtensionName(FilePath);
                          if (FileExt == "os") {
-                         	FilePath = "system\\OneScript\\bin\\oscript.exe " + FilePath
+                         	FilePath = "system\\OneScript\\bin\\oscript.exe " + "\"" + FilePath + "\"";
                          } else {
                          	FilePath = "wscript " + FilePath;
                          }
@@ -80,25 +80,22 @@ function SearchFile(Folder, RegExpMask){
 
 function Run() {
 	var array_commands = [
-	   { key: 'Добавить перенос строк', value: 'wscript format.js null format_block_vert' },  
-	   { key: 'Убрать перенос строк', value: 'wscript format.js null un_format_block_vert' },
+	   { key: 'Выделение в верхний регистр', value: 'system\\OneScript\\bin\\oscript.exe scripts\\РаботаСРегистромТекста.os up' },
+	   { key: 'Выделение в нижний регистр', value: 'system\\OneScript\\bin\\oscript.exe scripts\\РаботаСРегистромТекста.os down' },
+	   { key: 'Выделение в нормальный регистр', value: 'system\\OneScript\\bin\\oscript.exe scripts\\РаботаСРегистромТекста.os normal' },
 	   { key: '----------------------------------------', value: '' },
-	   { key: 'Выделение в верхний регистр', value: 'system\\OneScript\\bin\\oscript.exe РаботаСРегистромТекста.os up' },
-	   { key: 'Выделение в нижний регистр', value: 'system\\OneScript\\bin\\oscript.exe РаботаСРегистромТекста.os down' },
-	   { key: 'Выделение в нормальный регистр', value: 'system\\OneScript\\bin\\oscript.exe РаботаСРегистромТекста.os normal' },
+	   { key: 'Выравнять по равно', value: 'system\\OneScript\\bin\\oscript.exe scripts\\format.os align-equal-sign' },
+	   { key: 'Выравнять по первой запятой', value: 'system\\OneScript\\bin\\oscript.exe scripts\\format.os align-first-comma' },
+	   { key: 'Выравнять по выбранному значению', value: 'system\\OneScript\\bin\\oscript.exe scripts\\format.os align-user-symbol' },
 	   { key: '----------------------------------------', value: '' },
-	   { key: 'Выравнять по равно', value: 'system\\OneScript\\bin\\oscript.exe format.os align-equal-sign' },
-	   { key: 'Выравнять по первой запятой', value: 'system\\OneScript\\bin\\oscript.exe format.os align-first-comma' },
-	   { key: 'Выравнять по выбранному значению', value: 'system\\OneScript\\bin\\oscript.exe format.os align-user-symbol' },
-	   { key: '----------------------------------------', value: '' },
-	   { key: 'Очистить модуль', value: 'system\\OneScript\\bin\\oscript.exe ModuleCleaner.os' },
-	   { key: 'Убрать пробелы на конце строк', value: 'system\\OneScript\\bin\\oscript.exe format.os rtrim' },
+	   { key: 'Очистить модуль', value: 'system\\OneScript\\bin\\oscript.exe scripts\\ModuleCleaner.os' },
+	   { key: 'Убрать пробелы на конце строк', value: 'system\\OneScript\\bin\\oscript.exe scripts\\format.os rtrim' },
 	   { key: '============ Автоматически добавленные ============', value: '' }
 	]	
 	   
 	var FileSystem = new ActiveXObject('Scripting.FileSystemObject');
     var RegExpMask = /.*(\.os|\.js)/igm;
-    var Folder = FileSystem.GetFolder('auto');
+    var Folder = FileSystem.GetFolder('scripts\\auto');
 
     //listFiles = '';
 
@@ -121,6 +118,7 @@ function Run() {
 		for (var i = 0, len = array_commands.length; i < len; i++) {
 			if (array_commands[i].key == run_command) {
 				if (array_commands[i].value != "") {
+					// echo(array_commands[i].value);
 					WshShell.Run(array_commands[i].value,0,true);	
 					break;
 				}

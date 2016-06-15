@@ -96,137 +96,6 @@ function wtiteToResultFile(file_name, file_data) {
 	f.Close();
 }
 
-function GetMethList(lStrings)
-{
-
-	var re_meth = /^\s*(процедура|функция|procedure|function)\s+/i;
-	var lListProcFunc = "";
-
-	for(var i=0; i<lStrings.length; i++)
-	{
-		lStrCurrent = "";
-		lStr = lStrings[i];
-
-		var matches = lStr.match(re_meth);
-		if (matches != null)
-		{
-			j = i+1;
-			lStrLong = JSTrim(delFP(lStr));
-			FuncName = getTextBeforeBracket(lStrLong);
-			lListProcFunc += "(" + j + ") "+delFP(FuncName) + "\r\n";
-		}
-	}
-	if (JSTrim(lListProcFunc) == "") {
-		echo("В модуле нет процедур или функций");
-	} else {
-		ResultList(JSTrim(lListProcFunc),"Список процедур/функций");
-	}
-}
-
-
-function getSectionsList(lStrings) {
-
-	var re_meth = /^\s*(#Область)\s+/i;
-	var lListProcFunc = "";
-
-	for(var i=0; i<lStrings.length; i++)
-	{
-		lStrCurrent = "";
-		lStr = lStrings[i];
-
-		var matches = lStr.match(re_meth);
-		if (matches != null)
-		{
-			j = i+1;
-			lStrLong = JSTrim(delFP(lStr));
-			lListProcFunc += "(" + j + ") "+delFP(lStrLong) + "\r\n";
-		}
-	}
-	if (JSTrim(lListProcFunc) == "") {
-		echo("В модуле нет областей");
-	} else {
-		ResultList(lListProcFunc,"Список процедур/функций");
-	}
-}
-
-function ExtSearch(prmTxt)
-{
-
-	list = "";
-	list += "^/?([^/]/?)*ВыражениеТолькоНеКомментариях\r\n"
-	list += "//+.*ВыражениеТолькоВКомментариях\r\n";
-	list += "//+.*TODO\r\n";
-	list += "//+.*FIXME\r\n";
-	list += "//+.*BUG\r\n";
-
-	vRes =  SelectValue(list);
-	
-	if (!(vRes) == "")
-	{
-		var re = new RegExp(vRes,"ig");
-	}
-	else
-	{
-		return;
-	}
-
-    var i;
-	var lStr = "";
-	var lstrRes = "";
-
-    for (i=0; i<prmTxt.length; i++)
-    {
-        if (prmTxt[i] != "")
-        {
-			lStr = prmTxt[i];
-			var matches = lStr.match(re);
-			if (matches != null)
-			{
-				
-				if (i != 0)
-				{
-					j=i+1;
-					
-					lstrRes += "(" + j + ") "+ JSTrim(lStr).replace("|","") + "\r\n";
-					// res.WriteLine(lstrRes);
-					/*
-					WScript.Sleep(5);
-					WshShell.SendKeys("{HOME}");
-					WScript.Sleep(50);
-					WshShell.SendKeys("^(g)");
-					WshShell.SendKeys("^(п)");
-					//
-					WScript.Sleep(20);
-					WshShell.SendKeys(""+j);
-
-					WScript.Sleep(5);
-					WshShell.SendKeys("{HOME}");
-
-
-					WScript.Sleep(10);
-					WshShell.SendKeys("{ENTER}");
-					WScript.Sleep(10);
-					WshShell.SendKeys("%{F2}");
-					WScript.Sleep(5);
-					WshShell.SendKeys("{ESC}");
-					*/
-				}
-			}
-		}
-    }
-	wtiteToResultFile("tmp/search.txt",lstrRes);
-	ResultList(lstrRes, "Значение поиска");
-}
-
-function lastSearchResultShow() {
-	fso = new ActiveXObject("Scripting.FileSystemObject");
-	t_file = fso.OpenTextFile("tmp/search.txt", 1); 
-	var str = t_file.ReadAll();
-	t_file.Close();
-	//fso = 0;
-	return ResultList(str, "Значение поиска");
-}
-
 function preroclist(arg){
 	lstrRes = "&НаКлиенте\r\n&НаСервере\r\n\&НаСервереБезКонтекста";
 	vRes = SelectValue(lstrRes);
@@ -271,30 +140,6 @@ function words(txt) {
 
 	vRes = SelectValue(result_str,"Слово");
 	wtiteToResultFile("tmp/module.txt",JSTrim(vRes));
-}
-
-function methodBegin(lStrings) {
-	
-	var lListProcFunc = "";
-
-	data = lStrings;
-
-	data = lStrings.reverse();
-	var re_meth = /^\s*(процедура|функция|procedure|function)\s+/i;
-
-	CntRows = data.length;
-	rowBM = 1;
-	for(var i=0; i < CntRows; i++)
-	{
-		lStr = data[i];
-		var matches = lStr.match(re_meth);
-		if (matches != null)
-		{
-			rowBM = CntRows-i;
-			break;
-		}
-	}
-	WScript.Quit(rowBM);
 }
 
 function actionGoToType(lStrings) {
@@ -376,29 +221,11 @@ function Run()
 		
 	} 
 	switch (arg(1)) {
-		case "search":
-			ExtSearch(lList);
-			break;
-		case "search-last":
-			lastSearchResultShow();
-			break;
-		case "proclist":
-			GetMethList(lList);
-			break;
 		case "preprocmenu":
 			preroclist();
 			break;
 		case "words":
 			words(lList);
-			break;
-		case "BeginMethod":
-			methodBegin(lList);
-			break;
-		case "EndMethod":
-			methodBegin(lList);
-			break;
-		case "sectionslist":
-			getSectionsList(lList);
 			break;
 		case "gototype":
 			actionGoToType(lList);
