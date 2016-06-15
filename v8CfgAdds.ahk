@@ -127,6 +127,25 @@ $^sc24:: actionShowIncomingObjectTypes()
 $^+sc24:: actionShowMetadataNavigator()
 ;------------------------------------
 
+;------------------------------------
+; Автозамена приращений ++, +=, --, -=
+::++:: 
+ 	SendInput, ^+{left}^{ins}{Right}{space}{scD}{Space}+{ins}{sc4E}{Space}1;
+Return
+
+::--:: 
+ 	SendInput, ^+{left}^{ins}{Right}{space}{scD}{Space}+{ins}{sc4A}{Space}1;
+Return
+
+::+=:: 
+ 	SendInput, ^+{left}^{ins}{Right}{space}{scD}{Space}+{ins}{sc4E}{Space}
+Return
+
+::-=:: 
+ 	SendInput, ^+{left}^{ins}{Right}{space}{scD}{Space}+{ins}{sc4A}{Space}
+Return
+;------------------------------------
+
 ; Win + X
 #sc02D:: 
 	showMenu()
