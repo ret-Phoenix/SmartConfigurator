@@ -1,7 +1,7 @@
 ; Автоматическая печать символа "|" после перевода строки, при необходимости - Enter.
 ; Автоматическая печать символов комментария "//" после перевода строки по Shift+Enter, если текущая.строка также является комментарием.
 
-#include WorkWithModule.ahk
+#include core\WorkWithModule.ahk
 
 IsContinueRowMode := false ;Отключен "закирпичиватель"
 IsContinueRowMode := true  ;Включен "закирпичиватель"

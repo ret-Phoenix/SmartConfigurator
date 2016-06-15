@@ -45,6 +45,7 @@ Ctrl_Shift_Z = ^+{SC02C}
 ; Alt + r - результаты последнего поиска
 !r:: actionShowRegExSearchLastResult()
 
+; shift + alt + r
 +!r:: actionShowLastSelect()
 
 ; --- Прочее ---
@@ -81,9 +82,9 @@ $^SC008::Send &
 ; ----------------------------------------
 ; авторские комментарии
 ; ----------------------------------------
-!s:: actionRunAuthorComments("new") ; alt+s - блок добавлен
-!e:: actionRunAuthorComments("edit") ; alt+e - блок изменен
-!d:: actionRunAuthorComments("del") ; alt+d - блок удален
+!a:: actionRunAuthorComments("Добавлено") ; alt+s - блок добавлен
+!e:: actionRunAuthorComments("Изменено") ; alt+e - блок изменен
+!d:: actionRunAuthorComments("Удалено") ; alt+d - блок удален
 ; КОНЕЦ авторские комментарии
 ; ----------------------------------------
 
@@ -126,11 +127,12 @@ $^sc24:: actionShowIncomingObjectTypes()
 $^+sc24:: actionShowMetadataNavigator()
 ;------------------------------------
 
-#sc02D:: showMenu()
+; Win + X
+#sc02D:: 
+	showMenu()
 Return
 
 +^Space:: 
-   ;MsgBox, hi
    actionShowPrevWords()
 Return
  

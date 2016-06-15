@@ -130,7 +130,7 @@ actionShowLastSelect() {
 
 actionRunAuthorComments(data) {
 	putSelectionInFile()
-	RunWait, wscript scripts\author.js %data%
+	RunWait, system\OneScript\bin\oscript.exe scripts\АвторскиеКомментарии.os %data%,,Hide
 	pasteTextFromFile()
 }
 
