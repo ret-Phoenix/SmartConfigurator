@@ -151,7 +151,7 @@ Return
 	showMenu()
 Return
 
-+^Space:: 
+!^Space:: 
    actionShowPrevWords()
 Return
  
