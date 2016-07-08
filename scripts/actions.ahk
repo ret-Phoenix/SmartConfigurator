@@ -43,7 +43,7 @@ actionShowExtFilesList() {
 		set_locale_ru()
 		SendInput, !%KeyA%
 		SendInput, {DOWN}{DOWN}{Enter}
-		Sleep 50
+		Sleep 500
 		SendInput, ^%KeyV%{Enter}
 	}
 }
