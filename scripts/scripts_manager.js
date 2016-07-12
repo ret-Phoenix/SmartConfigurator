@@ -88,7 +88,6 @@ function Run() {
 	   { key: 'Выравнять по первой запятой', value: 'system\\OneScript\\bin\\oscript.exe scripts\\format.os align-first-comma' },
 	   { key: 'Выравнять по выбранному значению', value: 'system\\OneScript\\bin\\oscript.exe scripts\\format.os align-user-symbol' },
 	   { key: '----------------------------------------', value: '' },
-	   { key: 'Очистить модуль', value: 'system\\OneScript\\bin\\oscript.exe scripts\\ModuleCleaner.os' },
 	   { key: 'Убрать пробелы на конце строк', value: 'system\\OneScript\\bin\\oscript.exe scripts\\format.os rtrim' },
 	   { key: '============ Автоматически добавленные ============', value: '' }
 	]	
@@ -120,12 +119,13 @@ function Run() {
 				if (array_commands[i].value != "") {
 					// echo(array_commands[i].value);
 					WshShell.Run(array_commands[i].value,0,true);	
+					WScript.Quit(1);
 					break;
 				}
 			}
 		}
 	}
-	
+	WScript.Quit(0);
 }
 
 Run();
