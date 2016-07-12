@@ -118,7 +118,7 @@ return
 ; Навигация по метаданным
 
 ; Alt + J - Поиск по метаданным
-^k:: actionShowSimpleMetaSearch()
+$!sc24:: actionShowSimpleMetaSearch()
 
 ; Ctrl +j - Переход к объекту метаданных из типа текущего реквизита
 $^sc24:: actionShowIncomingObjectTypes()
@@ -130,20 +130,25 @@ $^+sc24:: actionShowMetadataNavigator()
 ;------------------------------------
 ; Автозамена приращений ++, +=, --, -=
 ::++:: 
- 	SendInput, ^+{left}^{ins}{Right}{space}{scD}{Space}+{ins}{sc4E}{Space}1;
+ 	SendInput, ^+{left}^+{left}^{ins}{Right}{space}{scD}{Space}+{ins}{sc4E}{Space}1;
 Return
 
 ::--:: 
- 	SendInput, ^+{left}^{ins}{Right}{space}{scD}{Space}+{ins}{sc4A}{Space}1;
+ 	SendInput, ^+{left}^+{left}^{ins}{Right}{space}{scD}{Space}+{ins}{sc4A}{Space}1;
 Return
 
 ::+=:: 
- 	SendInput, ^+{left}^{ins}{Right}{space}{scD}{Space}+{ins}{sc4E}{Space}
+ 	SendInput, ^+{left}^+{left}^{ins}{Right}{space}{scD}{Space}+{ins}{sc4E}{Space}
 Return
 
 ::-=:: 
- 	SendInput, ^+{left}^{ins}{Right}{space}{scD}{Space}+{ins}{sc4A}{Space}
+ 	SendInput, ^+{left}^+{left}^{ins}{Right}{space}{scD}{Space}+{ins}{sc4A}{Space}
 Return
+
+::.=:: 
+ 	SendInput, ^+{left}^+{left}^{ins}{Right}{space}{scD}{Space}+{ins}{sc4E}{Space}
+Return
+
 ;------------------------------------
 
 ; Win + X
@@ -156,3 +161,6 @@ Return
 Return
  
 
+; ----------------------------------
+; Ctrl + 0 Запуск 1script
+^0:: actionRun1Script()

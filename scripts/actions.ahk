@@ -51,8 +51,10 @@ actionShowExtFilesList() {
 actionShowScriptManager() {
 	putSelectionInFile()
 	RunWait, wscript scripts\scripts_manager.js
+	if (ErrorLevel > 0) {
 	; RunWait, system\OneScript\bin\oscript.exe scripts\МенеджерСкриптов.os,,Hide
-	pasteTextFromFile()
+		pasteTextFromFile()
+	}
 }
 
 actionShowPrevWords() {
@@ -232,4 +234,17 @@ actionShowMetadataNavigator() {
 showMenu() {
 	createMenuItems()
 	Menu, Popup, Show
+}
+
+actionRun1Script() {
+	module = tmp\module.os
+	
+	SendInput ^{SC01E}^{ins}{Left}
+	ClipWait
+	
+	FileDelete %module%
+
+	FileAppend, %Clipboard%, %module%, UTF-8
+	RunWait, cmd "/K system\OneScript\bin\oscript.exe tmp/module.os"
+
 }
