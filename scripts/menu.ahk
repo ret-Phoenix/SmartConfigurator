@@ -1,4 +1,5 @@
 createMenuItems() {
+
    Menu, Popup, Add, КонецЕсли, КонецЕсли
    Menu, Popup, Add, КонецЦикла, КонецЦикла
    Menu, Popup, Add, КонецПроцедуры, КонецПроцедуры

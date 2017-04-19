@@ -1,0 +1,149 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>sql</name>
+    </assembly>
+    <members>
+        <member name="T:OScriptSql.DBConnector">
+            <summary>
+            Соединение с БД. Используется для указания источника данных объекта Запрос.
+            </summary>
+        </member>
+        <member name="P:OScriptSql.DBConnector.DbTypes">
+            <summary>
+            Типы поддерживаемых СУБД
+            </summary>
+            <value>ТипСУБД</value>
+        </member>
+        <member name="P:OScriptSql.DBConnector.DbType">
+            <summary>
+            Тип подключенной СУБД
+            </summary>
+            <value>ТипСУБД</value>
+        </member>
+        <member name="P:OScriptSql.DBConnector.Port">
+            <summary>
+            Порт подключения
+            </summary>
+            <value>Число</value>
+        </member>
+        <member name="P:OScriptSql.DBConnector.Server">
+            <summary>
+            Имя или IP сервера
+            </summary>
+            <value>Строка</value>
+        </member>
+        <member name="P:OScriptSql.DBConnector.DbName">
+            <summary>
+            Имя базы, в случае с SQLITE - путь к базе
+            </summary>
+            <value>Строка</value>
+        </member>
+        <member name="P:OScriptSql.DBConnector.Login">
+            <summary>
+            Пользователь под которым происходит подключение.
+            Если СУБД MS SQL и пользователь не указан - используется Windows авторизация.
+            </summary>
+            <value>Строка</value>
+        </member>
+        <member name="P:OScriptSql.DBConnector.Password">
+            <summary>
+            Пароль пользователя
+            </summary>
+            <value>Строка</value>
+        </member>
+        <member name="P:OScriptSql.DBConnector.IsOpen">
+            <summary>
+            Статус соединения с БД
+            </summary>
+            <value>ConnectionState</value>
+        </member>
+        <member name="P:OScriptSql.DBConnector.ConnectionString">
+            <summary>
+            Подготовленная строка соединения. В случае sqlite аналог ИмяБазы
+            </summary>
+            <value>Строка</value>
+        </member>
+        <member name="M:OScriptSql.DBConnector.Open">
+            <summary>
+            Открыть соединение с БД
+            </summary>
+            <returns>Булево</returns>
+        </member>
+        <member name="M:OScriptSql.DBConnector.Close">
+            <summary>
+            Закрыть соединение с БД
+            </summary>
+        </member>
+        <member name="M:OScriptSql.DBConnector.CreateQuery">
+            <summary>
+            Создать запрос с установленным соединением
+            </summary>
+            <returns>Запрос - Запрос с установленным соединением</returns>
+        </member>
+        <member name="T:OScriptSql.EnumDBType">
+            <summary>
+            Тип поддерживаемой СУБД
+            </summary>
+        </member>
+        <member name="T:OScriptSql.QueryResult">
+            <summary>
+            Содержит результат выполнения запроса. Предназначен для хранения и обработки полученных данных.
+            </summary>
+        </member>
+        <member name="M:OScriptSql.QueryResult.Unload">
+            <summary>
+            Создает таблицу значений и копирует в нее все записи набора.
+            </summary>
+            <returns>ТаблицаЗначений</returns>
+        </member>
+        <member name="T:OScriptSql.Query">
+            <summary>
+            Предназначен для выполнения запросов к базе данных.
+            </summary>
+        </member>
+        <member name="P:OScriptSql.Query.Timeout">
+            <summary>
+            Управление таймауотом
+            </summary>
+            <value>Число</value>
+        </member>
+        <member name="P:OScriptSql.Query.Text">
+            <summary>
+            Содержит исходный текст выполняемого запроса.
+            </summary>
+            <value>Строка</value>
+        </member>
+        <member name="M:OScriptSql.Query.Execute">
+            <summary>
+            Выполняет запрос к базе данных. 
+            </summary>
+            <returns>РезультатЗапроса</returns>
+        </member>
+        <member name="M:OScriptSql.Query.ExecuteCommand">
+            <summary>
+            Выполняет запрос на модификацию к базе данных. 
+            </summary>
+            <returns>Число - Число обработанных строк.</returns>
+        </member>
+        <member name="M:OScriptSql.Query.SetParameter(System.String,ScriptEngine.Machine.IValue)">
+            <summary>
+            Устанавливает параметр запроса. Параметры доступны для обращения в тексте запроса. 
+            С помощью этого метода можно передавать переменные в запрос, например, для использования в условиях запроса.
+            ВАЖНО: В запросе имя параметра указывается с использованием '@'.
+            </summary>
+            <example>
+            Запрос.Текст = "select * from mytable where category_id = @category_id";
+            Запрос.УстановитьПараметр("category_id", 1);
+            </example>
+            <param name="ParametrName">Строка - Имя параметра</param>
+            <param name="ParametrValue">Произвольный - Значение параметра</param>
+        </member>
+        <member name="M:OScriptSql.Query.SetConnection(OScriptSql.DBConnector)">
+            <summary>
+            Установка соединения с БД.
+            </summary>
+            <param name="connector">Соединение - объект соединение с БД</param>
+        </member>
+    </members>
+</doc>
