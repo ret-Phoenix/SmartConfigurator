@@ -248,3 +248,63 @@ actionRun1Script() {
 	RunWait, cmd "/K system\OneScript\bin\oscript.exe tmp/module.os"
 
 }
+
+actionGoToPrevContainedWord() {
+
+	clipboard =
+
+	SendInput ^+{left}^{ins}{right}
+
+	module = tmp\module.txt
+	ClipWait
+	
+	FileDelete %module%
+
+	FileAppend, %Clipboard%, %module%, UTF-8
+	RunWait, system\OneScript\bin\oscript.exe scripts\РаботаСоСловами.os prev,,Hide
+	if (ErrorLevel > 0) {
+		UpCount := ErrorLevel
+		Loop %UpCount%
+		{
+			SendInput, {left}
+		}	
+	}
+}
+
+actionGoToNextContainedWord() {
+
+	clipboard =
+
+	SendInput ^+{right}^{ins}{left}
+
+	module = tmp\module.txt
+	ClipWait
+	
+	FileDelete %module%
+
+	FileAppend, %Clipboard%, %module%, UTF-8
+	RunWait, system\OneScript\bin\oscript.exe scripts\РаботаСоСловами.os next,,Hide
+	if (ErrorLevel > 0) {
+		UpCount := ErrorLevel
+		Loop %UpCount%
+		{
+			SendInput, {right}
+		}	
+	}
+}
+
+actionShowMethodName() {
+	Global
+
+	getTextUp()
+	RunWait, system\OneScript\bin\oscript.exe scripts\Навигация\НавигацияПоМодулю.os ИмяМетода,,Hide
+
+}
+
+actionGenerateServerMethodFromCurMethod() {
+	Global
+
+	getTextUp()
+	RunWait, system\OneScript\bin\oscript.exe scripts\Навигация\НавигацияПоМодулю.os СоздатьСерверныйМетод,,Hide
+
+}
