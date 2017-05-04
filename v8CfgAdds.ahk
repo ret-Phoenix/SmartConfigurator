@@ -76,8 +76,8 @@ $!SC01B::Send ]
 ; Ctrl - & - символ '&'
 $^SC008::Send &
 
-; Ctrl + D - Копирование текущей строки и вставка в следующей
-^sc20:: Send, {HOME}{SHIFTDOWN}{END}{SHIFTUP}{CTRLDOWN}{INS}{CTRLUP}{END}{ENTER}{SHIFTDOWN}{INS}{SHIFTUP}
+; Ctrl + D - Копирование текущей строки/ выделенного блока и вставка ниже
+^sc20:: Send, {CTRLDOWN}{INS}{CTRLUP}{Right}{HOME}{HOME}{SHIFTDOWN}{INS}{SHIFTUP}
 
 ; ----------------------------------------
 ; авторские комментарии
