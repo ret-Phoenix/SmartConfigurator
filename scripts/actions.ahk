@@ -313,7 +313,7 @@ actionRowMoveUp() {
 	Global
 	clipboard =
 	
-	SendInput {home}+{end}+{del}
+	SendInput {home}+{end}+{del}^{sc26}
 	ClipWait
 	SendInput {home}{up}{enter}{up}+{ins}
 }
