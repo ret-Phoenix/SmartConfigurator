@@ -308,3 +308,12 @@ actionGenerateServerMethodFromCurMethod() {
 	RunWait, system\OneScript\bin\oscript.exe scripts\Навигация\НавигацияПоМодулю.os СоздатьСерверныйМетод,,Hide
 
 }
+
+actionRowMoveUp() {
+	Global
+	clipboard =
+	
+	SendInput {home}+{end}+{del}
+	ClipWait
+	SendInput {home}{up}{enter}{up}+{ins}
+}

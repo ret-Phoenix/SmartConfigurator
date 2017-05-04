@@ -167,15 +167,28 @@ Return
 
 ; -----------------------------------
 ; Перейти к началу слова в составной строке
+; Shift + Alt + Left
 !+left::
 	actionGoToPrevContainedWord()
 return
 
 ; Перейти к концу слова в составной строке
+; Shift + Alt + Right
 !+Right::
 	actionGoToNextContainedWord()
 return
 
+; Win + N - показать имя метода
 #sc31::
 	actionShowMethodName()
+return
+
+; Alt + Up - передвинуть строку вверх
+!up::
+	actionRowMoveUp()
+return
+
+; Alt + down - передвинуть строку вверх
+!down::
+	Send, {HOME}{SHIFTDOWN}{END}{SHIFTUP}{SHIFTDOWN}{DEL}{SHIFTUP}^{sc26}{END}{ENTER}{SHIFTDOWN}{INS}{SHIFTUP}
 return
