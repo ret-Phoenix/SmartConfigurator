@@ -185,7 +185,7 @@ return
 
 ; Alt + Up - передвинуть строку вверх
 !up::
-	actionRowMoveUp()
+	Send, {HOME}{SHIFTDOWN}{END}{SHIFTUP}{SHIFTDOWN}{DEL}{SHIFTUP}^{sc26}{HOME}{UP}{HOME}{ENTER}{UP}{SHIFTDOWN}{INS}{SHIFTUP}
 return
 
 ; Alt + down - передвинуть строку вверх
