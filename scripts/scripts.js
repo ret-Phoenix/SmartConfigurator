@@ -194,8 +194,12 @@ function actionGoToObject(lStrings) {
 		UpCount++;
 	}
 	if (StrToChoice != "") {
-		var resultStr = SelectValue(StrToChoice);
-		wtiteToResultFile("tmp/module.txt",JSTrim(resultStr));
+		if (UpCount > 1) {
+			var resultStr = SelectValue(StrToChoice);
+			wtiteToResultFile("tmp/module.txt", JSTrim(resultStr));
+		} else {
+			wtiteToResultFile("tmp/module.txt", "");
+		}
 	} else {
 		wtiteToResultFile("tmp/module.txt","");
 		echo("Пустой список");

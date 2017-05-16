@@ -77,7 +77,7 @@ $!SC01B::Send ]
 $^SC008::Send &
 
 ; Ctrl + D - Копирование текущей строки/ выделенного блока и вставка ниже
-^sc20:: Send, {CTRLDOWN}{INS}{CTRLUP}{Right}{HOME}{HOME}{SHIFTDOWN}{INS}{SHIFTUP}
+^sc20:: SendInput, {CTRLDOWN}{INS}{CTRLUP}{Right}{HOME}{HOME}{SHIFTDOWN}{INS}{SHIFTUP}
 
 ; ----------------------------------------
 ; авторские комментарии
