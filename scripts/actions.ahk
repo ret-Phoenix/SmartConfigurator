@@ -70,7 +70,7 @@ actionGotoMethodBegin() {
 	RunWait, system\OneScript\bin\oscript.exe scripts\Навигация\НавигацияПоМодулю.os НачалоМетода,,Hide
 	if (ErrorLevel > 0) {
 		nStr := ErrorLevel
-		SendInput ^%KeyG%%nStr%{ENTER}
+		SendInput, {CtrlDown}%KeyG%{CtrlUp}%nStr%{ENTER}
 	}   
 	SendInput, {home}
 }
