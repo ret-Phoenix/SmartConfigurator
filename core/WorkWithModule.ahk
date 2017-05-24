@@ -109,6 +109,7 @@ getTextUp() {
 	ClipWait
 	FileDelete tmp\module.txt
 	FileAppend, %clipboard%, tmp\module.txt
+	clipboard := 
 }
 
 getTextDown() {
@@ -117,6 +118,7 @@ getTextDown() {
 	ClipWait
 	FileDelete tmp\module.txt
 	FileAppend, %clipboard%, tmp\module.txt
+	clipboard := 
 }
 
 

@@ -9,7 +9,9 @@ actionShowMethodsList() {
 	RunWait, system\OneScript\bin\oscript.exe scripts\Навигация\НавигацияПоМодулю.os СписокМетодов,,Hide
 	if (ErrorLevel > 0) {
 		nStr := ErrorLevel
-		SendInput ^%KeyG%%nStr%{ENTER}
+		SendInput ^%KeyG%
+		WinWait, Перейти по номеру строки
+		SendInput, %nStr%{ENTER}
 	}
 	SendInput, {home}
 	SendInput, ^{NumpadAdd}
@@ -24,7 +26,9 @@ actionShowRegionsList() {
 	RunWait, system\OneScript\bin\oscript.exe scripts\Навигация\НавигацияПоМодулю.os СписокОбластей,,Hide
 	if (ErrorLevel > 0) {
 		nStr := ErrorLevel
-		SendInput ^%KeyG%%nStr%{ENTER}
+		SendInput, ^%KeyG%
+		WinWait, Перейти по номеру строки
+		SendInput, %nStr%{ENTER}
 	}
 	SendInput, {home}
 	SendInput, ^{NumpadAdd}
@@ -70,7 +74,9 @@ actionGotoMethodBegin() {
 	RunWait, system\OneScript\bin\oscript.exe scripts\Навигация\НавигацияПоМодулю.os НачалоМетода,,Hide
 	if (ErrorLevel > 0) {
 		nStr := ErrorLevel
-		SendInput, {CtrlDown}%KeyG%{CtrlUp}%nStr%{ENTER}
+		SendInput, {CtrlDown}%KeyG%{CtrlUp}
+		WinWait, Перейти по номеру строки
+		SendInput,%nStr%{ENTER}
 	}   
 	SendInput, {home}
 }
@@ -82,7 +88,9 @@ actionGotoMethodEnd() {
 	RunWait, system\OneScript\bin\oscript.exe scripts\Навигация\НавигацияПоМодулю.os НачалоМетода,,Hide
 	if (ErrorLevel > 0) {
 		nStr := ErrorLevel
-		SendInput ^%KeyG%%nStr%{ENTER}
+		SendInput ^%KeyG%
+		WinWait, Перейти по номеру строки
+		SendInput %nStr%{ENTER}
 		SendInput ^{SC01A}
 	}   
 	SendInput, {home}
@@ -98,7 +106,9 @@ actionShowRegExSearch() {
 	if (ErrorLevel > 0) {
 		nStr := ErrorLevel
 		Sleep 1
-		SendInput ^%KeyG%%nStr%{ENTER}
+		SendInput ^%KeyG%
+		WinWait, Перейти по номеру строки
+		SendInput %nStr%{ENTER}
 	}   
 	SendInput, {home}
 }
@@ -110,7 +120,9 @@ actionShowRegExSearchLastResult() {
 	RunWait, system\OneScript\bin\oscript.exe scripts\Навигация\НавигацияПоМодулю.os РезультатПоследнегоПоиска,,Hide
 	if (ErrorLevel > 0) {
 		nStr := ErrorLevel
-		SendInput ^%KeyG%%nStr%{ENTER}
+		SendInput ^%KeyG%
+		WinWait, Перейти по номеру строки
+		SendInput %nStr%{ENTER}
 	}   
 	SendInput, {home}
 }
@@ -123,7 +135,9 @@ actionShowLastSelect() {
 	RunWait, system\OneScript\bin\oscript.exe scripts\Навигация\НавигацияПоМодулю.os ПоказатьПоследнийСписокВыбора,,Hide
 	if (ErrorLevel > 0) {
 		nStr := ErrorLevel
-		SendInput ^%KeyG%%nStr%{ENTER}
+		SendInput ^%KeyG%
+		WinWait, Перейти по номеру строки
+		SendInput %nStr%{ENTER}
 	}   
 	SendInput, {home}
 	SendInput, ^{NumpadAdd}
