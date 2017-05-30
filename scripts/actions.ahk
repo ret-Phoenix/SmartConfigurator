@@ -54,9 +54,9 @@ actionShowExtFilesList() {
 
 actionShowScriptManager() {
 	putSelectionInFile()
-	RunWait, wscript scripts\scripts_manager.js
+	;  RunWait, wscript scripts\scripts_manager.js
+	RunWait, system\OneScript\bin\oscript.exe scripts\МенеджерСкриптов.os,,
 	if (ErrorLevel > 0) {
-	; RunWait, system\OneScript\bin\oscript.exe scripts\МенеджерСкриптов.os,,Hide
 		pasteTextFromFile()
 	}
 }
