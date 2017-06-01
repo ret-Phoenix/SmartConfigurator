@@ -192,3 +192,11 @@ return
 !down::
 	SendInput, {HOME}{SHIFTDOWN}{END}{SHIFTUP}{SHIFTDOWN}{DEL}{SHIFTUP}^{sc26}{END}{ENTER}{SHIFTDOWN}{INS}{SHIFTUP}
 return
+
+^+sc20::
+	actionFormatSelection()
+return
+
+#sc22::
+	actionFindInTreeByName()
+return

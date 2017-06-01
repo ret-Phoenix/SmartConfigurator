@@ -322,3 +322,35 @@ actionGenerateServerMethodFromCurMethod() {
 	RunWait, system\OneScript\bin\oscript.exe scripts\Навигация\НавигацияПоМодулю.os СоздатьСерверныйМетод,,Hide
 
 }
+
+actionFormatSelection() {
+	putSelectionInFile()
+	RunWait, system\OneScript\bin\oscript.exe scripts\МойСкриптФорматирования.os ПараметрДляСкрипта,,
+	pasteTextFromFile()
+}
+
+actionFindInTreeByName() {
+	Global
+
+	clipboard =
+
+	; получили объект под курсором
+	SendInput ^{ins}
+
+	module = tmp\module.txt
+	ClipWait
+	
+	FileDelete %module%
+	; записали в файл текст
+	FileAppend, %Clipboard%, %module%, UTF-8
+	; запустили скрипт на получение имени объекта
+	RunWait, system\OneScript\bin\oscript.exe scripts\Навигация\НавигацияПоМетаданным.os ПерейтиКОбъектуПоИмени,,Hide
+	; если что-то есть вернет результат
+	; if (ErrorLevel > 0) {
+	; 	NewText := getTextFromFile()
+	; 	SendInput, ^!%KeyM%
+	; 	SendInput, +{ins}
+			
+	; }
+	
+}
