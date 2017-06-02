@@ -323,12 +323,6 @@ actionGenerateServerMethodFromCurMethod() {
 
 }
 
-actionFormatSelection() {
-	putSelectionInFile()
-	RunWait, system\OneScript\bin\oscript.exe scripts\ћой—крипт‘орматировани€.os ѕараметрƒл€—крипта,,
-	pasteTextFromFile()
-}
-
 actionFindInTreeByName() {
 	Global
 
@@ -353,4 +347,12 @@ actionFindInTreeByName() {
 			
 	; }
 	
+}
+actionOneStyleSelection() {
+    ; отформатируем выделение средствами 1—, т.к. у только выделенного блока недостаточно информации об отступах
+    global
+    SendInput, !+%KeyF%
+    putSelectionInFile()
+    RunWait, system\OneScript\bin\oscript.exe scripts\OneStyle\Main.os tmp\module.txt,,Hide
+    pasteTextFromFile()
 }
