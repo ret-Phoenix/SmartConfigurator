@@ -194,7 +194,7 @@ return
 return
 
 ^+sc20::
-	actionFormatSelection()
+	actionOneStyleSelection()
 return
 
 #sc22::
