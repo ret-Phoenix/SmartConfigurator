@@ -14,6 +14,7 @@ getTextFromFile() {
 
 pasteTextFromFile() {
   FileRead, newText, tmp\module.txt
+  StringTrimRight, newText, newText, 2
   ClipWait, 1
   Clipboard := newText
   ClipWait, 1
@@ -43,7 +44,7 @@ putSelectionInFile(fileName=0, flagSaveClipboard = 1) {
 	ClipWait
 	
 	FileDelete %module%
-	FileAppend, %clipboard%, %module%
+	FileAppend, %clipboard%`r`n, %module%
 
 	if (flagSaveClipboard = 1)
 		RestoreClipboard()
