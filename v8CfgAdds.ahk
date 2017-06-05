@@ -56,7 +56,7 @@ Ctrl_Shift_Z = ^+{SC02C}
 ^sc17:: SendInput, ^+{NumpadAdd}
 
 ; Ctrl+y - удаление строки
-$^SC015:: SendInput %Ctrl_L%
+; $^SC015:: SendInput %Ctrl_L%
 
 ; Ctrl-, - символ '<'
 $^,:: SendInput <
