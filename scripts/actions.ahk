@@ -38,7 +38,7 @@ actionShowExtFilesList() {
 	Global
 
 	; RunWait, wscript scripts\ExtFiles.js
-	RunWait, system\OneScript\bin\oscript.exe scripts\ExtFiles.os,,Hide
+	RunWait, system\OneScript\bin\oscript.exe scripts\ExtFiles.os,,
 
 	NewText := getTextFromFile()
 	If (NewText <> "") {
@@ -47,7 +47,7 @@ actionShowExtFilesList() {
 		set_locale_ru()
 		SendInput, !%KeyA%
 		SendInput, {DOWN}{DOWN}{Enter}
-		Sleep 500
+		WinWait, Открыть
 		SendInput, ^%KeyV%{Enter}
 	}
 }
