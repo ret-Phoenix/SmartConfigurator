@@ -29,6 +29,13 @@ set_locale_en() {
 }
 
 putSelectionInFile(fileName=0, flagSaveClipboard = 1) {
+
+	ControlGetFocus, WinType
+	If (WinType <> "V8Window4") {
+		Return "NotTextEditor"
+	}
+
+
 	clipboard := 
 	set_locale_ru()
 	if (flagSaveClipboard = 1)

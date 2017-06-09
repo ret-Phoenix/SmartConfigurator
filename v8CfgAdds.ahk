@@ -200,3 +200,20 @@ return
 #sc22::
 	actionFindInTreeByName()
 return
+
+#sc2E::
+	ControlGetFocus, OutputVar
+	MsgBox, Контрол с фокусом ДО = %OutputVar%
+	; If (OutputVar <> "V8Grid1") {
+	; 	SendInput {Tab}
+	; 	MsgBox, Выполнили переход	
+	; }
+	; ControlGetFocus, OutputVar
+	; MsgBox, Контрол с фокусом после = %OutputVar%
+return
+
+#sc2F::
+	;SendInput {shift}{ENTER}
+	ControlFocus V8FormElement34, Свойства: Группа
+	; SendInput, {ctrl}{down}{PgDn}{ENTER}
+return
