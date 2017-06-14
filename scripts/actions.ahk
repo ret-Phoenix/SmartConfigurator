@@ -1,16 +1,16 @@
 ; #include KeyCodes.ahk
-; КонецЕсли;#include ..\core\WorkWithModule.ahk
+; РљРѕРЅРµС†Р•СЃР»Рё;#include ..\core\WorkWithModule.ahk
 
 actionShowMethodsList() {
 	Global
 
 	putModuleInFile()
 	SendInput, {home}
-	RunWait, system\OneScript\bin\oscript.exe scripts\Навигация\НавигацияПоМодулю.os СписокМетодов,,Hide
+	RunWait, system\OneScript\bin\oscript.exe scripts\РќР°РІРёРіР°С†РёСЏ\РќР°РІРёРіР°С†РёСЏРџРѕРњРѕРґСѓР»СЋ.os РЎРїРёСЃРѕРєРњРµС‚РѕРґРѕРІ,,Hide
 	if (ErrorLevel > 0) {
 		nStr := ErrorLevel
 		SendInput ^%KeyG%
-		WinWait, Перейти по номеру строки
+		WinWait, РџРµСЂРµР№С‚Рё РїРѕ РЅРѕРјРµСЂСѓ СЃС‚СЂРѕРєРё
 		SendInput, %nStr%{ENTER}
 	}
 	SendInput, {home}
@@ -23,11 +23,11 @@ actionShowRegionsList() {
 	putModuleInFile()
 	SendInput, {home}
 	ClipWait
-	RunWait, system\OneScript\bin\oscript.exe scripts\Навигация\НавигацияПоМодулю.os СписокОбластей,,Hide
+	RunWait, system\OneScript\bin\oscript.exe scripts\РќР°РІРёРіР°С†РёСЏ\РќР°РІРёРіР°С†РёСЏРџРѕРњРѕРґСѓР»СЋ.os РЎРїРёСЃРѕРєРћР±Р»Р°СЃС‚РµР№,,Hide
 	if (ErrorLevel > 0) {
 		nStr := ErrorLevel
 		SendInput, ^%KeyG%
-		WinWait, Перейти по номеру строки
+		WinWait, РџРµСЂРµР№С‚Рё РїРѕ РЅРѕРјРµСЂСѓ СЃС‚СЂРѕРєРё
 		SendInput, %nStr%{ENTER}
 	}
 	SendInput, {home}
@@ -47,7 +47,7 @@ actionShowExtFilesList() {
 		set_locale_ru()
 		SendInput, !%KeyA%
 		SendInput, {DOWN}{DOWN}{Enter}
-		WinWait, Открыть
+		WinWait, РћС‚РєСЂС‹С‚СЊ
 		SendInput, ^%KeyV%{Enter}
 	}
 }
@@ -55,11 +55,11 @@ actionShowExtFilesList() {
 actionShowScriptManager() {
 	result := putSelectionInFile()
 	if (result = "NotTextEditor") {
-		MsgBox, "Окно не текстовый редактор"
+		MsgBox, "РћРєРЅРѕ РЅРµ С‚РµРєСЃС‚РѕРІС‹Р№ СЂРµРґР°РєС‚РѕСЂ"
 		Exit, 0
 	}
 	;  RunWait, wscript scripts\scripts_manager.js
-	RunWait, system\OneScript\bin\oscript.exe scripts\МенеджерСкриптов.os,,
+	RunWait, system\OneScript\bin\oscript.exe scripts\РњРµРЅРµРґР¶РµСЂРЎРєСЂРёРїС‚РѕРІ.os,,
 	if (ErrorLevel > 0) {
 		pasteTextFromFile()
 	}
@@ -75,11 +75,11 @@ actionGotoMethodBegin() {
 	Global
 
 	getTextUp()
-	RunWait, system\OneScript\bin\oscript.exe scripts\Навигация\НавигацияПоМодулю.os НачалоМетода,,Hide
+	RunWait, system\OneScript\bin\oscript.exe scripts\РќР°РІРёРіР°С†РёСЏ\РќР°РІРёРіР°С†РёСЏРџРѕРњРѕРґСѓР»СЋ.os РќР°С‡Р°Р»РѕРњРµС‚РѕРґР°,,Hide
 	if (ErrorLevel > 0) {
 		nStr := ErrorLevel
 		SendInput, {CtrlDown}%KeyG%{CtrlUp}
-		WinWait, Перейти по номеру строки
+		WinWait, РџРµСЂРµР№С‚Рё РїРѕ РЅРѕРјРµСЂСѓ СЃС‚СЂРѕРєРё
 		SendInput,%nStr%{ENTER}
 	}   
 	SendInput, {home}
@@ -89,11 +89,11 @@ actionGotoMethodEnd() {
 	Global
 
 	getTextUp()
-	RunWait, system\OneScript\bin\oscript.exe scripts\Навигация\НавигацияПоМодулю.os НачалоМетода,,Hide
+	RunWait, system\OneScript\bin\oscript.exe scripts\РќР°РІРёРіР°С†РёСЏ\РќР°РІРёРіР°С†РёСЏРџРѕРњРѕРґСѓР»СЋ.os РќР°С‡Р°Р»РѕРњРµС‚РѕРґР°,,Hide
 	if (ErrorLevel > 0) {
 		nStr := ErrorLevel
 		SendInput ^%KeyG%
-		WinWait, Перейти по номеру строки
+		WinWait, РџРµСЂРµР№С‚Рё РїРѕ РЅРѕРјРµСЂСѓ СЃС‚СЂРѕРєРё
 		SendInput %nStr%{ENTER}
 		SendInput ^{SC01A}
 	}   
@@ -106,12 +106,12 @@ actionShowRegExSearch() {
 	putModuleInFile()
 
 	SendInput, {home}
-	RunWait, system\OneScript\bin\oscript.exe scripts\Навигация\НавигацияПоМодулю.os RegExSearch,,Hide
+	RunWait, system\OneScript\bin\oscript.exe scripts\РќР°РІРёРіР°С†РёСЏ\РќР°РІРёРіР°С†РёСЏРџРѕРњРѕРґСѓР»СЋ.os RegExSearch,,Hide
 	if (ErrorLevel > 0) {
 		nStr := ErrorLevel
 		Sleep 1
 		SendInput ^%KeyG%
-		WinWait, Перейти по номеру строки
+		WinWait, РџРµСЂРµР№С‚Рё РїРѕ РЅРѕРјРµСЂСѓ СЃС‚СЂРѕРєРё
 		SendInput %nStr%{ENTER}
 	}   
 	SendInput, {home}
@@ -121,11 +121,11 @@ actionShowRegExSearchLastResult() {
 	Global
 
 	SendInput, {home}
-	RunWait, system\OneScript\bin\oscript.exe scripts\Навигация\НавигацияПоМодулю.os РезультатПоследнегоПоиска,,Hide
+	RunWait, system\OneScript\bin\oscript.exe scripts\РќР°РІРёРіР°С†РёСЏ\РќР°РІРёРіР°С†РёСЏРџРѕРњРѕРґСѓР»СЋ.os Р РµР·СѓР»СЊС‚Р°С‚РџРѕСЃР»РµРґРЅРµРіРѕРџРѕРёСЃРєР°,,Hide
 	if (ErrorLevel > 0) {
 		nStr := ErrorLevel
 		SendInput ^%KeyG%
-		WinWait, Перейти по номеру строки
+		WinWait, РџРµСЂРµР№С‚Рё РїРѕ РЅРѕРјРµСЂСѓ СЃС‚СЂРѕРєРё
 		SendInput %nStr%{ENTER}
 	}   
 	SendInput, {home}
@@ -136,11 +136,11 @@ actionShowLastSelect() {
 
 	SendInput, {home}
 	; RunWait, wscript scripts.js null last
-	RunWait, system\OneScript\bin\oscript.exe scripts\Навигация\НавигацияПоМодулю.os ПоказатьПоследнийСписокВыбора,,Hide
+	RunWait, system\OneScript\bin\oscript.exe scripts\РќР°РІРёРіР°С†РёСЏ\РќР°РІРёРіР°С†РёСЏРџРѕРњРѕРґСѓР»СЋ.os РџРѕРєР°Р·Р°С‚СЊРџРѕСЃР»РµРґРЅРёР№РЎРїРёСЃРѕРєР’С‹Р±РѕСЂР°,,Hide
 	if (ErrorLevel > 0) {
 		nStr := ErrorLevel
 		SendInput ^%KeyG%
-		WinWait, Перейти по номеру строки
+		WinWait, РџРµСЂРµР№С‚Рё РїРѕ РЅРѕРјРµСЂСѓ СЃС‚СЂРѕРєРё
 		SendInput %nStr%{ENTER}
 	}   
 	SendInput, {home}
@@ -150,7 +150,7 @@ actionShowLastSelect() {
 
 actionRunAuthorComments(data) {
 	putSelectionInFile()
-	RunWait, system\OneScript\bin\oscript.exe scripts\АвторскиеКомментарии.os %data%,,Hide
+	RunWait, system\OneScript\bin\oscript.exe scripts\РђРІС‚РѕСЂСЃРєРёРµРљРѕРјРјРµРЅС‚Р°СЂРёРё.os %data%,,Hide
 	pasteTextFromFile()
 }
 
@@ -221,15 +221,15 @@ actionShowMetadataNavigator() {
 		SendInput, ^!%KeyO%
 		SendInput, ^+%KeyC%
 
-		; Получаем текущее окно
+		; РџРѕР»СѓС‡Р°РµРј С‚РµРєСѓС‰РµРµ РѕРєРЅРѕ
 		ControlGetFocus, WinType
 		If (WinType <> "V8Grid1") {
-			; Если это окно поиска - тогда перейдем в дерево, послав Таб.
+			; Р•СЃР»Рё СЌС‚Рѕ РѕРєРЅРѕ РїРѕРёСЃРєР° - С‚РѕРіРґР° РїРµСЂРµР№РґРµРј РІ РґРµСЂРµРІРѕ, РїРѕСЃР»Р°РІ РўР°Р±.
 			SendInput {Tab}
 		}
 		; show search dlg
 		SendInput, ^%KeyF%
-		WinWait, Поиск объектов метаданных
+		WinWait, РџРѕРёСЃРє РѕР±СЉРµРєС‚РѕРІ РјРµС‚Р°РґР°РЅРЅС‹С…
 		pasteTextFromFile()
 		;SendInput, !{Insert}
 		SendInput, {Enter}
@@ -246,7 +246,7 @@ actionShowMetadataNavigator() {
 			If (NewText <> "") {
 				SendInput, {Home}
 				SendInput, ^%KeyF%
-				;WinWait, Поиск объектов метаданных
+				;WinWait, РџРѕРёСЃРє РѕР±СЉРµРєС‚РѕРІ РјРµС‚Р°РґР°РЅРЅС‹С…
 				SendInput +{ins}
 			
 				SendInput, !{Insert}
@@ -288,7 +288,7 @@ actionGoToPrevContainedWord() {
 	FileDelete %module%
 
 	FileAppend, %Clipboard%, %module%, UTF-8
-	RunWait, system\OneScript\bin\oscript.exe scripts\РаботаСоСловами.os prev,,Hide
+	RunWait, system\OneScript\bin\oscript.exe scripts\Р Р°Р±РѕС‚Р°РЎРѕРЎР»РѕРІР°РјРё.os prev,,Hide
 	if (ErrorLevel > 0) {
 		UpCount := ErrorLevel
 		Loop %UpCount%
@@ -310,7 +310,7 @@ actionGoToNextContainedWord() {
 	FileDelete %module%
 
 	FileAppend, %Clipboard%, %module%, UTF-8
-	RunWait, system\OneScript\bin\oscript.exe scripts\РаботаСоСловами.os next,,Hide
+	RunWait, system\OneScript\bin\oscript.exe scripts\Р Р°Р±РѕС‚Р°РЎРѕРЎР»РѕРІР°РјРё.os next,,Hide
 	if (ErrorLevel > 0) {
 		UpCount := ErrorLevel
 		Loop %UpCount%
@@ -324,7 +324,7 @@ actionShowMethodName() {
 	Global
 
 	getTextUp()
-	RunWait, system\OneScript\bin\oscript.exe scripts\Навигация\НавигацияПоМодулю.os ИмяМетода,,Hide
+	RunWait, system\OneScript\bin\oscript.exe scripts\РќР°РІРёРіР°С†РёСЏ\РќР°РІРёРіР°С†РёСЏРџРѕРњРѕРґСѓР»СЋ.os РРјСЏРњРµС‚РѕРґР°,,Hide
 
 }
 
@@ -332,12 +332,12 @@ actionGenerateServerMethodFromCurMethod() {
 	Global
 
 	getTextUp()
-	RunWait, system\OneScript\bin\oscript.exe scripts\Навигация\НавигацияПоМодулю.os СоздатьСерверныйМетод,,Hide
+	RunWait, system\OneScript\bin\oscript.exe scripts\РќР°РІРёРіР°С†РёСЏ\РќР°РІРёРіР°С†РёСЏРџРѕРњРѕРґСѓР»СЋ.os РЎРѕР·РґР°С‚СЊРЎРµСЂРІРµСЂРЅС‹Р№РњРµС‚РѕРґ,,Hide
 
 }
 
 actionOneStyleSelection() {
-    ; отформатируем выделение средствами 1С, т.к. у только выделенного блока недостаточно информации об отступах
+    ; РѕС‚С„РѕСЂРјР°С‚РёСЂСѓРµРј РІС‹РґРµР»РµРЅРёРµ СЃСЂРµРґСЃС‚РІР°РјРё 1РЎ, С‚.Рє. Сѓ С‚РѕР»СЊРєРѕ РІС‹РґРµР»РµРЅРЅРѕРіРѕ Р±Р»РѕРєР° РЅРµРґРѕСЃС‚Р°С‚РѕС‡РЅРѕ РёРЅС„РѕСЂРјР°С†РёРё РѕР± РѕС‚СЃС‚СѓРїР°С…
     global
     SendInput, !+%KeyF%
     putSelectionInFile()
