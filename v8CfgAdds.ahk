@@ -56,7 +56,7 @@ Ctrl_Shift_Z = ^+{SC02C}
 ^sc17:: SendInput, ^+{NumpadAdd}
 
 ; Ctrl+y - удаление строки
-$^SC015:: SendInput %Ctrl_L%
+; $^SC015:: SendInput %Ctrl_L%
 
 ; Ctrl-, - символ '<'
 $^,:: SendInput <
@@ -193,7 +193,8 @@ return
 	SendInput, {HOME}{SHIFTDOWN}{END}{SHIFTUP}{SHIFTDOWN}{DEL}{SHIFTUP}^{sc26}{END}{ENTER}{SHIFTDOWN}{INS}{SHIFTUP}
 return
 
-^+sc20::
+; Ctrl + Alt + F - выполнить форматирование
+^!sc21::
 	actionOneStyleSelection()
 return
 
