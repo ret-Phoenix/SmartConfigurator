@@ -202,7 +202,7 @@ return
 	actionFindInTreeByName()
 return
 
-#sc2E::
+#sc11::
 	ControlGetFocus, OutputVar
 	MsgBox, Контрол с фокусом ДО = %OutputVar%
 	; If (OutputVar <> "V8Grid1") {
@@ -217,4 +217,9 @@ return
 	;SendInput {shift}{ENTER}
 	ControlFocus V8FormElement34, Свойства: Группа
 	; SendInput, {ctrl}{down}{PgDn}{ENTER}
+return
+
+; Win + C - Взять в буфер слово под курсором
+#sc2E::
+	SendInput, {CTRLDOWN}{left}{SHIFTDOWN}{Right}{SHIFTUP}{ins}{CTRLUP}{Right}
 return

@@ -3,6 +3,23 @@
 
 ; #include Clipboard_rus_subs.ahk
 
+; Определение типа окна
+getWindowType() {
+
+	ControlGetFocus, WinType
+
+	If (WinType = "V8Window4") {
+		Return "TextEditor"
+	}
+
+	If (WinType = "V8Window2") {
+		Return "TextEditor"
+	}
+
+	return "unknown"
+	
+}
+
 getTextFromFile() {
   FileRead, newText, tmp\module.txt
   ClipWait, 1
@@ -31,11 +48,10 @@ set_locale_en() {
 
 putSelectionInFile(fileName=0, flagSaveClipboard = 1) {
 
-	ControlGetFocus, WinType
-	If (WinType <> "V8Window4") {
+	wType := getWindowType()
+	If (wType <> "TextEditor") {
 		Return "NotTextEditor"
 	}
-
 
 	clipboard := 
 	set_locale_ru()
