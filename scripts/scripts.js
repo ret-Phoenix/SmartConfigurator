@@ -9,7 +9,7 @@ function JSTrim(vValue)
 
 function delFP(vValue)
 {
-	return  vValue.replace(/\s*(РїСЂРѕС†РµРґСѓСЂР°|С„СѓРЅРєС†РёСЏ|procedure|function|#РћР±Р»Р°СЃС‚СЊ|#region)\s+/i, "");
+	return  vValue.replace(/\s*(процедура|функция|procedure|function|#Область|#region)\s+/i, "");
 }
 
 function getTextBeforeBracket(prmTxt)
@@ -97,7 +97,7 @@ function wtiteToResultFile(file_name, file_data) {
 }
 
 function preroclist(arg){
-	lstrRes = "&РќР°РљР»РёРµРЅС‚Рµ\r\n&РќР°РЎРµСЂРІРµСЂРµ\r\n\&РќР°РЎРµСЂРІРµСЂРµР‘РµР·РљРѕРЅС‚РµРєСЃС‚Р°";
+	lstrRes = "&НаКлиенте\r\n&НаСервере\r\n\&НаСервереБезКонтекста";
 	vRes = SelectValue(lstrRes);
 	wtiteToResultFile("tmp/module.txt",vRes);
 }
@@ -115,7 +115,7 @@ function preroclist(arg){
     }
 	 // lstrRes = "sss\r\n sss\r\n";
 	
-	ResultList(lstrRes, "Р—РЅР°С‡РµРЅРёРµ РїРѕРёСЃРєР°");
+	ResultList(lstrRes, "Значение поиска");
 }*/
 
 function words(txt) {
@@ -138,7 +138,7 @@ function words(txt) {
 	result_str += t_file.ReadAll();
 	t_file.Close();
 
-	vRes = SelectValue(result_str,"РЎР»РѕРІРѕ");
+	vRes = SelectValue(result_str,"Слово");
 	wtiteToResultFile("tmp/module.txt",JSTrim(vRes));
 }
 
@@ -151,7 +151,7 @@ function actionGoToType(lStrings) {
 	UpCount = 0;
 
 	data = lStrings.reverse();
-	var re_meth = /(СЃСЃС‹Р»Р°РµС‚СЃСЏ РЅР°)/i;
+	var re_meth = /(ссылается на)/i;
 
 	CntRows = data.length;
 	rowBM = 1;
@@ -202,7 +202,7 @@ function actionGoToObject(lStrings) {
 		}
 	} else {
 		wtiteToResultFile("tmp/module.txt","");
-		echo("РџСѓСЃС‚РѕР№ СЃРїРёСЃРѕРє");
+		echo("Пустой список");
 	}
 }
 
@@ -238,7 +238,7 @@ function Run()
 			actionGoToObject(lList);
 			break;
 		default:
-			return; // РЅРµ РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ РІ РїСЂРёРЅС†РёРїРµ
+			return; // не должно быть в принципе
 	}
 
 }

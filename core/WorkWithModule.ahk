@@ -1,9 +1,5 @@
-; #IfWinActive Конфигуратор ahk_class V8TopLevelFrame
 #IfWinActive ahk_class V8TopLevelFrame
 
-; #include Clipboard_rus_subs.ahk
-
-; Определение типа окна
 getWindowType() {
 
 	ControlGetFocus, WinType
@@ -31,7 +27,7 @@ getTextFromFile() {
 
 pasteTextFromFile() {
   FileRead, newText, tmp\module.txt
-  StringTrimRight, newText, newText, 2
+  StringTrimRight, newText, newText, 0
   ClipWait, 1
   Clipboard := newText
   ClipWait, 1
@@ -167,7 +163,6 @@ PutCurrentModuleTextIntoFileFast(fileName = 0, flagSaveClipboard = 1) {
 		RestoreClipboard()
 }
 
-; после выполнения текст модуля остается выделенным - это важно для некоторых скриптов
 PutCurrentModuleTextIntoFile(fileName, flagSaveClipboard = 1) {
 	set_locale_ru()
 	if (flagSaveClipboard = 1)
