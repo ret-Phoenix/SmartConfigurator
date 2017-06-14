@@ -56,7 +56,7 @@ Ctrl_Shift_Z = ^+{SC02C}
 ^sc17:: SendInput, ^+{NumpadAdd}
 
 ; Ctrl+y - удаление строки
-$^SC015:: SendInput %Ctrl_L%
+; $^SC015:: SendInput %Ctrl_L%
 
 ; Ctrl-, - символ '<'
 $^,:: SendInput <
@@ -193,10 +193,28 @@ return
 	SendInput, {HOME}{SHIFTDOWN}{END}{SHIFTUP}{SHIFTDOWN}{DEL}{SHIFTUP}^{sc26}{END}{ENTER}{SHIFTDOWN}{INS}{SHIFTUP}
 return
 
-^+sc20::
-	actionFormatSelection()
+; Ctrl + Alt + F - выполнить форматирование
+^!sc21::
+	actionOneStyleSelection()
 return
 
 #sc22::
 	actionFindInTreeByName()
+return
+
+#sc2E::
+	ControlGetFocus, OutputVar
+	MsgBox, Контрол с фокусом ДО = %OutputVar%
+	; If (OutputVar <> "V8Grid1") {
+	; 	SendInput {Tab}
+	; 	MsgBox, Выполнили переход	
+	; }
+	; ControlGetFocus, OutputVar
+	; MsgBox, Контрол с фокусом после = %OutputVar%
+return
+
+#sc2F::
+	;SendInput {shift}{ENTER}
+	ControlFocus V8FormElement34, Свойства: Группа
+	; SendInput, {ctrl}{down}{PgDn}{ENTER}
 return

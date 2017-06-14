@@ -38,7 +38,7 @@ actionShowExtFilesList() {
 	Global
 
 	; RunWait, wscript scripts\ExtFiles.js
-	RunWait, system\OneScript\bin\oscript.exe scripts\ExtFiles.os,,Hide
+	RunWait, system\OneScript\bin\oscript.exe scripts\ExtFiles.os,,
 
 	NewText := getTextFromFile()
 	If (NewText <> "") {
@@ -47,13 +47,17 @@ actionShowExtFilesList() {
 		set_locale_ru()
 		SendInput, !%KeyA%
 		SendInput, {DOWN}{DOWN}{Enter}
-		Sleep 500
+		WinWait, Открыть
 		SendInput, ^%KeyV%{Enter}
 	}
 }
 
 actionShowScriptManager() {
-	putSelectionInFile()
+	result := putSelectionInFile()
+	if (result = "NotTextEditor") {
+		MsgBox, "Окно не текстовый редактор"
+		Exit, 0
+	}
 	;  RunWait, wscript scripts\scripts_manager.js
 	RunWait, system\OneScript\bin\oscript.exe scripts\МенеджерСкриптов.os,,
 	if (ErrorLevel > 0) {
@@ -216,8 +220,16 @@ actionShowMetadataNavigator() {
 		; go to service msgs
 		SendInput, ^!%KeyO%
 		SendInput, ^+%KeyC%
+
+		; Получаем текущее окно
+		ControlGetFocus, WinType
+		If (WinType <> "V8Grid1") {
+			; Если это окно поиска - тогда перейдем в дерево, послав Таб.
+			SendInput {Tab}
+		}
 		; show search dlg
 		SendInput, ^%KeyF%
+		WinWait, Поиск объектов метаданных
 		pasteTextFromFile()
 		;SendInput, !{Insert}
 		SendInput, {Enter}
@@ -234,6 +246,7 @@ actionShowMetadataNavigator() {
 			If (NewText <> "") {
 				SendInput, {Home}
 				SendInput, ^%KeyF%
+				;WinWait, Поиск объектов метаданных
 				SendInput +{ins}
 			
 				SendInput, !{Insert}
@@ -323,12 +336,6 @@ actionGenerateServerMethodFromCurMethod() {
 
 }
 
-actionFormatSelection() {
-	putSelectionInFile()
-	RunWait, system\OneScript\bin\oscript.exe scripts\МойСкриптФорматирования.os ПараметрДляСкрипта,,
-	pasteTextFromFile()
-}
-
 actionFindInTreeByName() {
 	Global
 
@@ -353,4 +360,12 @@ actionFindInTreeByName() {
 			
 	; }
 	
+}
+actionOneStyleSelection() {
+    ; отформатируем выделение средствами 1С, т.к. у только выделенного блока недостаточно информации об отступах
+    global
+    SendInput, !+%KeyF%
+    putSelectionInFile()
+    RunWait, system\OneScript\bin\oscript.exe scripts\OneStyle\Main.os tmp\module.txt,,Hide
+    pasteTextFromFile()
 }

@@ -14,6 +14,7 @@ getTextFromFile() {
 
 pasteTextFromFile() {
   FileRead, newText, tmp\module.txt
+  StringTrimRight, newText, newText, 2
   ClipWait, 1
   Clipboard := newText
   ClipWait, 1
@@ -29,6 +30,13 @@ set_locale_en() {
 }
 
 putSelectionInFile(fileName=0, flagSaveClipboard = 1) {
+
+	ControlGetFocus, WinType
+	If (WinType <> "V8Window4") {
+		Return "NotTextEditor"
+	}
+
+
 	clipboard := 
 	set_locale_ru()
 	if (flagSaveClipboard = 1)
@@ -43,7 +51,7 @@ putSelectionInFile(fileName=0, flagSaveClipboard = 1) {
 	ClipWait
 	
 	FileDelete %module%
-	FileAppend, %clipboard%, %module%
+	FileAppend, %clipboard%`r`n, %module%
 
 	if (flagSaveClipboard = 1)
 		RestoreClipboard()
