@@ -130,6 +130,7 @@ $^+sc24:: actionShowMetadataNavigator()
 ;------------------------------------
 ; Автозамена приращений ++, +=, --, -=
 ::++:: 
+	clipboard =
  	SendInput, ^+{left}^+{left}^{ins}{Right}{space}{scD}{Space}+{ins}{sc4E}{Space}1;
 Return
 
@@ -151,15 +152,15 @@ Return
 
 ;------------------------------------
 
-; Win + X
+; Win + X - Показать меню
 #sc02D:: 
 	showMenu()
 Return
 
+; Alt + Ctrl + Пробел - выбрать ранее набранное слово
 !^Space:: 
    actionShowPrevWords()
 Return
- 
 
 ; ----------------------------------
 ; Ctrl + 0 Запуск 1script
@@ -196,27 +197,6 @@ return
 ; Ctrl + Alt + F - выполнить форматирование
 ^!sc21::
 	actionOneStyleSelection()
-return
-
-#sc22::
-	actionFindInTreeByName()
-return
-
-#sc11::
-	ControlGetFocus, OutputVar
-	MsgBox, Контрол с фокусом ДО = %OutputVar%
-	; If (OutputVar <> "V8Grid1") {
-	; 	SendInput {Tab}
-	; 	MsgBox, Выполнили переход	
-	; }
-	; ControlGetFocus, OutputVar
-	; MsgBox, Контрол с фокусом после = %OutputVar%
-return
-
-#sc2F::
-	;SendInput {shift}{ENTER}
-	ControlFocus V8FormElement34, Свойства: Группа
-	; SendInput, {ctrl}{down}{PgDn}{ENTER}
 return
 
 ; Win + C - Взять в буфер слово под курсором
