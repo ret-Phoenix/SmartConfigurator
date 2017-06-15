@@ -12,6 +12,10 @@ getWindowType() {
 		Return "TextEditor"
 	}
 
+	If (WinType = "V8Window3") {
+		Return "TextEditor"
+	}
+
 	return "unknown"
 	
 }

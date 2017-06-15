@@ -168,7 +168,7 @@ actionShowPreprocMethod() {
 	set_locale_ru()
 	FileRead, text, tmp\module.txt
 	set_locale_ru()
-	SendInput, %text%	
+	SendRaw, %text%	
 }
 
 actionShowSimpleMetaSearch() {
