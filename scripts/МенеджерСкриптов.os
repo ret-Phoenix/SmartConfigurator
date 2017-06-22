@@ -32,8 +32,10 @@
 	Скрипты.Вставить("Выравнять по равно","system\OneScript\bin\oscript.exe scripts\format.os align-equal-sign");
 	Скрипты.Вставить("Выравнять по первой запятой","system\OneScript\bin\oscript.exe scripts\format.os align-first-comma");
 	Скрипты.Вставить("Выравнять по выбранному значению","system\OneScript\bin\oscript.exe scripts\format.os align-user-symbol");
-	Скрипты.Вставить("----------------------------------------","");
+	Скрипты.Вставить("---------------------------------------","");
 	Скрипты.Вставить("Убрать пробелы в конце строк","system\OneScript\bin\oscript.exe scripts\format.os rtrim");
+	Скрипты.Вставить("Добавление ссылки на реквизит в модуле","wscript scripts\generator.js null simple-managment");
+	Скрипты.Вставить("Генератор кода","wscript scripts\generator.js null generator");
 	Скрипты.Вставить("============ Автоматически добавленные ============", "");
 
 	ТекПуть = ТекущийКаталог()+"\scripts\auto\";

@@ -1,6 +1,3 @@
-; #include KeyCodes.ahk
-; КонецЕсли;#include ..\core\WorkWithModule.ahk
-
 actionShowMethodsList() {
 	Global
 
@@ -150,7 +147,7 @@ actionShowLastSelect() {
 
 actionRunAuthorComments(data) {
 	putSelectionInFile()
-	RunWait, system\OneScript\bin\oscript.exe scripts\АвторскиеКомментарии.os %data%,,Hide
+	RunWait, system\OneScript\bin\oscript.exe scripts\АвторскиеКомментарии.os %data%,,hide
 	pasteTextFromFile()
 }
 
@@ -171,7 +168,7 @@ actionShowPreprocMethod() {
 	set_locale_ru()
 	FileRead, text, tmp\module.txt
 	set_locale_ru()
-	SendInput, %text%	
+	SendRaw, %text%	
 }
 
 actionShowSimpleMetaSearch() {
@@ -336,31 +333,6 @@ actionGenerateServerMethodFromCurMethod() {
 
 }
 
-actionFindInTreeByName() {
-	Global
-
-	clipboard =
-
-	; получили объект под курсором
-	SendInput ^{ins}
-
-	module = tmp\module.txt
-	ClipWait
-	
-	FileDelete %module%
-	; записали в файл текст
-	FileAppend, %Clipboard%, %module%, UTF-8
-	; запустили скрипт на получение имени объекта
-	RunWait, system\OneScript\bin\oscript.exe scripts\Навигация\НавигацияПоМетаданным.os ПерейтиКОбъектуПоИмени,,Hide
-	; если что-то есть вернет результат
-	; if (ErrorLevel > 0) {
-	; 	NewText := getTextFromFile()
-	; 	SendInput, ^!%KeyM%
-	; 	SendInput, +{ins}
-			
-	; }
-	
-}
 actionOneStyleSelection() {
     ; отформатируем выделение средствами 1С, т.к. у только выделенного блока недостаточно информации об отступах
     global

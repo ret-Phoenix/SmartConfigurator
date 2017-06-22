@@ -17,7 +17,7 @@ ListLines, Off
 DetectHiddenWindows, On
 CoordMode, Pixel
 
-Global AhkSpyVersion := 2.48
+Global AhkSpyVersion := 2.49
 Gosub, CheckAhkVersion
 Menu, Tray, UseErrorLevel
 Menu, Tray, Icon, Shell32.dll, % A_OSVersion = "WIN_XP" ? 222 : 278
@@ -335,8 +335,8 @@ RButton::
 	TitleText(CopyText)
 	Return
 
-+RButton:: ClipAdd(CopyText := oMS.ELSel.OuterText), ToolTip("add", 300), TitleText(CopyText)
-^+RButton:: ClipAdd(CopyText := CopyCommaParam(oMS.ELSel.OuterText)), ToolTip("add", 300), TitleText(CopyText)
++RButton:: ClipAdd(CopyText := oMS.ELSel.OuterText, 1), TitleText(CopyText)
+^+RButton:: ClipAdd(CopyText := CopyCommaParam(oMS.ELSel.OuterText), 1), TitleText(CopyText)
 
 #If (Sleep != 1 && oMS.ELSel) && (oMS.ELSel.OuterText != "" || MS_Cancel())  ;	Mode = Hotkey
 
@@ -344,7 +344,7 @@ RButton::
 	CopyText := oMS.ELSel.OuterText
 	KeyWait, RButton, T0.3
 	If ErrorLevel
-		ClipAdd(CopyText), ToolTip("add", 300)
+		ClipAdd(CopyText, 1)
 	Else
 		Clipboard := CopyText, ToolTip("copy", 300)
 	TitleText(CopyText)
@@ -362,8 +362,8 @@ CopyText:
 	TitleText(CopyText)
 	Return
 
-+RButton:: ClipAdd(CopyText), ToolTip("add", 300), TitleText(CopyText)
-^+RButton:: ClipAdd(CopyText := CopyCommaParam(CopyText)), ToolTip("add", 300), TitleText(CopyText)
++RButton:: ClipAdd(CopyText, 1), TitleText(CopyText)
+^+RButton:: ClipAdd(CopyText := CopyCommaParam(CopyText), 1), TitleText(CopyText)
 
 #If (Sleep != 1 && !DllCall("IsWindowVisible", "Ptr", oOther.hZoom))
 
@@ -714,9 +714,9 @@ GetInfo_Scintilla(hwnd, ByRef ClassNN) {
 	ControlGet, CurrentCol, CurrentCol,,, ahk_id %hwnd%
 	ControlGet, CurrentLine, CurrentLine,,, ahk_id %hwnd%
 	ControlGet, Selected, Selected,,, ahk_id %hwnd%
-	SendMessage, 0x00B0,,,, ahk_id %hwnd%			;  EM_GETSEL
+	SendMessage, 0x00B0, , , , ahk_id %hwnd%			;  EM_GETSEL
 	EM_GETSEL := ErrorLevel >> 16
-	SendMessage, 0x00CE,,,, ahk_id %hwnd%			;  EM_GETFIRSTVISIBLELINE
+	SendMessage, 0x00CE, , , , ahk_id %hwnd%			;  EM_GETFIRSTVISIBLELINE
 	EM_GETFIRSTVISIBLELINE := ErrorLevel + 1
 	; Control_GetFont(hwnd, FName, FSize)
 	Return	"`n<span id='param' name='MS:N'>Row count:</span> <span name='MS:'>" LineCount "</span>" DP
@@ -1088,7 +1088,10 @@ Write_Hotkey(K) {
 	If (DUMods != "")
 		LRSend := "  " DP "  <span><span name='MS:'>Send " DUMods "</span>" Comment "</span>"
 	If SCCode !=
-		ThisKeySC := "   " DP "   <span name='MS:'>" VKCode "</span>   " DP "   <span name='MS:'>" SCCode "</span>"
+		ThisKeySC := "   " DP "   <span name='MS:'>" VKCode "</span>   " DP "   <span name='MS:'>" SCCode "</span>   "   
+		. DP "   <span name='MS:'>0x" SubStr(VKCode, 3) "</span>   " DP "   <span name='MS:'>0x" SubStr(SCCode, 3) "</span>"
+	Else
+		ThisKeySC := "   " DP "   <span name='MS:'>0x" SubStr(VKCode, 3) "</span>"
 	   
 	HTML_Hotkey =
 	( Ltrim
@@ -1693,9 +1696,9 @@ InArr(Val, Arr*) {
 }
 
 TransformHTML(str) {
-	StringReplace, str, str, `r`n, `n
-	StringReplace, str, str, `n, `r`n
-	Transform, str, HTML, %str%
+	StringReplace, str, str, `r`n, `n, 1
+	StringReplace, str, str, `n, `r`n, 1
+	Transform, str, HTML, %str%, 3
 	Return str
 }
 
@@ -1722,11 +1725,13 @@ TitleText(Text, Time = 1000) {
 	SetTimer, TitleShow, -%Time%
 }
 
-ClipAdd(Text) {
+ClipAdd(Text, AddTip = 0) {
 	If ClipAdd_Before
 		Clipboard := Text ClipAdd_Delimiter Clipboard
 	Else
 		Clipboard := Clipboard ClipAdd_Delimiter Text
+	If AddTip
+		ToolTip("add", 300)
 }
 
 ClipPaste() {
@@ -1913,7 +1918,7 @@ GetLangName(hWnd) {
 
 ChangeLocal(hWnd) {
 	Static WM_INPUTLANGCHANGEREQUEST := 0x0050, INPUTLANGCHANGE_FORWARD := 0x0002
-	SendMessage, WM_INPUTLANGCHANGEREQUEST, INPUTLANGCHANGE_FORWARD, ,, % "ahk_id" hWnd
+	SendMessage, WM_INPUTLANGCHANGEREQUEST, INPUTLANGCHANGE_FORWARD, , , % "ahk_id" hWnd
 }
 
 ToolTip(text, time) {
@@ -2263,12 +2268,13 @@ Class Events {
 			oDoc.body.focus()
 			If (thisid = "copy_button" || thisid = "copy_button_1")
 				o := oDoc.all.item(oevent.sourceIndex + 2 + (thisid = "copy_button_1"))
-				, Clipboard := o.OuterText, HighLight(o, 500)
+				, GetKeyState("Shift", "P") ? ClipAdd(o.OuterText, 1) : (Clipboard := o.OuterText), HighLight(o, 500)
 			Else If thisid = copy_alltitle
 			{
-				Clipboard := (t:=oDoc.getElementById("wintitle1").OuterText) . (t = "" ? "" : " ")
+				Text := (t:=oDoc.getElementById("wintitle1").OuterText) . (t = "" ? "" : " ")
 					. oDoc.getElementById("wintitle2").OuterText " "
 					. oDoc.getElementById("wintitle3").OuterText
+				GetKeyState("Shift", "P") ? ClipAdd(Text, 1) : (Clipboard := Text)
 				HighLight(oDoc.getElementById("wintitle1"), 500)
 				HighLight(oDoc.getElementById("wintitle2"), 500, 0)
 				HighLight(oDoc.getElementById("wintitle3"), 500, 0)

@@ -1,7 +1,24 @@
-; #IfWinActive Конфигуратор ahk_class V8TopLevelFrame
 #IfWinActive ahk_class V8TopLevelFrame
 
-; #include Clipboard_rus_subs.ahk
+getWindowType() {
+
+	ControlGetFocus, WinType
+
+	If (WinType = "V8Window4") {
+		Return "TextEditor"
+	}
+
+	If (WinType = "V8Window2") {
+		Return "TextEditor"
+	}
+
+	If (WinType = "V8Window3") {
+		Return "TextEditor"
+	}
+
+	return "unknown"
+	
+}
 
 getTextFromFile() {
   FileRead, newText, tmp\module.txt
@@ -14,7 +31,7 @@ getTextFromFile() {
 
 pasteTextFromFile() {
   FileRead, newText, tmp\module.txt
-  StringTrimRight, newText, newText, 2
+  StringTrimRight, newText, newText, 0
   ClipWait, 1
   Clipboard := newText
   ClipWait, 1
@@ -31,11 +48,10 @@ set_locale_en() {
 
 putSelectionInFile(fileName=0, flagSaveClipboard = 1) {
 
-	ControlGetFocus, WinType
-	If (WinType <> "V8Window4") {
+	wType := getWindowType()
+	If (wType <> "TextEditor") {
 		Return "NotTextEditor"
 	}
-
 
 	clipboard := 
 	set_locale_ru()
@@ -151,7 +167,6 @@ PutCurrentModuleTextIntoFileFast(fileName = 0, flagSaveClipboard = 1) {
 		RestoreClipboard()
 }
 
-; после выполнения текст модуля остается выделенным - это важно для некоторых скриптов
 PutCurrentModuleTextIntoFile(fileName, flagSaveClipboard = 1) {
 	set_locale_ru()
 	if (flagSaveClipboard = 1)

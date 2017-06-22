@@ -82,9 +82,9 @@ $^SC008::Send &
 ; ----------------------------------------
 ; авторские комментарии
 ; ----------------------------------------
-!sc1E:: actionRunAuthorComments("Добавлено") ; alt+a - блок добавлен
-!sc12:: actionRunAuthorComments("Изменено") ; alt+e - блок изменен
-!sc20:: actionRunAuthorComments("Удалено") ; alt+d - блок удален
+!sc1E:: actionRunAuthorComments("add") ; alt+a - блок добавлен
+!sc12:: actionRunAuthorComments("edit") ; alt+e - блок изменен
+!sc20:: actionRunAuthorComments("del") ; alt+d - блок удален
 ; КОНЕЦ авторские комментарии
 ; ----------------------------------------
 
@@ -106,10 +106,10 @@ return
 ;------------------------------------
 
 ; Alt+h - добавление ссылки на реквизит в модуле
-!sc23:: actionRunLinksToItems()
+;!sc23:: actionRunLinksToItems()
 
 ; Alt+g - Вызов генераторов кода
-!sc22:: actionShowCodeGenerator()
+; !sc22:: actionShowCodeGenerator()
 
 ; Alt+7 - Препроцессор функции
 !SC008:: actionShowPreprocMethod()
@@ -130,6 +130,7 @@ $^+sc24:: actionShowMetadataNavigator()
 ;------------------------------------
 ; Автозамена приращений ++, +=, --, -=
 ::++:: 
+	clipboard =
  	SendInput, ^+{left}^+{left}^{ins}{Right}{space}{scD}{Space}+{ins}{sc4E}{Space}1;
 Return
 
@@ -151,15 +152,15 @@ Return
 
 ;------------------------------------
 
-; Win + X
+; Win + X - Показать меню
 #sc02D:: 
 	showMenu()
 Return
 
+; Alt + Ctrl + Пробел - выбрать ранее набранное слово
 !^Space:: 
    actionShowPrevWords()
 Return
- 
 
 ; ----------------------------------
 ; Ctrl + 0 Запуск 1script
@@ -198,23 +199,7 @@ return
 	actionOneStyleSelection()
 return
 
-#sc22::
-	actionFindInTreeByName()
-return
-
+; Win + C - Взять в буфер слово под курсором
 #sc2E::
-	ControlGetFocus, OutputVar
-	MsgBox, Контрол с фокусом ДО = %OutputVar%
-	; If (OutputVar <> "V8Grid1") {
-	; 	SendInput {Tab}
-	; 	MsgBox, Выполнили переход	
-	; }
-	; ControlGetFocus, OutputVar
-	; MsgBox, Контрол с фокусом после = %OutputVar%
-return
-
-#sc2F::
-	;SendInput {shift}{ENTER}
-	ControlFocus V8FormElement34, Свойства: Группа
-	; SendInput, {ctrl}{down}{PgDn}{ENTER}
+	SendInput, {CTRLDOWN}{left}{SHIFTDOWN}{Right}{SHIFTUP}{ins}{CTRLUP}{Right}
 return
