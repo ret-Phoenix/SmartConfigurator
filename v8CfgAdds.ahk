@@ -106,10 +106,10 @@ return
 ;------------------------------------
 
 ; Alt+h - добавление ссылки на реквизит в модуле
-!sc23:: actionRunLinksToItems()
+;!sc23:: actionRunLinksToItems()
 
 ; Alt+g - Вызов генераторов кода
-!sc22:: actionShowCodeGenerator()
+; !sc22:: actionShowCodeGenerator()
 
 ; Alt+7 - Препроцессор функции
 !SC008:: actionShowPreprocMethod()
