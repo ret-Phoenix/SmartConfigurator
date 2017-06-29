@@ -203,3 +203,8 @@ return
 #sc2E::
 	SendInput, {CTRLDOWN}{left}{SHIFTDOWN}{Right}{SHIFTUP}{ins}{CTRLUP}{Right}
 return
+
+; Win + W - Менеджер окон
+#sc11::
+	actionWindowsManager()
+return

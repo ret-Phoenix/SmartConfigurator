@@ -341,3 +341,37 @@ actionOneStyleSelection() {
     RunWait, system\OneScript\bin\oscript.exe scripts\OneStyle\Main.os tmp\module.txt,,Hide
     pasteTextFromFile()
 }
+
+actionWindowsManager() {
+	detect_hidden = 0
+	WinGet controls, ControlListHwnd
+	static WINDOW_TEXT_SIZE := 32767 ; Defined in AutoHotkey source.
+	VarSetCapacity(buf, WINDOW_TEXT_SIZE * (A_IsUnicode ? 2 : 1))
+	text := ""
+	Loop Parse, controls, `n
+	{
+		if !detect_hidden && !DllCall("IsWindowVisible", "ptr", A_LoopField)
+			continue
+		if !DllCall("GetWindowText", "ptr", A_LoopField, "str", buf, "int", WINDOW_TEXT_SIZE)
+			continue
+		if (buf = "Конфигурация") {
+			continue
+		} 
+		text .= buf "`r`n"
+	}
+
+	module = tmp\module.txt
+	FileDelete %module%
+	FileAppend, %text%, %module%, UTF-8
+
+	RunWait, system\SelectValueSharp.exe %module%
+	FileRead, text, tmp\module.txt
+	Loop Parse, controls, `n
+	{
+		if !DllCall("GetWindowText", "ptr", A_LoopField, "str", buf, "int", WINDOW_TEXT_SIZE)
+			continue
+		 if (buf = text) {
+		 	WinActivate, ahk_id %A_LoopField%
+		 }
+	}
+}
