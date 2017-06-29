@@ -2,6 +2,7 @@
 
 #include core\KeyCodes.ahk
 #include core\WorkWithModule.ahk
+#include core\WorkWithWindows.ahk
 #include scripts\actions.ahk
 #include scripts\menu.ahk
 
@@ -207,4 +208,9 @@ return
 ; Win + W - Менеджер окон
 #sc11::
 	actionWindowsManager()
+return
+
+; Win + S - Фильтрация результатов поиска
+#sc1F::
+	actionResultSearchFilter()
 return

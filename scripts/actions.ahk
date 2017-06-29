@@ -375,3 +375,34 @@ actionWindowsManager() {
 		 }
 	}
 }
+
+actionResultSearchFilter() {
+
+	; Активировать результат поиска
+	ActivateWindowByTitle("Результаты поиска")
+
+	clipboard =
+	; выделили и скопировали данные
+	SendInput, ^%KeyA%^{ins}
+	;SendInput, ^{ins}
+	ClipWait
+	SendInput, {home}
+
+	module = tmp\module.txt
+	FileDelete %module%
+	FileAppend, %Clipboard%, %module%, UTF-8
+
+	SendInput, {home}
+	RunWait, system\OneScript\bin\oscript.exe scripts\Навигация\НавигацияПоМетаданным.os РезультатыПоискаПерейти,,Hide
+	if (ErrorLevel > 0) {
+		UpCount := ErrorLevel
+		ActivateWindowByTitle("Результаты поиска")
+		Loop %UpCount%
+		{
+			SendInput, {down}
+		}	
+		SendInput, {ENTER}	
+	}
+
+
+}
