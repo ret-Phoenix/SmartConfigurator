@@ -1,5 +1,25 @@
 #IfWinActive ahk_class V8TopLevelFrame
 
+getWindowType() {
+
+	ControlGetFocus, WinType
+
+	If (WinType = "V8Window4") {
+		Return "TextEditor"
+	}
+
+	If (WinType = "V8Window2") {
+		Return "TextEditor"
+	}
+
+	If (WinType = "V8Window3") {
+		Return "TextEditor"
+	}
+
+	return "unknown"
+	
+}
+
 ActivateWindowByTitle(wndTitle) {
 
 	detect_hidden = 1

@@ -1,25 +1,5 @@
 #IfWinActive ahk_class V8TopLevelFrame
 
-getWindowType() {
-
-	ControlGetFocus, WinType
-
-	If (WinType = "V8Window4") {
-		Return "TextEditor"
-	}
-
-	If (WinType = "V8Window2") {
-		Return "TextEditor"
-	}
-
-	If (WinType = "V8Window3") {
-		Return "TextEditor"
-	}
-
-	return "unknown"
-	
-}
-
 getTextFromFile() {
   FileRead, newText, tmp\module.txt
   ClipWait, 1
@@ -52,7 +32,7 @@ putSelectionInFile(fileName=0, flagSaveClipboard = 1) {
 	If (wType <> "TextEditor") {
 		Return "NotTextEditor"
 	}
-
+	
 	clipboard := 
 	set_locale_ru()
 	if (flagSaveClipboard = 1)
@@ -67,7 +47,7 @@ putSelectionInFile(fileName=0, flagSaveClipboard = 1) {
 	ClipWait
 	
 	FileDelete %module%
-	FileAppend, %clipboard%`r`n, %module%
+	FileAppend, %clipboard%`r`n, %module%, UTF-8
 
 	if (flagSaveClipboard = 1)
 		RestoreClipboard()
@@ -79,6 +59,8 @@ putModuleInFile() {
 
 putModuleInFileWithSavePosition() {
 
+	SaveClipboard()
+
 	module = tmp\module.txt
 
 	FileDelete %module%
@@ -88,14 +70,14 @@ putModuleInFileWithSavePosition() {
 	clipboard := 
 	SendInput, ^+{Home}^{ins}{Right}
 	ClipWait
-	ClipWait
-	FileAppend, %clipboard%, %module%
+	FileAppend, %clipboard%, %module%, UTF-8
 
 	clipboard := 
 	SendInput, ^+{End}^{ins}{Left} 
 	ClipWait
-	ClipWait
-	FileAppend, %clipboard%, %module%
+	FileAppend, %clipboard%, %module%, UTF-8
+
+	RestoreClipboard()	
 }
 
 
@@ -132,7 +114,7 @@ getTextUp() {
 	SendInput, {CTRLDOWN}{ALTDOWN}{SHIFTDOWN}{Home}{CTRLUP}{ALTUP}{SHIFTUP}{CTRLDOWN}{INS}{CTRLUP}{Right}
 	ClipWait
 	FileDelete tmp\module.txt
-	FileAppend, %clipboard%, tmp\module.txt
+	FileAppend, %clipboard%, tmp\module.txt, UTF-8
 	clipboard := 
 }
 
@@ -141,7 +123,7 @@ getTextDown() {
 	SendInput, ^+{End}^{ins}{Left} 
 	ClipWait
 	FileDelete tmp\module.txt
-	FileAppend, %clipboard%, tmp\module.txt
+	FileAppend, %clipboard%, tmp\module.txt, UTF-8
 	clipboard := 
 }
 
@@ -161,7 +143,7 @@ PutCurrentModuleTextIntoFileFast(fileName = 0, flagSaveClipboard = 1) {
 	ClipWait
 	
 	FileDelete %module%
-	FileAppend, %clipboard%, %module%
+	FileAppend, %clipboard%, %module%, UTF-8
 
 	if (flagSaveClipboard = 1)
 		RestoreClipboard()
@@ -183,7 +165,7 @@ PutCurrentModuleTextIntoFile(fileName, flagSaveClipboard = 1) {
 	ClipWait
 	
 	FileDelete %module%
-	FileAppend, %clipboard%, %module%
+	FileAppend, %clipboard%, %module%, UTF-8
 
 	if (flagSaveClipboard = 1)
 		RestoreClipboard()

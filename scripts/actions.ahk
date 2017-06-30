@@ -1,15 +1,19 @@
 actionShowMethodsList() {
 	Global
 
-	putModuleInFile()
+	; putModuleInFile()
+	putModuleInFileWithSavePosition()
 	SendInput, {home}
 	RunWait, system\OneScript\bin\oscript.exe scripts\Навигация\НавигацияПоМодулю.os СписокМетодов,,Hide
-	if (ErrorLevel > 0) {
-		nStr := ErrorLevel
-		SendInput ^%KeyG%
-		WinWait, Перейти по номеру строки
-		SendInput, %nStr%{ENTER}
+	if (ErrorLevel = 0) {
+		return
 	}
+
+	nStr := ErrorLevel
+	SendInput ^%KeyG%
+	WinWait, Перейти по номеру строки
+	SendInput, %nStr%{ENTER}
+
 	SendInput, {home}
 	SendInput, ^{NumpadAdd}
 }
@@ -17,16 +21,20 @@ actionShowMethodsList() {
 actionShowRegionsList() {
 	Global
 
-	putModuleInFile()
+	;putModuleInFile()
+	putModuleInFileWithSavePosition()
 	SendInput, {home}
 	ClipWait
 	RunWait, system\OneScript\bin\oscript.exe scripts\Навигация\НавигацияПоМодулю.os СписокОбластей,,Hide
-	if (ErrorLevel > 0) {
-		nStr := ErrorLevel
-		SendInput, ^%KeyG%
-		WinWait, Перейти по номеру строки
-		SendInput, %nStr%{ENTER}
+	if (ErrorLevel = 0) {
+		return
 	}
+
+	nStr := ErrorLevel
+	SendInput, ^%KeyG%
+	WinWait, Перейти по номеру строки
+	SendInput, %nStr%{ENTER}
+
 	SendInput, {home}
 	SendInput, ^{NumpadAdd}
 }
