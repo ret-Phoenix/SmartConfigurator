@@ -15,19 +15,19 @@ createMenuItems() {
    Return
 
    КонецЕсли:
-      SendInput, КонецЕсли;
+      SendRaw, КонецЕсли;
    Return
 
    КонецЦикла:
-      SendInput, КонецЦикла;
+      SendRaw, КонецЦикла;
    Return
 
    КонецПроцедуры:
-      SendInput, КонецПроцедуры;
+      SendRaw, КонецПроцедуры;
    Return
 
    КонецФункции:
-      SendInput, КонецФункции;
+      SendRaw, КонецФункции;
    Return
 
    ВыравнитьПоРавно:

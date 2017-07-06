@@ -1,18 +1,19 @@
-; #include KeyCodes.ahk
-; КонецЕсли;#include ..\core\WorkWithModule.ahk
-
 actionShowMethodsList() {
 	Global
 
-	putModuleInFile()
+	; putModuleInFile()
+	putModuleInFileWithSavePosition()
 	SendInput, {home}
 	RunWait, system\OneScript\bin\oscript.exe scripts\Навигация\НавигацияПоМодулю.os СписокМетодов,,Hide
-	if (ErrorLevel > 0) {
-		nStr := ErrorLevel
-		SendInput ^%KeyG%
-		WinWait, Перейти по номеру строки
-		SendInput, %nStr%{ENTER}
+	if (ErrorLevel = 0) {
+		return
 	}
+
+	nStr := ErrorLevel
+	SendInput ^%KeyG%
+	WinWait, Перейти по номеру строки
+	SendInput, %nStr%{ENTER}
+
 	SendInput, {home}
 	SendInput, ^{NumpadAdd}
 }
@@ -20,16 +21,20 @@ actionShowMethodsList() {
 actionShowRegionsList() {
 	Global
 
-	putModuleInFile()
+	;putModuleInFile()
+	putModuleInFileWithSavePosition()
 	SendInput, {home}
 	ClipWait
 	RunWait, system\OneScript\bin\oscript.exe scripts\Навигация\НавигацияПоМодулю.os СписокОбластей,,Hide
-	if (ErrorLevel > 0) {
-		nStr := ErrorLevel
-		SendInput, ^%KeyG%
-		WinWait, Перейти по номеру строки
-		SendInput, %nStr%{ENTER}
+	if (ErrorLevel = 0) {
+		return
 	}
+
+	nStr := ErrorLevel
+	SendInput, ^%KeyG%
+	WinWait, Перейти по номеру строки
+	SendInput, %nStr%{ENTER}
+
 	SendInput, {home}
 	SendInput, ^{NumpadAdd}
 }
@@ -150,7 +155,7 @@ actionShowLastSelect() {
 
 actionRunAuthorComments(data) {
 	putSelectionInFile()
-	RunWait, system\OneScript\bin\oscript.exe scripts\АвторскиеКомментарии.os %data%,,Hide
+	RunWait, system\OneScript\bin\oscript.exe scripts\АвторскиеКомментарии.os %data%,,hide
 	pasteTextFromFile()
 }
 
@@ -171,7 +176,7 @@ actionShowPreprocMethod() {
 	set_locale_ru()
 	FileRead, text, tmp\module.txt
 	set_locale_ru()
-	SendInput, %text%	
+	SendRaw, %text%	
 }
 
 actionShowSimpleMetaSearch() {
@@ -336,31 +341,6 @@ actionGenerateServerMethodFromCurMethod() {
 
 }
 
-actionFindInTreeByName() {
-	Global
-
-	clipboard =
-
-	; получили объект под курсором
-	SendInput ^{ins}
-
-	module = tmp\module.txt
-	ClipWait
-	
-	FileDelete %module%
-	; записали в файл текст
-	FileAppend, %Clipboard%, %module%, UTF-8
-	; запустили скрипт на получение имени объекта
-	RunWait, system\OneScript\bin\oscript.exe scripts\Навигация\НавигацияПоМетаданным.os ПерейтиКОбъектуПоИмени,,Hide
-	; если что-то есть вернет результат
-	; if (ErrorLevel > 0) {
-	; 	NewText := getTextFromFile()
-	; 	SendInput, ^!%KeyM%
-	; 	SendInput, +{ins}
-			
-	; }
-	
-}
 actionOneStyleSelection() {
     ; отформатируем выделение средствами 1С, т.к. у только выделенного блока недостаточно информации об отступах
     global
@@ -368,4 +348,69 @@ actionOneStyleSelection() {
     putSelectionInFile()
     RunWait, system\OneScript\bin\oscript.exe scripts\OneStyle\Main.os tmp\module.txt,,Hide
     pasteTextFromFile()
+}
+
+actionWindowsManager() {
+	detect_hidden = 0
+	WinGet controls, ControlListHwnd
+	static WINDOW_TEXT_SIZE := 32767 ; Defined in AutoHotkey source.
+	VarSetCapacity(buf, WINDOW_TEXT_SIZE * (A_IsUnicode ? 2 : 1))
+	text := ""
+	Loop Parse, controls, `n
+	{
+		if !detect_hidden && !DllCall("IsWindowVisible", "ptr", A_LoopField)
+			continue
+		if !DllCall("GetWindowText", "ptr", A_LoopField, "str", buf, "int", WINDOW_TEXT_SIZE)
+			continue
+		if (buf = "Конфигурация") {
+			continue
+		} 
+		text .= buf "`r`n"
+	}
+
+	module = tmp\module.txt
+	FileDelete %module%
+	FileAppend, %text%, %module%, UTF-8
+
+	RunWait, system\SelectValueSharp.exe %module%
+	FileRead, text, tmp\module.txt
+	Loop Parse, controls, `n
+	{
+		if !DllCall("GetWindowText", "ptr", A_LoopField, "str", buf, "int", WINDOW_TEXT_SIZE)
+			continue
+		 if (buf = text) {
+		 	WinActivate, ahk_id %A_LoopField%
+		 }
+	}
+}
+
+actionResultSearchFilter() {
+
+	; Активировать результат поиска
+	ActivateWindowByTitle("Результаты поиска")
+
+	clipboard =
+	; выделили и скопировали данные
+	SendInput, ^%KeyA%^{ins}
+	;SendInput, ^{ins}
+	ClipWait
+	SendInput, {home}
+
+	module = tmp\module.txt
+	FileDelete %module%
+	FileAppend, %Clipboard%, %module%, UTF-8
+
+	SendInput, {home}
+	RunWait, system\OneScript\bin\oscript.exe scripts\Навигация\НавигацияПоМетаданным.os РезультатыПоискаПерейти,,Hide
+	if (ErrorLevel > 0) {
+		UpCount := ErrorLevel
+		ActivateWindowByTitle("Результаты поиска")
+		Loop %UpCount%
+		{
+			SendInput, {down}
+		}	
+		SendInput, {ENTER}	
+	}
+
+
 }
