@@ -345,9 +345,11 @@ actionOneStyleSelection() {
     ; отформатируем выделение средствами 1С, т.к. у только выделенного блока недостаточно информации об отступах
     global
     SendInput, !+%KeyF%
-    putSelectionInFile()
-    RunWait, system\OneScript\bin\oscript.exe scripts\OneStyle\Main.os tmp\module.txt,,Hide
-    pasteTextFromFile()
+	fileName:="scripts\OneStyle\module.txt"
+    putSelectionInFile( fileName )
+    RunWait, system\OneScript\bin\oscript.exe scripts\OneStyle\Main.os %fileName%,,Hide
+    pasteTextFromFile( fileName )
+	FileDelete %fileName%
 }
 
 actionWindowsManager() {
