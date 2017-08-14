@@ -1,10 +1,7 @@
 actionShowMethodsList() {
 	Global
 
-	; putModuleInFile()
-	putModuleInFileWithSavePosition()
-	SendInput, {home}
-	RunWait, system\OneScript\bin\oscript.exe scripts\Навигация\НавигацияПоМодулю.os СписокМетодов,,Hide
+	RunWait, system\OneScript\bin\woscript.exe scripts\Навигация\НавигацияПоМодулю.os СписокМетодов
 	if (ErrorLevel = 0) {
 		return
 	}
@@ -21,11 +18,7 @@ actionShowMethodsList() {
 actionShowRegionsList() {
 	Global
 
-	;putModuleInFile()
-	putModuleInFileWithSavePosition()
-	SendInput, {home}
-	ClipWait
-	RunWait, system\OneScript\bin\oscript.exe scripts\Навигация\НавигацияПоМодулю.os СписокОбластей,,Hide
+	RunWait, system\OneScript\bin\woscript.exe scripts\Навигация\НавигацияПоМодулю.os СписокОбластей,,Hide
 	if (ErrorLevel = 0) {
 		return
 	}
@@ -43,7 +36,7 @@ actionShowExtFilesList() {
 	Global
 
 	; RunWait, wscript scripts\ExtFiles.js
-	RunWait, system\OneScript\bin\oscript.exe scripts\ExtFiles.os,,
+	RunWait, system\OneScript\bin\woscript.exe scripts\ExtFiles.os,,
 
 	NewText := getTextFromFile()
 	If (NewText <> "") {
@@ -64,15 +57,14 @@ actionShowScriptManager() {
 		Exit, 0
 	}
 	;  RunWait, wscript scripts\scripts_manager.js
-	RunWait, system\OneScript\bin\oscript.exe scripts\МенеджерСкриптов.os,,
+	RunWait, system\OneScript\bin\woscript.exe scripts\МенеджерСкриптов.os,,
 	if (ErrorLevel > 0) {
 		pasteTextFromFile()
 	}
 }
 
 actionShowPrevWords() {
-	putModuleInFileWithSavePosition()
-	RunWait, wscript scripts\scripts.js tmp\module.txt words
+	RunWait, system\OneScript\bin\woscript.exe scripts\Навигация\НавигацияПоМодулю.os allwords,,
 	pasteTextFromFile()
 }
 
@@ -80,7 +72,7 @@ actionGotoMethodBegin() {
 	Global
 
 	getTextUp()
-	RunWait, system\OneScript\bin\oscript.exe scripts\Навигация\НавигацияПоМодулю.os НачалоМетода,,Hide
+	RunWait, system\OneScript\bin\woscript.exe scripts\Навигация\НавигацияПоМодулю.os НачалоМетода,,Hide
 	if (ErrorLevel > 0) {
 		nStr := ErrorLevel
 		SendInput, {CtrlDown}%KeyG%{CtrlUp}
@@ -94,7 +86,7 @@ actionGotoMethodEnd() {
 	Global
 
 	getTextUp()
-	RunWait, system\OneScript\bin\oscript.exe scripts\Навигация\НавигацияПоМодулю.os НачалоМетода,,Hide
+	RunWait, system\OneScript\bin\woscript.exe scripts\Навигация\НавигацияПоМодулю.os НачалоМетода,,Hide
 	if (ErrorLevel > 0) {
 		nStr := ErrorLevel
 		SendInput ^%KeyG%
@@ -108,10 +100,7 @@ actionGotoMethodEnd() {
 actionShowRegExSearch() {
 	Global
 
-	putModuleInFile()
-
-	SendInput, {home}
-	RunWait, system\OneScript\bin\oscript.exe scripts\Навигация\НавигацияПоМодулю.os RegExSearch,,Hide
+	RunWait, system\OneScript\bin\woscript.exe scripts\Навигация\НавигацияПоМодулю.os RegExSearch,,Hide
 	if (ErrorLevel > 0) {
 		nStr := ErrorLevel
 		Sleep 1
@@ -126,7 +115,7 @@ actionShowRegExSearchLastResult() {
 	Global
 
 	SendInput, {home}
-	RunWait, system\OneScript\bin\oscript.exe scripts\Навигация\НавигацияПоМодулю.os РезультатПоследнегоПоиска,,Hide
+	RunWait, system\OneScript\bin\woscript.exe scripts\Навигация\НавигацияПоМодулю.os РезультатПоследнегоПоиска,,Hide
 	if (ErrorLevel > 0) {
 		nStr := ErrorLevel
 		SendInput ^%KeyG%
@@ -141,7 +130,7 @@ actionShowLastSelect() {
 
 	SendInput, {home}
 	; RunWait, wscript scripts.js null last
-	RunWait, system\OneScript\bin\oscript.exe scripts\Навигация\НавигацияПоМодулю.os ПоказатьПоследнийСписокВыбора,,Hide
+	RunWait, system\OneScript\bin\woscript.exe scripts\Навигация\НавигацияПоМодулю.os ПоказатьПоследнийСписокВыбора,,Hide
 	if (ErrorLevel > 0) {
 		nStr := ErrorLevel
 		SendInput ^%KeyG%
@@ -194,7 +183,8 @@ actionShowIncomingObjectTypes() {
 	SendInput, {UP}{UP}{UP}{ENTER}
 	Sleep 100
 	SendInput, {Enter}
-	SendInput, ^!%KeyO%
+	;SendInput, ^!%KeyO%
+	ActivateWindowByTitle("Служебные сообщения")
 	SendInput, ^%KeyA%
 	putSelectionInFile(0)
 	module = tmp\module.txt
@@ -293,7 +283,7 @@ actionGoToPrevContainedWord() {
 	FileDelete %module%
 
 	FileAppend, %Clipboard%, %module%, UTF-8
-	RunWait, system\OneScript\bin\oscript.exe scripts\РаботаСоСловами.os prev,,Hide
+	RunWait, system\OneScript\bin\woscript.exe scripts\РаботаСоСловами.os prev,,Hide
 	if (ErrorLevel > 0) {
 		UpCount := ErrorLevel
 		Loop %UpCount%
@@ -329,7 +319,7 @@ actionShowMethodName() {
 	Global
 
 	getTextUp()
-	RunWait, system\OneScript\bin\oscript.exe scripts\Навигация\НавигацияПоМодулю.os ИмяМетода,,Hide
+	RunWait, system\OneScript\bin\woscript.exe scripts\Навигация\НавигацияПоМодулю.os ИмяМетода,,
 
 }
 
@@ -403,7 +393,7 @@ actionResultSearchFilter() {
 	FileAppend, %Clipboard%, %module%, UTF-8
 
 	SendInput, {home}
-	RunWait, system\OneScript\bin\oscript.exe scripts\Навигация\НавигацияПоМетаданным.os РезультатыПоискаПерейти,,Hide
+	RunWait, system\OneScript\bin\woscript.exe scripts\Навигация\НавигацияПоМетаданным.os РезультатыПоискаПерейти,,Hide
 	if (ErrorLevel > 0) {
 		UpCount := ErrorLevel
 		ActivateWindowByTitle("Результаты поиска")
@@ -415,4 +405,9 @@ actionResultSearchFilter() {
 	}
 
 
+}
+
+
+actionTextWinExt() {
+	RunWait, system\OneScript\bin\oscript.exe scripts\WinExtTest.os,,
 }
