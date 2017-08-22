@@ -9,14 +9,14 @@ getTextFromFile() {
   Return %newText%
 }
 
-pasteTextFromFile( fileName=0 ) {
+pasteTextFromFile( fileName=0, TrimRightCount=0 ) {
 
   if (fileName = 0) {
 		fileName = tmp\module.txt	
 	}
   module := fileName
   FileRead, newText, %module%
-  StringTrimRight, newText, newText, 0
+  StringTrimRight, newText, newText, TrimRightCount
   ClipWait, 1
   Clipboard := newText
   ClipWait, 1

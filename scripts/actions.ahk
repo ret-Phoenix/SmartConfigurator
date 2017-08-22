@@ -345,7 +345,7 @@ actionOneStyleSelection() {
 	fileName:="scripts\OneStyle\module.txt"
     putSelectionInFile( fileName )
     RunWait, system\OneScript\bin\oscript.exe scripts\OneStyle\Main.os %fileName%,,Hide
-    pasteTextFromFile( fileName )
+    pasteTextFromFile( fileName, 2 )
 	FileDelete %fileName%
 }
 
