@@ -29,8 +29,8 @@ ActivateWindowByTitle(wndTitle) {
 	text := ""
 	Loop Parse, controls, `n
 	{
-		if !detect_hidden && !DllCall("IsWindowVisible", "ptr", A_LoopField)
-			continue
+		;if !detect_hidden && !DllCall("IsWindowVisible", "ptr", A_LoopField)
+		;	continue
 		if !DllCall("GetWindowText", "ptr", A_LoopField, "str", buf, "int", WINDOW_TEXT_SIZE)
 			continue
 		if (buf = wndTitle) {

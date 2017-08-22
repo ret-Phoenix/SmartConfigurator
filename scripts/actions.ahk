@@ -161,7 +161,8 @@ actionShowCodeGenerator() {
 
 actionShowPreprocMethod() {
 	set_locale_ru()
-	RunWait, wscript scripts\scripts.js null preprocmenu
+	; RunWait, wscript scripts\scripts.js null preprocmenu
+	RunWait, system\OneScript\bin\oscript.exe scripts\РаботаСТекстом.os ВыбратьПрепроцессор
 	set_locale_ru()
 	FileRead, text, tmp\module.txt
 	set_locale_ru()
@@ -183,14 +184,18 @@ actionShowIncomingObjectTypes() {
 	SendInput, {UP}{UP}{UP}{ENTER}
 	Sleep 100
 	SendInput, {Enter}
-	;SendInput, ^!%KeyO%
+	SendInput, ^!%KeyO%
 	ActivateWindowByTitle("Служебные сообщения")
 	SendInput, ^%KeyA%
+	ClipWait
 	putSelectionInFile(0)
 	module = tmp\module.txt
-	SendInput, ^{END}
+	
 	RunWait, wscript scripts\scripts.js %module% gototype
+	;RunWait, system\OneScript\bin\oscript.exe scripts\Навигация\НавигацияПоМетаданным.os ПерейтиКСсылкеВОбъекте
 	if (ErrorLevel > 0) {
+		SendInput, ^{END}
+		;MsgBox %ErrorLevel%
 		UpCount := ErrorLevel
 		Loop %UpCount%
 		{
@@ -198,6 +203,7 @@ actionShowIncomingObjectTypes() {
 		}	
 		SendInput, {ENTER}	
 	}
+	SendInput, {HOME}
 }
 
 actionShowMetadataNavigator() {
@@ -224,10 +230,11 @@ actionShowMetadataNavigator() {
 		}
 		; show search dlg
 		SendInput, ^%KeyF%
-		WinWait, Поиск объектов метаданных
+		;WinWait, Поиск объектов метаданных
 		pasteTextFromFile()
 		;SendInput, !{Insert}
 		SendInput, {Enter}
+		;ActivateWindowByTitle("Результаты поиска")
 		Sleep 2000
 		SendInput, ^%KeyA%
 		ClipWait

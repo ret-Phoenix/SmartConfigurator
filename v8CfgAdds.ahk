@@ -60,10 +60,10 @@ Ctrl_Shift_Z = ^+{SC02C}
 ; $^SC015:: SendInput %Ctrl_L%
 
 ; Ctrl-, - символ '<'
-$^,:: SendInput <
+;$^,:: SendInput <
 
 ; Ctrl-. символ '>'
-$^.:: SendInput >
+;$^.:: SendInput >
 
 ; Ctrl-\ символ '|'
 $^\:: SendInput |
