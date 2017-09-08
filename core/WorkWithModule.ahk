@@ -1,5 +1,11 @@
 #IfWinActive ahk_class V8TopLevelFrame
 
+
+readTextFromFile() {
+  FileRead, newText, tmp\module.txt
+  Return %newText%
+}
+
 getTextFromFile() {
   FileRead, newText, tmp\module.txt
   ClipWait, 1

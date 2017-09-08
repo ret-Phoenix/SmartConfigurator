@@ -160,13 +160,14 @@ actionShowCodeGenerator() {
 }
 
 actionShowPreprocMethod() {
-	set_locale_ru()
-	; RunWait, wscript scripts\scripts.js null preprocmenu
-	RunWait, system\OneScript\bin\oscript.exe scripts\РаботаСТекстом.os ВыбратьПрепроцессор
-	set_locale_ru()
-	FileRead, text, tmp\module.txt
-	set_locale_ru()
-	SendRaw, %text%	
+	RunWait, system\OneScript\bin\woscript.exe scripts\РаботаСТекстом.os ВыбратьПрепроцессор,,
+	result = readTextFromFile()
+	if (result <> "") {
+		set_locale_ru()
+		FileRead, text, tmp\module.txt
+		set_locale_ru()
+		SendRaw, %text%	
+	}
 }
 
 actionShowSimpleMetaSearch() {
@@ -221,20 +222,26 @@ actionShowMetadataNavigator() {
 		; go to service msgs
 		SendInput, ^!%KeyO%
 		SendInput, ^+%KeyC%
-
+		ActivateWindowByTitle("Результаты поиска")
+		Sleep 1
 		; Получаем текущее окно
 		ControlGetFocus, WinType
+		
 		If (WinType <> "V8Grid1") {
 			; Если это окно поиска - тогда перейдем в дерево, послав Таб.
-			SendInput {Tab}
+			SendInput, {Tab}
 		}
 
 		; show search dlg
 		SendInput, ^%KeyF%
+		WinWait, Поиск объектов метаданных
 		pasteTextFromFile()
-		;SendInput, !{Insert}
 		SendInput, {Enter}
+		
 		Sleep 2000
+		
+		ActivateWindowByTitle("Результаты поиска")
+
 		SendInput, ^%KeyA%
 		ClipWait
 		SendInput, {Left}{Enter}
