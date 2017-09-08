@@ -228,18 +228,17 @@ actionShowMetadataNavigator() {
 			; Если это окно поиска - тогда перейдем в дерево, послав Таб.
 			SendInput {Tab}
 		}
+
 		; show search dlg
 		SendInput, ^%KeyF%
-		;WinWait, Поиск объектов метаданных
 		pasteTextFromFile()
 		;SendInput, !{Insert}
 		SendInput, {Enter}
-		;ActivateWindowByTitle("Результаты поиска")
 		Sleep 2000
 		SendInput, ^%KeyA%
 		ClipWait
 		SendInput, {Left}{Enter}
-		putSelectionInFile(0)
+		putTextFromResultWindowInFile(0)
 		NewText := getTextFromFile()
 		If (NewText <> "") {
 			SendInput, ^{END}
@@ -248,7 +247,6 @@ actionShowMetadataNavigator() {
 			If (NewText <> "") {
 				SendInput, {Home}
 				SendInput, ^%KeyF%
-				;WinWait, Поиск объектов метаданных
 				SendInput +{ins}
 			
 				SendInput, !{Insert}

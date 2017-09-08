@@ -31,6 +31,28 @@ set_locale_en() {
   SendMessage, 0x50,, 0x4090409,, A 
 }
 
+putTextFromResultWindowInFile(fileName=0, flagSaveClipboard = 1) {
+
+	clipboard := 
+	set_locale_ru()
+	if (flagSaveClipboard = 1)
+		SaveClipboard()
+
+	if (fileName = 0) {
+		fileName = tmp\module.txt	
+	}
+
+	module := fileName
+	SendInput, ^{ins}
+	ClipWait
+	
+	FileDelete %module%
+	FileAppend, %clipboard%`r`n, %module%
+
+	if (flagSaveClipboard = 1)
+		RestoreClipboard()
+}
+
 putSelectionInFile(fileName=0, flagSaveClipboard = 1) {
 
 	wType := getWindowType()
