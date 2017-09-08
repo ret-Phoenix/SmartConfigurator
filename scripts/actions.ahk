@@ -180,23 +180,26 @@ actionShowSimpleMetaSearch() {
 
 actionShowIncomingObjectTypes() {
 	Global
-
+try {
 	SendInput, %KeyContextMenu%
 	SendInput, {UP}{UP}{UP}{ENTER}
 	Sleep 100
 	SendInput, {Enter}
+	; Sleep 1
 	SendInput, ^!%KeyO%
 	ActivateWindowByTitle("—лужебные сообщени€")
 	SendInput, ^%KeyA%
-	ClipWait
+	; ClipWait
+	Sleep 1
 	putTextFromResultWindowInFile(0)
 	module = tmp\module.txt
 	
 	RunWait, wscript scripts\scripts.js %module% gototype
 	;RunWait, system\OneScript\bin\oscript.exe scripts\Ќавигаци€\Ќавигаци€ѕоћетаданным.os ѕерейти —сылке¬ќбъекте
+		; MsgBox %ErrorLevel%
+		Sleep 1
 	if (ErrorLevel > 0) {
 		SendInput, ^{END}
-		;MsgBox %ErrorLevel%
 		UpCount := ErrorLevel
 		Loop %UpCount%
 		{
@@ -205,6 +208,11 @@ actionShowIncomingObjectTypes() {
 		SendInput, {ENTER}	
 	}
 	SendInput, {HOME}
+
+	}  Catch, er {
+		MsgBox, er
+    Reload
+}
 }
 
 actionShowMetadataNavigator() {

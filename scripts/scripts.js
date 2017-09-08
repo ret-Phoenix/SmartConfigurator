@@ -108,7 +108,7 @@ function actionGoToType(lStrings) {
 	var re_meth = /(ссылается на)/i;
 
 	CntRows = data.length;
-	rowBM = 1;
+	// rowBM = 1;
 	for(var i=0; i < CntRows; i++)
 	{
 		lStr = data[i];
