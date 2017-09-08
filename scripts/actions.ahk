@@ -45,7 +45,7 @@ actionShowExtFilesList() {
 		set_locale_ru()
 		SendInput, !%KeyA%
 		SendInput, {DOWN}{DOWN}{Enter}
-		WinWait, Открыть
+		WinWait, Открытие
 		SendInput, ^%KeyV%{Enter}
 	}
 }
@@ -188,7 +188,7 @@ actionShowIncomingObjectTypes() {
 	ActivateWindowByTitle("Служебные сообщения")
 	SendInput, ^%KeyA%
 	ClipWait
-	putSelectionInFile(0)
+	putTextFromResultWindowInFile(0)
 	module = tmp\module.txt
 	
 	RunWait, wscript scripts\scripts.js %module% gototype
