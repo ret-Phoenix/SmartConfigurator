@@ -1,29 +1,33 @@
 createMenuItems() {
 
-   Menu, Popup, Add, КонецЕсли, КонецЕсли
-   Menu, Popup, Add, КонецЦикла, КонецЦикла
-   Menu, Popup, Add, КонецПроцедуры, КонецПроцедуры
-   Menu, Popup, Add, КонецФункции, КонецФункции
+    ; Магия, чтобы нормально работал разделитель меню
+    Menu, Popup, Add, 
+    Menu, Popup, DeleteAll 
+
+   Menu, Popup, Add, Конец&Если, КонецЕсли
+   Menu, Popup, Add, Конец&Цикла, КонецЦикла
+   Menu, Popup, Add, Конец&Процедуры, КонецПроцедуры
+   Menu, Popup, Add, Конец&Функции, КонецФункции
    Menu, Popup, Add, 
-   Menu, Popup, Add, Выравнить по равно, ВыравнитьПоРавно
+   Menu, Popup, Add, Выравнить по &равно, ВыравнитьПоРавно
 
    Пустышка:
    Return
 
    КонецЕсли:
-      SendInput, КонецЕсли;
+      SendRaw, КонецЕсли;
    Return
 
    КонецЦикла:
-      SendInput, КонецЦикла;
+      SendRaw, КонецЦикла;
    Return
 
    КонецПроцедуры:
-      SendInput, КонецПроцедуры;
+      SendRaw, КонецПроцедуры;
    Return
 
    КонецФункции:
-      SendInput, КонецФункции;
+      SendRaw, КонецФункции;
    Return
 
    ВыравнитьПоРавно:
