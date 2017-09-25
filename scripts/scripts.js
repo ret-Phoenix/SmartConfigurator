@@ -96,52 +96,6 @@ function wtiteToResultFile(file_name, file_data) {
 	f.Close();
 }
 
-function preroclist(arg){
-	lstrRes = "&НаКлиенте\r\n&НаСервере\r\n\&НаСервереБезКонтекста";
-	vRes = SelectValue(lstrRes);
-	wtiteToResultFile("tmp/module.txt",vRes);
-}
-
-/*function showPrevSarchResult(prmTxt)
-{
-	var lstrRes = "";
-    for (i=0; i<prmTxt.length; i++)
-    {
-        if (prmTxt[i] != "")
-        {
-			// lStr = prmTxt[i];
-			lstrRes += prmTxt[i] + "\r\n";
-		}
-    }
-	 // lstrRes = "sss\r\n sss\r\n";
-	
-	ResultList(lstrRes, "Значение поиска");
-}*/
-
-function words(txt) {
-	txt = txt.join('');
-	txt1 = txt.replace(/(\s|>|<|\*|}|{|=|\||\"|\.|,|:|;|-|\+|\(|\)|\b|\r\n)/g, "\r\n");
-	t1 = txt1.split('\r\n');
-	result_str = "";
-	for (var i = 0; i < t1.length; i++) {
-		if (t1[i].length > 4)  {
-			if (result_str.indexOf(t1[i]) == -1) 
-			{
-				result_str += "\r\n" + t1[i];	
-			}
-		} 
-	}
-	result_str += "\r\n";
-	
-	fso = new ActiveXObject("Scripting.FileSystemObject");
-	t_file = fso.OpenTextFile("words.txt", 1); 
-	result_str += t_file.ReadAll();
-	t_file.Close();
-
-	vRes = SelectValue(result_str,"Слово");
-	wtiteToResultFile("tmp/module.txt",JSTrim(vRes));
-}
-
 function actionGoToType(lStrings) {
 	
 	var lListProcFunc = "";
@@ -154,7 +108,7 @@ function actionGoToType(lStrings) {
 	var re_meth = /(ссылается на)/i;
 
 	CntRows = data.length;
-	rowBM = 1;
+	// rowBM = 1;
 	for(var i=0; i < CntRows; i++)
 	{
 		lStr = data[i];
@@ -194,8 +148,12 @@ function actionGoToObject(lStrings) {
 		UpCount++;
 	}
 	if (StrToChoice != "") {
-		var resultStr = SelectValue(StrToChoice);
-		wtiteToResultFile("tmp/module.txt",JSTrim(resultStr));
+		if (UpCount > 1) {
+			var resultStr = SelectValue(StrToChoice);
+			wtiteToResultFile("tmp/module.txt", JSTrim(resultStr));
+		} else {
+			wtiteToResultFile("tmp/module.txt", "");
+		}
 	} else {
 		wtiteToResultFile("tmp/module.txt","");
 		echo("Пустой список");
@@ -221,12 +179,6 @@ function Run()
 		
 	} 
 	switch (arg(1)) {
-		case "preprocmenu":
-			preroclist();
-			break;
-		case "words":
-			words(lList);
-			break;
 		case "gototype":
 			actionGoToType(lList);
 			break;

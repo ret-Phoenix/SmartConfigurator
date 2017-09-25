@@ -45,13 +45,13 @@ function SearchFile(Folder, RegExpMask){
         var FilesEnumerator = new Enumerator(Folder.Files);
         while (!FilesEnumerator.atEnd()){
                 var File = FilesEnumerator.item();
-                var FileName = File.Name;//имя файла
-                var FilePath = File.Path;//полный путь к файлу
-                var FileSize = File.Size;//размер файла
+                var FileName = File.Name;//РёРјСЏ С„Р°Р№Р»Р°
+                var FilePath = File.Path;//РїРѕР»РЅС‹Р№ РїСѓС‚СЊ Рє С„Р°Р№Р»Сѓ
+                var FileSize = File.Size;//СЂР°Р·РјРµСЂ С„Р°Р№Р»Р°
                 RegExpMask.compile(RegExpMask);
                 var FileByMask = RegExpMask.exec(FileName);
                 if (FileByMask){
-                        // Log.Write(1, FilePath);//здесь можно выполнять любые действия с найденным файлом
+                        // Log.Write(1, FilePath);//Р·РґРµСЃСЊ РјРѕР¶РЅРѕ РІС‹РїРѕР»РЅСЏС‚СЊ Р»СЋР±С‹Рµ РґРµР№СЃС‚РІРёСЏ СЃ РЅР°Р№РґРµРЅРЅС‹Рј С„Р°Р№Р»РѕРј
                         //WScript.StdOut.WriteLine(FilePath);
                         //listFiles += FilePath + "\r\n";
 
@@ -66,12 +66,12 @@ function SearchFile(Folder, RegExpMask){
                 }
                 FilesEnumerator.moveNext();
         }
-        //поиск в подпапках 
+        //РїРѕРёСЃРє РІ РїРѕРґРїР°РїРєР°С… 
         var SubFoldersEnumerator = new Enumerator(Folder.SubFolders);    
         while (!SubFoldersEnumerator.atEnd()){
                 var Folder = SubFoldersEnumerator.item();               
-                //System.ProcessMessages();//<--здесь можно двигать бегунок
-                //Log.Write(1, Folder.Path);//<--здесь можно выполнять любые действия с найденной папкой
+                //System.ProcessMessages();//<--Р·РґРµСЃСЊ РјРѕР¶РЅРѕ РґРІРёРіР°С‚СЊ Р±РµРіСѓРЅРѕРє
+                //Log.Write(1, Folder.Path);//<--Р·РґРµСЃСЊ РјРѕР¶РЅРѕ РІС‹РїРѕР»РЅСЏС‚СЊ Р»СЋР±С‹Рµ РґРµР№СЃС‚РІРёСЏ СЃ РЅР°Р№РґРµРЅРЅРѕР№ РїР°РїРєРѕР№
                 SearchFile(Folder, RegExpMask);
                 SubFoldersEnumerator.moveNext();
         }
@@ -80,16 +80,16 @@ function SearchFile(Folder, RegExpMask){
 
 function Run() {
 	var array_commands = [
-	   { key: 'Выделение в верхний регистр', value: 'system\\OneScript\\bin\\oscript.exe scripts\\РаботаСРегистромТекста.os up' },
-	   { key: 'Выделение в нижний регистр', value: 'system\\OneScript\\bin\\oscript.exe scripts\\РаботаСРегистромТекста.os down' },
-	   { key: 'Выделение в нормальный регистр', value: 'system\\OneScript\\bin\\oscript.exe scripts\\РаботаСРегистромТекста.os normal' },
+	   { key: 'Р’С‹РґРµР»РµРЅРёРµ РІ РІРµСЂС…РЅРёР№ СЂРµРіРёСЃС‚СЂ', value: 'system\\OneScript\\bin\\oscript.exe scripts\\Р Р°Р±РѕС‚Р°РЎР РµРіРёСЃС‚СЂРѕРјРўРµРєСЃС‚Р°.os up' },
+	   { key: 'Р’С‹РґРµР»РµРЅРёРµ РІ РЅРёР¶РЅРёР№ СЂРµРіРёСЃС‚СЂ', value: 'system\\OneScript\\bin\\oscript.exe scripts\\Р Р°Р±РѕС‚Р°РЎР РµРіРёСЃС‚СЂРѕРјРўРµРєСЃС‚Р°.os down' },
+	   { key: 'Р’С‹РґРµР»РµРЅРёРµ РІ РЅРѕСЂРјР°Р»СЊРЅС‹Р№ СЂРµРіРёСЃС‚СЂ', value: 'system\\OneScript\\bin\\oscript.exe scripts\\Р Р°Р±РѕС‚Р°РЎР РµРіРёСЃС‚СЂРѕРјРўРµРєСЃС‚Р°.os normal' },
 	   { key: '----------------------------------------', value: '' },
-	   { key: 'Выравнять по равно', value: 'system\\OneScript\\bin\\oscript.exe scripts\\format.os align-equal-sign' },
-	   { key: 'Выравнять по первой запятой', value: 'system\\OneScript\\bin\\oscript.exe scripts\\format.os align-first-comma' },
-	   { key: 'Выравнять по выбранному значению', value: 'system\\OneScript\\bin\\oscript.exe scripts\\format.os align-user-symbol' },
+	   { key: 'Р’С‹СЂР°РІРЅСЏС‚СЊ РїРѕ СЂР°РІРЅРѕ', value: 'system\\OneScript\\bin\\oscript.exe scripts\\format.os align-equal-sign' },
+	   { key: 'Р’С‹СЂР°РІРЅСЏС‚СЊ РїРѕ РїРµСЂРІРѕР№ Р·Р°РїСЏС‚РѕР№', value: 'system\\OneScript\\bin\\oscript.exe scripts\\format.os align-first-comma' },
+	   { key: 'Р’С‹СЂР°РІРЅСЏС‚СЊ РїРѕ РІС‹Р±СЂР°РЅРЅРѕРјСѓ Р·РЅР°С‡РµРЅРёСЋ', value: 'system\\OneScript\\bin\\oscript.exe scripts\\format.os align-user-symbol' },
 	   { key: '----------------------------------------', value: '' },
-	   { key: 'Убрать пробелы на конце строк', value: 'system\\OneScript\\bin\\oscript.exe scripts\\format.os rtrim' },
-	   { key: '============ Автоматически добавленные ============', value: '' }
+	   { key: 'РЈР±СЂР°С‚СЊ РїСЂРѕР±РµР»С‹ РЅР° РєРѕРЅС†Рµ СЃС‚СЂРѕРє', value: 'system\\OneScript\\bin\\oscript.exe scripts\\format.os rtrim' },
+	   { key: '============ РђРІС‚РѕРјР°С‚РёС‡РµСЃРєРё РґРѕР±Р°РІР»РµРЅРЅС‹Рµ ============', value: '' }
 	]	
 	   
 	var FileSystem = new ActiveXObject('Scripting.FileSystemObject');
@@ -111,7 +111,7 @@ function Run() {
 	for (var i = 0, len = array_commands.length; i < len; i++) {
 		str_select += array_commands[i].key + '\r\n';
 	}
-	run_command = JSTrim(SelectValue(str_select, 'Команда'));
+	run_command = JSTrim(SelectValue(str_select, 'РљРѕРјР°РЅРґР°'));
 
 	if (run_command != "") {
 		for (var i = 0, len = array_commands.length; i < len; i++) {
