@@ -145,7 +145,7 @@ actionShowLastSelect() {
 actionRunAuthorComments(data) {
 	putSelectionInFile()
 	RunWait, system\OneScript\bin\oscript.exe scripts\АвторскиеКомментарии.os %data%,,hide
-	pasteTextFromFile()
+	; pasteTextFromFile()
 }
 
 actionRunLinksToItems() {
@@ -429,5 +429,6 @@ actionResultSearchFilter() {
 
 
 actionTextWinExt() {
-	RunWait, system\OneScript\bin\oscript.exe scripts\WinExtTest.os,,
+	; MsgBox go
+	RunWait, system\OneScript\bin\woscript.exe scripts\WinExtTest.os,,
 }
