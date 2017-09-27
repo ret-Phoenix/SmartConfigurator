@@ -31,9 +31,9 @@ createMenuItems() {
    Return
 
    ВыравнитьПоРавно:
-      putSelectionInFile()
+    ;   putSelectionInFile()
       RunWait, system\OneScript\bin\oscript.exe scripts\format.os align-equal-sign,,Hide
-      pasteTextFromFile()
+    ;   pasteTextFromFile()
    Return   
 
 }
