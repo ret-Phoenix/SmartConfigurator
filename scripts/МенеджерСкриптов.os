@@ -44,6 +44,7 @@
 	ВставитьСкрипт("Убрать пробелы в конце строк", "system\OneScript\bin\woscript.exe scripts\format.os rtrim");
 	// ВставитьСкрипт("Добавление ссылки на реквизит в модуле", "wscript scripts\generator.js null simple-managment");
 	// ВставитьСкрипт("Генератор кода", "wscript scripts\generator.js null generator");
+	ВставитьСкрипт("Генератор кода", "system\OneScript\bin\woscript.exe scripts/ГенераторКодаПоМетаданным.os Действие ГенерацияКодаПоМетаданным");
 	ВставитьСкрипт("============ Автоматически добавленные ============", "");
 	
 	ТекПуть = ТекущийКаталог() + "\scripts\auto\";
