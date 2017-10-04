@@ -381,6 +381,13 @@ actionResultSearchFilter() {
 
 }
 
+actionContinueRow() {
+	SendInput, {SHIFTDOWN}{up}{up}{up}{SHIFTUP}^{Insert}
+	ClipWait
+	SendInput, {Right}
+	RunWait, system\OneScript\bin\woscript.exe scripts\РаботаСТекстом.os ПродолжитьСтрокуКомментарий
+}
+
 
 actionTextWinExt() {
 	; MsgBox go
