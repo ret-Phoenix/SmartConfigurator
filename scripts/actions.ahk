@@ -137,17 +137,6 @@ actionRunAuthorComments(data) {
 	RunWait, system\OneScript\bin\oscript.exe scripts\АвторскиеКомментарии.os %data%,,hide
 }
 
-actionRunLinksToItems() {
-	putSelectionInFile()
-	RunWait, wscript scripts\generator.js null simple-managment
-	pasteTextFromFile()
-}
-
-actionShowCodeGenerator() {
-	RunWait, wscript scripts\generator.js null generator
-	pasteTextFromFile()	
-}
-
 actionShowPreprocMethod() {
 	RunWait, system\OneScript\bin\woscript.exe scripts\РаботаСТекстом.os ВыбратьПрепроцессор,,
 }
@@ -297,14 +286,6 @@ actionShowMethodName() {
 
 }
 
-actionGenerateServerMethodFromCurMethod() {
-	Global
-
-	getTextUp()
-	RunWait, system\OneScript\bin\oscript.exe scripts\Навигация\НавигацияПоМодулю.os СоздатьСерверныйМетод,,Hide
-
-}
-
 actionOneStyleSelection() {
     ; отформатируем выделение средствами 1С, т.к. у только выделенного блока недостаточно информации об отступах
     global
@@ -382,10 +363,4 @@ actionContinueRow() {
 	ClipWait
 	SendInput, {Right}
 	RunWait, system\OneScript\bin\woscript.exe scripts\РаботаСТекстом.os ПродолжитьСтрокуКомментарий
-}
-
-
-actionTextWinExt() {
-	; MsgBox go
-	RunWait, system\OneScript\bin\woscript.exe scripts\WinExtTest.os,,
 }
