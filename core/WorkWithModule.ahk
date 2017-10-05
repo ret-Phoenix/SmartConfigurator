@@ -1,5 +1,11 @@
 #IfWinActive ahk_class V8TopLevelFrame
 
+
+readTextFromFile() {
+  FileRead, newText, tmp\module.txt
+  Return %newText%
+}
+
 getTextFromFile() {
   FileRead, newText, tmp\module.txt
   ClipWait, 1
@@ -31,12 +37,34 @@ set_locale_en() {
   SendMessage, 0x50,, 0x4090409,, A 
 }
 
+putTextFromResultWindowInFile(fileName=0, flagSaveClipboard = 1) {
+
+	clipboard := 
+	set_locale_ru()
+	if (flagSaveClipboard = 1)
+		SaveClipboard()
+
+	if (fileName = 0) {
+		fileName = tmp\module.txt	
+	}
+
+	module := fileName
+	SendInput, ^{ins}
+	ClipWait
+	
+	FileDelete %module%
+	FileAppend, %clipboard%`r`n, %module%
+
+	if (flagSaveClipboard = 1)
+		RestoreClipboard()
+}
+
 putSelectionInFile(fileName=0, flagSaveClipboard = 1) {
 
-	wType := getWindowType()
-	If (wType <> "TextEditor") {
-		Return "NotTextEditor"
-	}
+	; wType := getWindowType()
+	; If (wType <> "TextEditor") {
+	; 	Return "NotTextEditor"
+	; }
 	
 	clipboard := 
 	set_locale_ru()

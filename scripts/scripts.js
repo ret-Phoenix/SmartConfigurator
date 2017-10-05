@@ -96,15 +96,6 @@ function wtiteToResultFile(file_name, file_data) {
 	f.Close();
 }
 
-function preroclist(arg){
-	lstrRes = "&НаКлиенте\r\n&НаСервере\r\n\&НаСервереБезКонтекста";
-	vRes = SelectValue(lstrRes);
-	wtiteToResultFile("tmp/module.txt",vRes);
-}
-
-
-
-
 function actionGoToType(lStrings) {
 	
 	var lListProcFunc = "";
@@ -117,7 +108,7 @@ function actionGoToType(lStrings) {
 	var re_meth = /(ссылается на)/i;
 
 	CntRows = data.length;
-	rowBM = 1;
+	// rowBM = 1;
 	for(var i=0; i < CntRows; i++)
 	{
 		lStr = data[i];
@@ -188,9 +179,6 @@ function Run()
 		
 	} 
 	switch (arg(1)) {
-		case "preprocmenu":
-			preroclist();
-			break;
 		case "gototype":
 			actionGoToType(lList);
 			break;

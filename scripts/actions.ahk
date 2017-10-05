@@ -45,22 +45,13 @@ actionShowExtFilesList() {
 		set_locale_ru()
 		SendInput, !%KeyA%
 		SendInput, {DOWN}{DOWN}{Enter}
-		WinWait, Открыть
+		WinWait, Открытие
 		SendInput, ^%KeyV%{Enter}
 	}
 }
 
 actionShowScriptManager() {
-	result := putSelectionInFile()
-	if (result = "NotTextEditor") {
-		MsgBox, "Окно не текстовый редактор"
-		Exit, 0
-	}
-	;  RunWait, wscript scripts\scripts_manager.js
 	RunWait, system\OneScript\bin\woscript.exe scripts\МенеджерСкриптов.os,,
-	if (ErrorLevel > 0) {
-		pasteTextFromFile()
-	}
 }
 
 actionShowPrevWords() {
@@ -143,9 +134,7 @@ actionShowLastSelect() {
 
 
 actionRunAuthorComments(data) {
-	putSelectionInFile()
 	RunWait, system\OneScript\bin\oscript.exe scripts\АвторскиеКомментарии.os %data%,,hide
-	pasteTextFromFile()
 }
 
 actionRunLinksToItems() {
@@ -160,12 +149,7 @@ actionShowCodeGenerator() {
 }
 
 actionShowPreprocMethod() {
-	set_locale_ru()
-	RunWait, wscript scripts\scripts.js null preprocmenu
-	set_locale_ru()
-	FileRead, text, tmp\module.txt
-	set_locale_ru()
-	SendRaw, %text%	
+	RunWait, system\OneScript\bin\woscript.exe scripts\РаботаСТекстом.os ВыбратьПрепроцессор,,
 }
 
 actionShowSimpleMetaSearch() {
@@ -178,19 +162,26 @@ actionShowSimpleMetaSearch() {
 
 actionShowIncomingObjectTypes() {
 	Global
-
+try {
 	SendInput, %KeyContextMenu%
 	SendInput, {UP}{UP}{UP}{ENTER}
 	Sleep 100
 	SendInput, {Enter}
-	;SendInput, ^!%KeyO%
+	; Sleep 1
+	SendInput, ^!%KeyO%
 	ActivateWindowByTitle("Служебные сообщения")
 	SendInput, ^%KeyA%
-	putSelectionInFile(0)
+	; ClipWait
+	Sleep 1
+	putTextFromResultWindowInFile(0)
 	module = tmp\module.txt
-	SendInput, ^{END}
+	
 	RunWait, wscript scripts\scripts.js %module% gototype
+	;RunWait, system\OneScript\bin\oscript.exe scripts\Навигация\НавигацияПоМетаданным.os ПерейтиКСсылкеВОбъекте
+		; MsgBox %ErrorLevel%
+		Sleep 1
 	if (ErrorLevel > 0) {
+		SendInput, ^{END}
 		UpCount := ErrorLevel
 		Loop %UpCount%
 		{
@@ -198,6 +189,12 @@ actionShowIncomingObjectTypes() {
 		}	
 		SendInput, {ENTER}	
 	}
+	SendInput, {HOME}
+
+	}  Catch, er {
+		MsgBox, er
+    Reload
+}
 }
 
 actionShowMetadataNavigator() {
@@ -215,24 +212,30 @@ actionShowMetadataNavigator() {
 		; go to service msgs
 		SendInput, ^!%KeyO%
 		SendInput, ^+%KeyC%
-
+		ActivateWindowByTitle("Результаты поиска")
+		Sleep 1
 		; Получаем текущее окно
 		ControlGetFocus, WinType
+		
 		If (WinType <> "V8Grid1") {
 			; Если это окно поиска - тогда перейдем в дерево, послав Таб.
-			SendInput {Tab}
+			SendInput, {Tab}
 		}
+
 		; show search dlg
 		SendInput, ^%KeyF%
 		WinWait, Поиск объектов метаданных
 		pasteTextFromFile()
-		;SendInput, !{Insert}
 		SendInput, {Enter}
+		
 		Sleep 2000
+		
+		ActivateWindowByTitle("Результаты поиска")
+
 		SendInput, ^%KeyA%
 		ClipWait
 		SendInput, {Left}{Enter}
-		putSelectionInFile(0)
+		putTextFromResultWindowInFile(0)
 		NewText := getTextFromFile()
 		If (NewText <> "") {
 			SendInput, ^{END}
@@ -241,7 +244,6 @@ actionShowMetadataNavigator() {
 			If (NewText <> "") {
 				SendInput, {Home}
 				SendInput, ^%KeyF%
-				;WinWait, Поиск объектов метаданных
 				SendInput +{ins}
 			
 				SendInput, !{Insert}
@@ -276,21 +278,7 @@ actionGoToPrevContainedWord() {
 	clipboard =
 
 	SendInput ^+{left}^{ins}{right}
-
-	module = tmp\module.txt
-	ClipWait
-	
-	FileDelete %module%
-
-	FileAppend, %Clipboard%, %module%, UTF-8
-	RunWait, system\OneScript\bin\woscript.exe scripts\РаботаСоСловами.os prev,,Hide
-	if (ErrorLevel > 0) {
-		UpCount := ErrorLevel
-		Loop %UpCount%
-		{
-			SendInput, {left}
-		}	
-	}
+	RunWait, system\OneScript\bin\woscript.exe scripts\РаботаСоСловами.os prev,,
 }
 
 actionGoToNextContainedWord() {
@@ -298,21 +286,7 @@ actionGoToNextContainedWord() {
 	clipboard =
 
 	SendInput ^+{right}^{ins}{left}
-
-	module = tmp\module.txt
-	ClipWait
-	
-	FileDelete %module%
-
-	FileAppend, %Clipboard%, %module%, UTF-8
-	RunWait, system\OneScript\bin\oscript.exe scripts\РаботаСоСловами.os next,,Hide
-	if (ErrorLevel > 0) {
-		UpCount := ErrorLevel
-		Loop %UpCount%
-		{
-			SendInput, {right}
-		}	
-	}
+	RunWait, system\OneScript\bin\woscript.exe scripts\РаботаСоСловами.os next,,
 }
 
 actionShowMethodName() {
@@ -407,7 +381,15 @@ actionResultSearchFilter() {
 
 }
 
+actionContinueRow() {
+	SendInput, {SHIFTDOWN}{up}{up}{up}{SHIFTUP}^{Insert}
+	ClipWait
+	SendInput, {Right}
+	RunWait, system\OneScript\bin\woscript.exe scripts\РаботаСТекстом.os ПродолжитьСтрокуКомментарий
+}
+
 
 actionTextWinExt() {
-	RunWait, system\OneScript\bin\oscript.exe scripts\WinExtTest.os,,
+	; MsgBox go
+	RunWait, system\OneScript\bin\woscript.exe scripts\WinExtTest.os,,
 }
