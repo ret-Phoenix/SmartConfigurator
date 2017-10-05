@@ -195,7 +195,6 @@ return
 	actionResultSearchFilter()
 return
 
-$+$SC01C:: ; Shift+Enter
-$+$SC11C:: ; Shift+Enter на "цифровой" клавиатуре
++Enter::
 	actionContinueRow()
 Return
