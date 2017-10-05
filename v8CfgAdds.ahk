@@ -145,7 +145,7 @@ Return
 
 ; ----------------------------------
 ; Ctrl + 0 Запуск 1script
-!0:: actionTextWinExt() ;actionRun1Script()
+^0:: actionTextWinExt() ;actionRun1Script()
 
 ; -----------------------------------
 ; Перейти к началу слова в составной строке
@@ -194,3 +194,8 @@ return
 #sc1F::
 	actionResultSearchFilter()
 return
+
+$+$SC01C:: ; Shift+Enter
+$+$SC11C:: ; Shift+Enter на "цифровой" клавиатуре
+	actionContinueRow()
+Return

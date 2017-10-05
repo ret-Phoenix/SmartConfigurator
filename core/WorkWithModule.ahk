@@ -61,10 +61,10 @@ putTextFromResultWindowInFile(fileName=0, flagSaveClipboard = 1) {
 
 putSelectionInFile(fileName=0, flagSaveClipboard = 1) {
 
-	wType := getWindowType()
-	If (wType <> "TextEditor") {
-		Return "NotTextEditor"
-	}
+	; wType := getWindowType()
+	; If (wType <> "TextEditor") {
+	; 	Return "NotTextEditor"
+	; }
 	
 	clipboard := 
 	set_locale_ru()
