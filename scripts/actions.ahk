@@ -45,7 +45,7 @@ actionShowExtFilesList() {
 		set_locale_ru()
 		SendInput, !%KeyA%
 		SendInput, {DOWN}{DOWN}{Enter}
-		WinWait, Открытие
+		WinWait, Открыть
 		SendInput, ^%KeyV%{Enter}
 	}
 }
