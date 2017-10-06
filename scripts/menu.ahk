@@ -10,6 +10,7 @@ createMenuItems() {
    Menu, Popup, Add, Конец&Функции, КонецФункции
    Menu, Popup, Add, 
    Menu, Popup, Add, Выравнить по &равно, ВыравнитьПоРавно
+   Menu, Popup, Add, &Обрамление текста, ОбрамлениеТекста
 
    Пустышка:
    Return
@@ -31,10 +32,13 @@ createMenuItems() {
    Return
 
    ВыравнитьПоРавно:
-    ;   putSelectionInFile()
-      RunWait, system\OneScript\bin\oscript.exe scripts\format.os align-equal-sign,,Hide
-    ;   pasteTextFromFile()
+      RunWait, system\OneScript\bin\woscript.exe scripts\format.os align-equal-sign
    Return   
+
+   ОбрамлениеТекста:
+      RunWait, system\OneScript\bin\woscript.exe scripts\auto\ОбрамлениеКода.os
+   Return   
+
 
 }
 
