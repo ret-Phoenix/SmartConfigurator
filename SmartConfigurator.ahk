@@ -111,24 +111,19 @@ $^+sc24:: actionShowMetadataNavigator()
 ;------------------------------------
 ; Автозамена приращений ++, +=, --, -=
 ::++:: 
-	clipboard =
- 	SendInput, ^+{left}^+{left}^{ins}{Right}{space}{scD}{Space}+{ins}{sc4E}{Space}1;
+	actionIncrements("++")
 Return
 
 ::--:: 
- 	SendInput, ^+{left}^+{left}^{ins}{Right}{space}{scD}{Space}+{ins}{sc4A}{Space}1;
+	actionIncrements("--")
 Return
 
 ::+=:: 
- 	SendInput, ^+{left}^+{left}^{ins}{Right}{space}{scD}{Space}+{ins}{sc4E}{Space}
+	actionIncrements("-=")
 Return
 
 ::-=:: 
- 	SendInput, ^+{left}^+{left}^{ins}{Right}{space}{scD}{Space}+{ins}{sc4A}{Space}
-Return
-
-::.=:: 
- 	SendInput, ^+{left}^+{left}^{ins}{Right}{space}{scD}{Space}+{ins}{sc4E}{Space}
+	actionIncrements("-=")
 Return
 
 ;------------------------------------

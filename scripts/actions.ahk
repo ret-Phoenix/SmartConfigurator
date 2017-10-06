@@ -364,3 +364,9 @@ actionContinueRow() {
 	SendInput, {Right}
 	RunWait, system\OneScript\bin\woscript.exe scripts\РаботаСТекстом.os ПродолжитьСтрокуКомментарий
 }
+
+actionIncrements(kind) {
+	SendInput, ^{ins}
+	ClipWait
+	RunWait, system\OneScript\bin\woscript.exe scripts\РаботаСТекстом.os Инкремент %kind%
+}
