@@ -20,7 +20,7 @@ Ctrl_Shift_Z = ^+{SC02C}
 ^3:: actionShowExtFilesList()
 
 ; Ctrl + Shift + m - Прочие скрипты
-^+sc32:: actionShowScriptManager()
+~^+sc32:: actionShowScriptManager()
 
 ; Ctrl + w Выбор ранее набранного слова
 ^sc11:: actionShowPrevWords()
@@ -192,4 +192,8 @@ return
 
 +Enter::
 	actionContinueRow()
+Return
+
+~^+sc10::
+	actionChoiceTemplate()
 Return

@@ -370,3 +370,7 @@ actionIncrements(kind) {
 	ClipWait
 	RunWait, system\OneScript\bin\woscript.exe scripts\РаботаСТекстом.os Инкремент %kind%
 }
+
+actionChoiceTemplate() {
+	RunWait, system\OneScript\bin\woscript.exe scripts\РаботаСТекстом.os ВыбратьШаблон
+}
