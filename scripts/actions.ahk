@@ -45,22 +45,13 @@ actionShowExtFilesList() {
 		set_locale_ru()
 		SendInput, !%KeyA%
 		SendInput, {DOWN}{DOWN}{Enter}
-		WinWait, Открытие
+		WinWait, Открыть
 		SendInput, ^%KeyV%{Enter}
 	}
 }
 
 actionShowScriptManager() {
-	result := putSelectionInFile()
-	if (result = "NotTextEditor") {
-		MsgBox, "Окно не текстовый редактор"
-		Exit, 0
-	}
-	;  RunWait, wscript scripts\scripts_manager.js
 	RunWait, system\OneScript\bin\woscript.exe scripts\МенеджерСкриптов.os,,
-	if (ErrorLevel > 0) {
-		pasteTextFromFile()
-	}
 }
 
 actionShowPrevWords() {
@@ -143,31 +134,11 @@ actionShowLastSelect() {
 
 
 actionRunAuthorComments(data) {
-	putSelectionInFile()
 	RunWait, system\OneScript\bin\oscript.exe scripts\АвторскиеКомментарии.os %data%,,hide
-	pasteTextFromFile()
-}
-
-actionRunLinksToItems() {
-	putSelectionInFile()
-	RunWait, wscript scripts\generator.js null simple-managment
-	pasteTextFromFile()
-}
-
-actionShowCodeGenerator() {
-	RunWait, wscript scripts\generator.js null generator
-	pasteTextFromFile()	
 }
 
 actionShowPreprocMethod() {
 	RunWait, system\OneScript\bin\woscript.exe scripts\РаботаСТекстом.os ВыбратьПрепроцессор,,
-	result = readTextFromFile()
-	if (result <> "") {
-		set_locale_ru()
-		FileRead, text, tmp\module.txt
-		set_locale_ru()
-		SendRaw, %text%	
-	}
 }
 
 actionShowSimpleMetaSearch() {
@@ -296,21 +267,7 @@ actionGoToPrevContainedWord() {
 	clipboard =
 
 	SendInput ^+{left}^{ins}{right}
-
-	module = tmp\module.txt
-	ClipWait
-	
-	FileDelete %module%
-
-	FileAppend, %Clipboard%, %module%, UTF-8
-	RunWait, system\OneScript\bin\woscript.exe scripts\РаботаСоСловами.os prev,,Hide
-	if (ErrorLevel > 0) {
-		UpCount := ErrorLevel
-		Loop %UpCount%
-		{
-			SendInput, {left}
-		}	
-	}
+	RunWait, system\OneScript\bin\woscript.exe scripts\РаботаСоСловами.os prev,,
 }
 
 actionGoToNextContainedWord() {
@@ -318,21 +275,7 @@ actionGoToNextContainedWord() {
 	clipboard =
 
 	SendInput ^+{right}^{ins}{left}
-
-	module = tmp\module.txt
-	ClipWait
-	
-	FileDelete %module%
-
-	FileAppend, %Clipboard%, %module%, UTF-8
-	RunWait, system\OneScript\bin\oscript.exe scripts\РаботаСоСловами.os next,,Hide
-	if (ErrorLevel > 0) {
-		UpCount := ErrorLevel
-		Loop %UpCount%
-		{
-			SendInput, {right}
-		}	
-	}
+	RunWait, system\OneScript\bin\woscript.exe scripts\РаботаСоСловами.os next,,
 }
 
 actionShowMethodName() {
@@ -343,23 +286,11 @@ actionShowMethodName() {
 
 }
 
-actionGenerateServerMethodFromCurMethod() {
-	Global
-
-	getTextUp()
-	RunWait, system\OneScript\bin\oscript.exe scripts\Навигация\НавигацияПоМодулю.os СоздатьСерверныйМетод,,Hide
-
-}
-
 actionOneStyleSelection() {
     ; отформатируем выделение средствами 1С, т.к. у только выделенного блока недостаточно информации об отступах
     global
     SendInput, !+%KeyF%
-	fileName:="scripts\OneStyle\module.txt"
-    putSelectionInFile( fileName )
-    RunWait, system\OneScript\bin\oscript.exe scripts\OneStyle\Main.os %fileName%,,Hide
-    pasteTextFromFile( fileName, 2 )
-	FileDelete %fileName%
+	RunWait, system\OneScript\bin\woscript.exe scripts\OneStyle\Main.os,,Hide
 }
 
 actionWindowsManager() {
@@ -427,7 +358,15 @@ actionResultSearchFilter() {
 
 }
 
+actionContinueRow() {
+	SendInput, {SHIFTDOWN}{up}{up}{up}{SHIFTUP}^{Insert}
+	ClipWait
+	SendInput, {Right}
+	RunWait, system\OneScript\bin\woscript.exe scripts\РаботаСТекстом.os ПродолжитьСтрокуКомментарий
+}
 
-actionTextWinExt() {
-	RunWait, system\OneScript\bin\oscript.exe scripts\WinExtTest.os,,
+actionIncrements(kind) {
+	SendInput, ^{ins}
+	ClipWait
+	RunWait, system\OneScript\bin\woscript.exe scripts\РаботаСТекстом.os Инкремент %kind%
 }

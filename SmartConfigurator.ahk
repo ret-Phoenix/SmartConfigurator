@@ -111,30 +111,25 @@ $^+sc24:: actionShowMetadataNavigator()
 ;------------------------------------
 ; Автозамена приращений ++, +=, --, -=
 ::++:: 
-	clipboard =
- 	SendInput, ^+{left}^+{left}^{ins}{Right}{space}{scD}{Space}+{ins}{sc4E}{Space}1;
+	actionIncrements("++")
 Return
 
 ::--:: 
- 	SendInput, ^+{left}^+{left}^{ins}{Right}{space}{scD}{Space}+{ins}{sc4A}{Space}1;
+	actionIncrements("--")
 Return
 
 ::+=:: 
- 	SendInput, ^+{left}^+{left}^{ins}{Right}{space}{scD}{Space}+{ins}{sc4E}{Space}
+	actionIncrements("-=")
 Return
 
 ::-=:: 
- 	SendInput, ^+{left}^+{left}^{ins}{Right}{space}{scD}{Space}+{ins}{sc4A}{Space}
-Return
-
-::.=:: 
- 	SendInput, ^+{left}^+{left}^{ins}{Right}{space}{scD}{Space}+{ins}{sc4E}{Space}
+	actionIncrements("-=")
 Return
 
 ;------------------------------------
 
 ; Win + X - Показать меню
-#sc02D:: 
+$#sc02D:: 
 	showMenu()
 Return
 
@@ -145,7 +140,7 @@ Return
 
 ; ----------------------------------
 ; Ctrl + 0 Запуск 1script
-!0:: actionTextWinExt() ;actionRun1Script()
+^0:: actionRun1Script()
 
 ; -----------------------------------
 ; Перейти к началу слова в составной строке
@@ -194,3 +189,7 @@ return
 #sc1F::
 	actionResultSearchFilter()
 return
+
++Enter::
+	actionContinueRow()
+Return
