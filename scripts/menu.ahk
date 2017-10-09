@@ -36,7 +36,7 @@ createMenuItems() {
    Return   
 
    ОбрамлениеТекста:
-      RunWait, system\OneScript\bin\woscript.exe scripts\auto\ОбрамлениеКода.os
+      RunWait, system\OneScript\bin\woscript.exe scripts\auto\ОбрамлениеКода.os,,
    Return   
 
 
