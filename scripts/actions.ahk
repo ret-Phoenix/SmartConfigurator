@@ -1,35 +1,9 @@
 actionShowMethodsList() {
-	Global
-
 	RunWait, system\OneScript\bin\woscript.exe scripts\Навигация\НавигацияПоМодулю.os СписокМетодов
-	if (ErrorLevel = 0) {
-		return
-	}
-
-	nStr := ErrorLevel
-	SendInput ^%KeyG%
-	WinWait, Перейти по номеру строки
-	SendInput, %nStr%{ENTER}
-
-	SendInput, {home}
-	SendInput, ^{NumpadAdd}
 }
 
 actionShowRegionsList() {
-	Global
-
-	RunWait, system\OneScript\bin\woscript.exe scripts\Навигация\НавигацияПоМодулю.os СписокОбластей,,Hide
-	if (ErrorLevel = 0) {
-		return
-	}
-
-	nStr := ErrorLevel
-	SendInput, ^%KeyG%
-	WinWait, Перейти по номеру строки
-	SendInput, %nStr%{ENTER}
-
-	SendInput, {home}
-	SendInput, ^{NumpadAdd}
+	RunWait, system\OneScript\bin\woscript.exe scripts\Навигация\НавигацияПоМодулю.os СписокОбластей
 }
 
 actionShowExtFilesList() {
