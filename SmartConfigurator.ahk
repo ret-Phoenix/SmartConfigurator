@@ -119,7 +119,7 @@ Return
 Return
 
 ::+=:: 
-	actionIncrements("-=")
+	actionIncrements("+=")
 Return
 
 ::-=:: 
@@ -190,10 +190,12 @@ return
 	actionResultSearchFilter()
 return
 
+; Shift + Enter - продолжить строку
 +Enter::
 	actionContinueRow()
 Return
 
+; Ctrl + Shift + Q - выбор шаблона
 ~^+sc10::
 	actionChoiceTemplate()
 Return
