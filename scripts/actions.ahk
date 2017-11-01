@@ -36,30 +36,15 @@ actionShowPrevWords() {
 actionGotoMethodBegin() {
 	Global
 
-	getTextUp()
-	RunWait, system\OneScript\bin\woscript.exe scripts\Навигация\НавигацияПоМодулю.os НачалоМетода,,Hide
-	if (ErrorLevel > 0) {
-		nStr := ErrorLevel
-		SendInput, {CtrlDown}%KeyG%{CtrlUp}
-		WinWait, Перейти по номеру строки
-		SendInput,%nStr%{ENTER}
-	}   
-	SendInput, {home}
+	getTextUpWithCurRow()
+	RunWait, system\OneScript\bin\woscript.exe scripts\Навигация\НавигацияПоМодулю.os НачалоМетода
 }
 
 actionGotoMethodEnd() {
 	Global
 
-	getTextUp()
-	RunWait, system\OneScript\bin\woscript.exe scripts\Навигация\НавигацияПоМодулю.os НачалоМетода,,Hide
-	if (ErrorLevel > 0) {
-		nStr := ErrorLevel
-		SendInput ^%KeyG%
-		WinWait, Перейти по номеру строки
-		SendInput %nStr%{ENTER}
-		SendInput ^{SC01A}
-	}   
-	SendInput, {home}
+	getTextUpWithCurRow()
+	RunWait, system\OneScript\bin\woscript.exe scripts\Навигация\НавигацияПоМодулю.os КонецМетода
 }
 
 actionShowRegExSearch() {

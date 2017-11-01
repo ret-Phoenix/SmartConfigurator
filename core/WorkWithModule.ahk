@@ -142,6 +142,16 @@ putModuleInFile(fileName = 0) {
 	
 }
 */
+
+getTextUpWithCurRow() {
+	clipboard := 
+	SendInput, {End}{CTRLDOWN}{ALTDOWN}{SHIFTDOWN}{Home}{CTRLUP}{ALTUP}{SHIFTUP}{CTRLDOWN}{INS}{CTRLUP}{Right}
+	ClipWait
+	FileDelete tmp\module.txt
+	FileAppend, %clipboard%, tmp\module.txt, UTF-8
+	clipboard := 
+}
+
 getTextUp() {
 	clipboard := 
 	SendInput, {CTRLDOWN}{ALTDOWN}{SHIFTDOWN}{Home}{CTRLUP}{ALTUP}{SHIFTUP}{CTRLDOWN}{INS}{CTRLUP}{Right}
