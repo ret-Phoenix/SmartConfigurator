@@ -54,8 +54,8 @@ Ctrl_Shift_Z = ^+{SC02C}
 ; Ctrl + i - Развернуть модуль: 
 ^sc17:: SendInput, ^+{NumpadAdd}
 
-; Ctrl-\ символ '|'
-$^\:: SendInput |
+; Alt-\ символ '|'
+$!\:: SendInput |
 
 ; Alt - [ - символ '['
 $!SC01A::Send [ 
@@ -65,6 +65,12 @@ $!SC01B::Send ]
 
 ; Alt - & - символ '&'
 $!SC008::Send &
+
+; Alt - < - символ '<'
+$!sc33::Send <
+
+; Alt - > - символ '>'
+$!sc34::Send >
 
 ; Ctrl + D - Копирование текущей строки/ выделенного блока и вставка ниже
 ^sc20:: SendInput, {CTRLDOWN}{INS}{CTRLUP}{Right}{HOME}{HOME}{SHIFTDOWN}{INS}{SHIFTUP}
