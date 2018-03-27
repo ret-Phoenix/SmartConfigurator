@@ -7,21 +7,7 @@ actionShowRegionsList() {
 }
 
 actionShowExtFilesList() {
-	Global
-
-	; RunWait, wscript scripts\ExtFiles.js
 	RunWait, system\OneScript\bin\woscript.exe scripts\ExtFiles.os,,
-
-	NewText := getTextFromFile()
-	If (NewText <> "") {
-		ClipWait
-		Sleep 1
-		set_locale_ru()
-		SendInput, !%KeyA%
-		SendInput, {DOWN}{DOWN}{Enter}
-		WinWait, Открыть
-		SendInput, ^%KeyV%{Enter}
-	}
 }
 
 actionShowScriptManager() {

@@ -171,7 +171,7 @@ return
 	SendInput, {HOME}{SHIFTDOWN}{END}{SHIFTUP}{SHIFTDOWN}{DEL}{SHIFTUP}^{sc26}{HOME}{UP}{HOME}{ENTER}{UP}{SHIFTDOWN}{INS}{SHIFTUP}
 return
 
-; Alt + down - передвинуть строку вверх
+; Alt + down - передвинуть строку вниз
 !down::
 	SendInput, {HOME}{SHIFTDOWN}{END}{SHIFTUP}{SHIFTDOWN}{DEL}{SHIFTUP}^{sc26}{END}{ENTER}{SHIFTDOWN}{INS}{SHIFTUP}
 return
