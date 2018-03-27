@@ -57,8 +57,9 @@ actionShowRegExSearch() {
 		SendInput ^%KeyG%
 		WinWait, Перейти по номеру строки
 		SendInput %nStr%{ENTER}
+		SendInput, {home}
 	}   
-	SendInput, {home}
+	
 }
 
 actionShowRegExSearchLastResult() {
@@ -71,8 +72,8 @@ actionShowRegExSearchLastResult() {
 		SendInput ^%KeyG%
 		WinWait, Перейти по номеру строки
 		SendInput %nStr%{ENTER}
+		SendInput, {home}
 	}   
-	SendInput, {home}
 }
 
 actionShowLastSelect() {
@@ -86,9 +87,9 @@ actionShowLastSelect() {
 		SendInput ^%KeyG%
 		WinWait, Перейти по номеру строки
 		SendInput %nStr%{ENTER}
+		SendInput, {home}
+		SendInput, ^{NumpadAdd}
 	}   
-	SendInput, {home}
-	SendInput, ^{NumpadAdd}
 }
 
 
