@@ -20,16 +20,10 @@ actionShowPrevWords() {
 }
 
 actionGotoMethodBegin() {
-	Global
-
-	getTextUpWithCurRow()
 	RunWait, system\OneScript\bin\woscript.exe scripts\Навигация\НавигацияПоМодулю.os НачалоМетода
 }
 
 actionGotoMethodEnd() {
-	Global
-
-	getTextUpWithCurRow()
 	RunWait, system\OneScript\bin\woscript.exe scripts\Навигация\НавигацияПоМодулю.os КонецМетода
 }
 
@@ -224,9 +218,9 @@ actionGoToNextContainedWord() {
 }
 
 actionShowMethodName() {
-	Global
+	; Global
 
-	getTextUp()
+	; getTextUp()
 	RunWait, system\OneScript\bin\woscript.exe scripts\Навигация\НавигацияПоМодулю.os ИмяМетода,,
 
 }
@@ -311,8 +305,8 @@ actionContinueRow() {
 }
 
 actionIncrements(kind) {
-	SendInput, ^{ins}
-	ClipWait
+	; SendInput, ^{ins}
+	; ClipWait
 	RunWait, system\OneScript\bin\woscript.exe scripts\РаботаСТекстом.os Инкремент %kind%
 }
 
