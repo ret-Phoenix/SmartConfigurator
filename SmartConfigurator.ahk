@@ -20,7 +20,7 @@ Ctrl_Shift_Z = ^+{SC02C}
 ^3:: actionShowExtFilesList()
 
 ; Ctrl + Shift + m - Прочие скрипты
-^+sc32:: actionShowScriptManager()
+~^+sc32:: actionShowScriptManager()
 
 ; Ctrl + w Выбор ранее набранного слова
 ^sc11:: actionShowPrevWords()
@@ -54,8 +54,8 @@ Ctrl_Shift_Z = ^+{SC02C}
 ; Ctrl + i - Развернуть модуль: 
 ^sc17:: SendInput, ^+{NumpadAdd}
 
-; Ctrl-\ символ '|'
-$^\:: SendInput |
+; Alt-\ символ '|'
+$!\:: SendInput |
 
 ; Alt - [ - символ '['
 $!SC01A::Send [ 
@@ -65,6 +65,12 @@ $!SC01B::Send ]
 
 ; Alt - & - символ '&'
 $!SC008::Send &
+
+; Alt - < - символ '<'
+$!sc33::Send <
+
+; Alt - > - символ '>'
+$!sc34::Send >
 
 ; Ctrl + D - Копирование текущей строки/ выделенного блока и вставка ниже
 ^sc20:: SendInput, {CTRLDOWN}{INS}{CTRLUP}{Right}{HOME}{HOME}{SHIFTDOWN}{INS}{SHIFTUP}
@@ -119,7 +125,7 @@ Return
 Return
 
 ::+=:: 
-	actionIncrements("-=")
+	actionIncrements("+=")
 Return
 
 ::-=:: 
@@ -165,7 +171,7 @@ return
 	SendInput, {HOME}{SHIFTDOWN}{END}{SHIFTUP}{SHIFTDOWN}{DEL}{SHIFTUP}^{sc26}{HOME}{UP}{HOME}{ENTER}{UP}{SHIFTDOWN}{INS}{SHIFTUP}
 return
 
-; Alt + down - передвинуть строку вверх
+; Alt + down - передвинуть строку вниз
 !down::
 	SendInput, {HOME}{SHIFTDOWN}{END}{SHIFTUP}{SHIFTDOWN}{DEL}{SHIFTUP}^{sc26}{END}{ENTER}{SHIFTDOWN}{INS}{SHIFTUP}
 return
@@ -190,6 +196,12 @@ return
 	actionResultSearchFilter()
 return
 
+; Shift + Enter - продолжить строку
 +Enter::
 	actionContinueRow()
+Return
+
+; Ctrl + Shift + Q - выбор шаблона
+~^+sc10::
+	actionChoiceTemplate()
 Return

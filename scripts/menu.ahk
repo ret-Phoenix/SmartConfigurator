@@ -24,11 +24,11 @@ createMenuItems() {
    Return
 
    КонецПроцедуры:
-      SendRaw, КонецПроцедуры;
+      SendRaw, КонецПроцедуры
    Return
 
    КонецФункции:
-      SendRaw, КонецФункции;
+      SendRaw, КонецФункции
    Return
 
    ВыравнитьПоРавно:

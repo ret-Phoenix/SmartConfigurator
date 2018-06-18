@@ -1,4 +1,6 @@
-﻿::о..::
+﻿#include core\WorkWithWindows.ahk
+
+::о..::
 	SendRaw, Объект.
 Return
 

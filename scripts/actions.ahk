@@ -1,53 +1,13 @@
 actionShowMethodsList() {
-	Global
-
 	RunWait, system\OneScript\bin\woscript.exe scripts\Навигация\НавигацияПоМодулю.os СписокМетодов
-	if (ErrorLevel = 0) {
-		return
-	}
-
-	nStr := ErrorLevel
-	SendInput ^%KeyG%
-	WinWait, Перейти по номеру строки
-	SendInput, %nStr%{ENTER}
-
-	SendInput, {home}
-	SendInput, ^{NumpadAdd}
 }
 
 actionShowRegionsList() {
-	Global
-
-	RunWait, system\OneScript\bin\woscript.exe scripts\Навигация\НавигацияПоМодулю.os СписокОбластей,,Hide
-	if (ErrorLevel = 0) {
-		return
-	}
-
-	nStr := ErrorLevel
-	SendInput, ^%KeyG%
-	WinWait, Перейти по номеру строки
-	SendInput, %nStr%{ENTER}
-
-	SendInput, {home}
-	SendInput, ^{NumpadAdd}
+	RunWait, system\OneScript\bin\woscript.exe scripts\Навигация\НавигацияПоМодулю.os СписокОбластей
 }
 
 actionShowExtFilesList() {
-	Global
-
-	; RunWait, wscript scripts\ExtFiles.js
 	RunWait, system\OneScript\bin\woscript.exe scripts\ExtFiles.os,,
-
-	NewText := getTextFromFile()
-	If (NewText <> "") {
-		ClipWait
-		Sleep 1
-		set_locale_ru()
-		SendInput, !%KeyA%
-		SendInput, {DOWN}{DOWN}{Enter}
-		WinWait, Открыть
-		SendInput, ^%KeyV%{Enter}
-	}
 }
 
 actionShowScriptManager() {
@@ -60,32 +20,11 @@ actionShowPrevWords() {
 }
 
 actionGotoMethodBegin() {
-	Global
-
-	getTextUp()
-	RunWait, system\OneScript\bin\woscript.exe scripts\Навигация\НавигацияПоМодулю.os НачалоМетода,,Hide
-	if (ErrorLevel > 0) {
-		nStr := ErrorLevel
-		SendInput, {CtrlDown}%KeyG%{CtrlUp}
-		WinWait, Перейти по номеру строки
-		SendInput,%nStr%{ENTER}
-	}   
-	SendInput, {home}
+	RunWait, system\OneScript\bin\woscript.exe scripts\Навигация\НавигацияПоМодулю.os НачалоМетода
 }
 
 actionGotoMethodEnd() {
-	Global
-
-	getTextUp()
-	RunWait, system\OneScript\bin\woscript.exe scripts\Навигация\НавигацияПоМодулю.os НачалоМетода,,Hide
-	if (ErrorLevel > 0) {
-		nStr := ErrorLevel
-		SendInput ^%KeyG%
-		WinWait, Перейти по номеру строки
-		SendInput %nStr%{ENTER}
-		SendInput ^{SC01A}
-	}   
-	SendInput, {home}
+	RunWait, system\OneScript\bin\woscript.exe scripts\Навигация\НавигацияПоМодулю.os КонецМетода
 }
 
 actionShowRegExSearch() {
@@ -98,8 +37,9 @@ actionShowRegExSearch() {
 		SendInput ^%KeyG%
 		WinWait, Перейти по номеру строки
 		SendInput %nStr%{ENTER}
+		SendInput, {home}
 	}   
-	SendInput, {home}
+	
 }
 
 actionShowRegExSearchLastResult() {
@@ -112,8 +52,8 @@ actionShowRegExSearchLastResult() {
 		SendInput ^%KeyG%
 		WinWait, Перейти по номеру строки
 		SendInput %nStr%{ENTER}
+		SendInput, {home}
 	}   
-	SendInput, {home}
 }
 
 actionShowLastSelect() {
@@ -127,9 +67,9 @@ actionShowLastSelect() {
 		SendInput ^%KeyG%
 		WinWait, Перейти по номеру строки
 		SendInput %nStr%{ENTER}
+		SendInput, {home}
+		SendInput, ^{NumpadAdd}
 	}   
-	SendInput, {home}
-	SendInput, ^{NumpadAdd}
 }
 
 
@@ -279,9 +219,9 @@ actionGoToNextContainedWord() {
 }
 
 actionShowMethodName() {
-	Global
+	; Global
 
-	getTextUp()
+	; getTextUp()
 	RunWait, system\OneScript\bin\woscript.exe scripts\Навигация\НавигацияПоМодулю.os ИмяМетода,,
 
 }
@@ -366,7 +306,11 @@ actionContinueRow() {
 }
 
 actionIncrements(kind) {
-	SendInput, ^{ins}
-	ClipWait
+	; SendInput, ^{ins}
+	; ClipWait
 	RunWait, system\OneScript\bin\woscript.exe scripts\РаботаСТекстом.os Инкремент %kind%
+}
+
+actionChoiceTemplate() {
+	RunWait, system\OneScript\bin\woscript.exe scripts\РаботаСТекстом.os ВыбратьШаблон
 }
