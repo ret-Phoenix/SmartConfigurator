@@ -314,3 +314,10 @@ actionIncrements(kind) {
 actionChoiceTemplate() {
 	RunWait, system\OneScript\bin\woscript.exe scripts\РаботаСТекстом.os ВыбратьШаблон
 }
+
+actionOpenObjectModuleExternal() {
+	Global
+	SendInput, {CtrlUp}
+	SendInput, {CtrlDown}%KeyT%{CtrlUp}
+	SendInput, {Tab}{Enter}{down}{Enter}
+}

@@ -205,3 +205,8 @@ Return
 ~^+sc10::
 	actionChoiceTemplate()
 Return
+
+; Ctrl + 6 - Открыть модуль объекта внешней обработки / внешнего отчета
+~^6::
+	actionOpenObjectModuleExternal()
+Return
