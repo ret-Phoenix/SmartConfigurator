@@ -210,3 +210,8 @@ Return
 ~^6::
 	actionOpenObjectModuleExternal()
 Return
+
+; Ctrl + 5 - Открыть основную форму внешней обработки / внешнего отчета
+~^5::
+	actionOpenMainFormExternal()
+Return

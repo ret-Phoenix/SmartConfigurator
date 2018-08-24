@@ -321,3 +321,11 @@ actionOpenObjectModuleExternal() {
 	SendInput, {CtrlDown}%KeyT%{CtrlUp}
 	SendInput, {Tab}{Enter}{down}{Enter}
 }
+
+actionOpenMainFormExternal() {
+	Global
+	SendInput, {CtrlUp}
+	SendInput, {CtrlDown}%KeyT%{CtrlUp}
+	SendInput, +{Tab}
+	SendInput, ^+{F4}
+}
