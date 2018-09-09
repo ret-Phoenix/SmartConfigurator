@@ -16,7 +16,6 @@ actionShowScriptManager() {
 
 actionShowPrevWords() {
 	RunWait, system\OneScript\bin\woscript.exe scripts\Навигация\НавигацияПоМодулю.os allwords,,
-	pasteTextFromFile()
 }
 
 actionGotoMethodBegin() {
@@ -326,6 +325,5 @@ actionOpenMainFormExternal() {
 	Global
 	SendInput, {CtrlUp}
 	SendInput, {CtrlDown}%KeyT%{CtrlUp}
-	SendInput, +{Tab}
-	SendInput, ^+{F4}
+	SendInput, {Tab}{Enter}{down}{down}{Enter}
 }
