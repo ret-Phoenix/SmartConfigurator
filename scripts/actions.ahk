@@ -16,7 +16,6 @@ actionShowScriptManager() {
 
 actionShowPrevWords() {
 	RunWait, system\OneScript\bin\woscript.exe scripts\Навигация\НавигацияПоМодулю.os allwords,,
-	pasteTextFromFile()
 }
 
 actionGotoMethodBegin() {
@@ -313,4 +312,18 @@ actionIncrements(kind) {
 
 actionChoiceTemplate() {
 	RunWait, system\OneScript\bin\woscript.exe scripts\РаботаСТекстом.os ВыбратьШаблон
+}
+
+actionOpenObjectModuleExternal() {
+	Global
+	SendInput, {CtrlUp}
+	SendInput, {CtrlDown}%KeyT%{CtrlUp}
+	SendInput, {Tab}{Enter}{down}{Enter}
+}
+
+actionOpenMainFormExternal() {
+	Global
+	SendInput, {CtrlUp}
+	SendInput, {CtrlDown}%KeyT%{CtrlUp}
+	SendInput, {Tab}{Enter}{down}{down}{Enter}
 }
